@@ -1,0 +1,54 @@
+{
+  "name": "hay-caf",
+  "version": "0.0.1",
+  "description": "A demonstration testing automation framework appication for the purposes of demonstrating the usage and integration of D-CAF, Hest, Hexiom, HayRunner, HayMonkey, and HayD-CAG in a single testing automation framework general cloud and mobile business solution.",
+  "main": "hay-caf.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SethEden/Hay-CAF.git"
+  },
+  "keywords": [
+    "test",
+    "testing",
+    "automation",
+    "testing",
+    "automation",
+    "QA",
+    "QC",
+    "QE",
+    "quality",
+    "quality",
+    "assurance",
+    "quality",
+    "control",
+    "quality",
+    "engineering",
+    "load",
+    "testing",
+    "performance",
+    "testing",
+    "compliance",
+    "testing",
+    "monkey",
+    "testing",
+    "api",
+    "testing",
+    "web",
+    "service",
+    "testing",
+    "REST",
+    "API",
+    "testing",
+    "service",
+    "virtualization"
+  ],
+  "author": "Seth Hollingsead",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SethEden/Hay-CAF/issues"
+  },
+  "homepage": "https://github.com/SethEden/Hay-CAF#readme"
+}
