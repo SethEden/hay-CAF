@@ -20,7 +20,7 @@
 // Internal imports
 import testBroker from './brokers/testBroker.js';
 import testRules from './businessRules/clientRulesLibrary.js';
-import testCommands from './commands/clientCommandsLibrary';
+import testCommands from './commands/clientCommandsLibrary.js';
 import * as app_cmd from './constants/application.command.constants.js';
 import * as app_cfg from './constants/application.configuration.constants.js';
 import * as apc from './constants/application.constants.js';

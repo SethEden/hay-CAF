@@ -3,7 +3,7 @@
  * @module testCommands
  * @description Contains all client defined commands for execution of client test commands with various kinds of operations,
  * specific for GUI testing, API testing, etc...
- * @requires module:installBroker
+ * @requires module:testBroker
  * @requires module:application.command.constants
  * @requires module:application.message.constants
  * @requires module:application.system.constants
@@ -16,7 +16,7 @@
  */
 
 // Internal imports
-import installBroker from '../../brokers/installBroker.js';
+import testBroker from '../../brokers/testBroker.js';
 import * as apc from '../../constants/application.constants.js';
 import * as app_msg from '../../constants/application.message.constants.js';
 import * as app_sys from '../../constants/application.system.constants.js';
