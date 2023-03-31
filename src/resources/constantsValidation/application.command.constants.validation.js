@@ -37,7 +37,7 @@ export const applicationCommandConstantsValidation = [
   // ********************************
   // test Commands in order
   // ********************************
-
+  {Name: 'cexecuteTest', Actual: app_cmd.cexecuteTest, Expected: 'executeTest'},
   
   // ********************************
   // Application Workflows in order
