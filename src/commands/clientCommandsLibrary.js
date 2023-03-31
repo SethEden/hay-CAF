@@ -50,7 +50,7 @@ const initApplicationCommandsLibrary = function() {
     // ***********************************************
     // test commands in order
     // ***********************************************
-    
+    [app_cmd.cexecuteTest]: (inputData, inputMetaData) => testCommands.executeTest(inputData, inputMetaData)
   }
 }
 
