@@ -14,7 +14,7 @@
 
 // Internal imports
 import applicationSystem from './clientCommands/applicationSystem.js';
-import applicationTest from './clientCommands/applicationTests.js';
+import applicationTests from './clientCommands/applicationTests.js';
 import testCommands from './clientCommands/testCommands.js';
 import * as app_cmd from '../constants/application.command.constants.js';
 
@@ -42,10 +42,10 @@ const initApplicationCommandsLibrary = function() {
     // ***********************************************
     // application test commands in order
     // ***********************************************
-    [app_cmd.cvalidateApplicationConstants]: (inputData, inputMetaData) => applicationTest.validateApplicationConstants(inputData, inputMetaData),
-    [app_cmd.cvalidateApplicationCommandAliases]: (inputData, inputMetaData) => applicationTest.validateApplicationCommandAliases(inputData, inputMetaData),
-    [app_cmd.cvalidateApplicationWorkflows]: (inputData, inputMetaData) => applicationTest.validateApplicationWorkflows(inputData, inputMetaData),
-    [app_cmd.callApplicationValidations]: (inputData, inputMetaData) => applicationTest.allApplicationValidations(inputData, inputMetaData),
+    [app_cmd.cvalidateApplicationConstants]: (inputData, inputMetaData) => applicationTests.validateApplicationConstants(inputData, inputMetaData),
+    [app_cmd.cvalidateApplicationCommandAliases]: (inputData, inputMetaData) => applicationTests.validateApplicationCommandAliases(inputData, inputMetaData),
+    [app_cmd.cvalidateApplicationWorkflows]: (inputData, inputMetaData) => applicationTests.validateApplicationWorkflows(inputData, inputMetaData),
+    [app_cmd.callApplicationValidations]: (inputData, inputMetaData) => applicationTests.allApplicationValidations(inputData, inputMetaData),
 
     // ***********************************************
     // test commands in order
