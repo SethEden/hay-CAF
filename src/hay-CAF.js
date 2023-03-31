@@ -54,8 +54,8 @@ let exitConditionArrayIndex = 0;
  * @date 2023/03/30
  */
 async function bootStrapApplication() {
-  let functionName = bootStrapApplication.name;
-  console.log(`BEGIN ${namespacePrefix}${functionName} function`);
+  // let functionName = bootStrapApplication.name;
+  // console.log(`BEGIN ${namespacePrefix}${functionName} function`);
   rootPath = url.fileURLToPath(path.dirname(import.meta.url));
   let rootPathArray = [];
   let pathSeparator = '';
@@ -121,9 +121,9 @@ async function bootStrapApplication() {
   }
   appConfig[sys.cclientBusinessRules] = await testRules.initApplicationRulesLibrary();
   appConfig[sys.cclientCommands] = await testCommands.initApplicationCommandsLibrary();
-  console.log('appConfig is: ', appConfig);
+  // console.log('appConfig is: ', appConfig);
   await haystacks.initFramework(appConfig);
-  console.log(`END ${namespacePrefix}${functionName} function`);
+  // console.log(`END ${namespacePrefix}${functionName} function`);
 }
 
 /**
