@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SethEden/Hay-CAF.git"
+    "url": "git+https://github.com/SethEden/hay-CAF.git"
   },
   "keywords": [
     "test",
@@ -40,9 +40,9 @@
   "author": "Seth Hollingsead <iceversaka@hotmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SethEden/Hay-CAF/issues"
+    "url": "https://github.com/SethEden/hay-CAF/issues"
   },
-  "homepage": "https://github.com/SethEden/Hay-CAF#readme",
+  "homepage": "https://github.com/SethEden/hay-CAF#readme",
   "dependencies": {
     "@haystacks/async": ">=0.2.7",
     "@haystacks/constants": ">=0.2.7",
