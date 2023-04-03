@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?><CommandsAliases>
+  <Command Name="test" Aliases="tst,exeT,exe-t,exetest,exTest,ex-t,etest,xtest,exetst,etst" Description="Executes a test, or suite of tests."/>
+</CommandsAliases>

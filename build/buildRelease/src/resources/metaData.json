@@ -1,0 +1,5 @@
+{
+  "Name": "buildRelease",
+  "Version": "0.0.1",
+  "Description": "A build application that leverages the haystacks platform to self-build and self-deploy the haystacks npm package."
+}
