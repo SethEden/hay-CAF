@@ -1,0 +1,14 @@
+*/node_modules/*
+node_modules/*
+*/documentation/*
+documentation/*
+*/bin/*
+bin/*
+*.env
+*.Env
+*.ENV
+*.log
+*.Log
+*.LOG
+*.html
+*.HTML

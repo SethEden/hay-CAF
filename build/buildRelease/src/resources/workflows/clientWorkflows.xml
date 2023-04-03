@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><CommandWorkflows>
+  <Workflow Name="workflow1" Value="commandSequencer echoCommand customEchoCommand"/>
+  <Workflow Name="workflow2" Value="commandSequencer customEchoCommand echoCommand"/>
+  <Workflow Name="build" Value="commandSequencer validateConstants validateCommandAliases validateWorkflows deployApplication,sourceResourcesPath,destinationResourcesPath releaseApplication"/>
+  <!--Workflow Name="build" Value="commandSequencer deployApplication,sourceResourcesPath,destinationResourcesPath releaseApplication"/-->
+</CommandWorkflows>
