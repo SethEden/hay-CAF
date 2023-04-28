@@ -33,7 +33,7 @@ export const callApplicationValidations = wrd.call + wrd.cApplication + wrd.cVal
 // ********************************
 // hay-CAF Commands in order
 // ********************************
-export const ctest = wrd.cTest; // test
+export const ctest = wrd.ctest; // test
 
 // ********************************
 // Application Workflows in order
