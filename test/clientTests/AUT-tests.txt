@@ -1,0 +1,14 @@
+Implement the library of Application Under Test - testing here.
+This is where all feature, regression and smoke testing should be created.
+Sub-folders such as:
+Test data
+Page data
+Assertion data
+Results data
+Locators (CSS/Xpath/ETC...)
+Reports data
+Keyword definitions (BDD/CSV/ETC...)
+Test definitions (BDD/CSV/ETC...)
+DevOps testing verticals definitions
+
+All should be organized and placed under this folder.

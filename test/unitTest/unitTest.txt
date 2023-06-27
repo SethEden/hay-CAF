@@ -1,0 +1,5 @@
+Implement unit test plan, unit test data, unit test and unit test documentation in this folder.
+All of these tests should be specific to the Hay-CAF repo only.
+
+AUT unit tests should be implemented with the AUT application source code to provide
+maximum visibility into unit test code coverage according to static code checkers such as SonarCloud/SonarQube.
