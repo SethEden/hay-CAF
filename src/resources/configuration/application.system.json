@@ -18,7 +18,7 @@
   "system.clearBusinessRulesPerformanceDataAfterAnalysis": false,
   "system.clearCommandPerformanceDataAfterAnalysis": false,
   "system.printDataHiveToLogFile": true,
-  "system.enablePluginLoader": true,
+  "system.enablePluginLoader": false,
   "system.synchronizePluginRegistryWithPluginFolder": false,
   "system.enableConstantsValidation": true,
   "system.displayIndividualConstantsValidationPassMessages": false,
@@ -29,5 +29,7 @@
   "system.logUserEnteredCommands": true,
   "system.logAllCommands": true,
   "system.enableUserCommandsLogClearing": true,
-  "system.enableAllCommandsLogClearing": true
+  "system.enableAllCommandsLogClearing": true,
+  "system.boilerPlateTestPathAndFileName": "C:/CAFfeinated/TestBureau/SethEden/Tests/Default.test.js",
+  "system.rootTestFolderPath": "C:/CAFfeinated/TestBureau/SethEden/Tests/Workflows"
 }

@@ -33,6 +33,9 @@ export const callApplicationValidations = wrd.call + wrd.cApplication + wrd.cVal
 // ********************************
 // hay-CAF Commands in order
 // ********************************
+export const csetBoilerPlateTestPathAndFileName = wrd.cset + wrd.cBoiler + wrd.cPlate + wrd.cTest + wrd.cPath + wrd.cAnd + wrd.cFileName; // setBoilerPlateTestPathAndFileName
+export const csetRootTestFolderPath = wrd.cset + wrd.cRoot + wrd.cTest + wrd.cFolder + wrd.cPath; // setRootTestFolderPath
+export const cprintApplicationConfiguration = wrd.cprint + wrd.cApplication + wrd.cConfiguration; // printApplicationConfiguration
 export const ctest = wrd.ctest; // test
 
 // ********************************

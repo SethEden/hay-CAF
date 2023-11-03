@@ -37,6 +37,9 @@ export const applicationCommandConstantsValidation = [
   // ********************************
   // test Commands in order
   // ********************************
+  {Name: 'csetBoilerPlateTestPathAndFileName', Actual: app_cmd.csetBoilerPlateTestPathAndFileName, Expected: 'setBoilerPlateTestPathAndFileName'},
+  {Name: 'csetRootTestFolderPath', Actual: app_cmd.csetRootTestFolderPath, Expected: 'setRootTestFolderPath'},
+  {Name: 'cprintApplicationConfiguration', Actual: app_cmd.cprintApplicationConfiguration, Expected: 'printApplicationConfiguration'},
   {Name: 'ctest', Actual: app_cmd.ctest, Expected: 'test'},
   
   // ********************************

@@ -11,3 +11,6 @@
 // External imports
 import hayConst from '@haystacks/constants';
 const {wrd} = hayConst;
+
+export const cboilerPlateTestPathAndFileName = wrd.cboiler + wrd.cPlate + wrd.cTest + wrd.cPath + wrd.cAnd + wrd.cFileName; // boilerPlateTestPathAndFileName
+export const crootTestFolderPath = wrd.croot + wrd.cTest + wrd.cFolder + wrd.cPath; // rootTestFolderPath
