@@ -51,5 +51,10 @@ export const applicationMessageConstantsValidation = [
   {Name: 'capplicationMessage02', Actual: app_msg.capplicationMessage02, Expected: 'BEGIN command parser'},
   {Name: 'capplicationMessage03', Actual: app_msg.capplicationMessage03, Expected: 'END command parser'},
   {Name: 'capplicationMessage04', Actual: app_msg.capplicationMessage04, Expected: 'END main program loop'},
-  {Name: 'capplicationMessage05', Actual: app_msg.capplicationMessage05, Expected: 'Exiting Hay-CAF application'}
+  {Name: 'capplicationMessage05', Actual: app_msg.capplicationMessage05, Expected: 'Exiting Hay-CAF application'},
+
+  {Name: 'csettingKeyIs', Actual: app_msg.csettingKeyIs, Expected: 'settingKey is: '},
+  {Name: 'csettingValueIs', Actual: app_msg.csettingValueIs, Expected: 'settingValue is: '},
+  {Name: 'crefactoredAppConfigIs', Actual: app_msg.crefactoredAppConfigIs, Expected: 'refactoredAppConfig is: '},
+  {Name: 'cappConfigIs', Actual: app_msg.cappConfigIs, Expected: 'appConfig is: '}
 ];

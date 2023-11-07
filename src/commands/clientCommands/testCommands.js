@@ -114,7 +114,32 @@ async function printApplicationConfiguration(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = [true, ];
   let appConfig = await haystacks.executeBusinessRules([[wrd.cconfiguration, wrd.csystem], false], [biz.cgetNamespacedDataObject]);
-  console.log('appConfig is: ' + JSON.stringify(appConfig));
+  let refactoredAppConfig = [];
+  for (let settingKey in appConfig) {
+    // settingKey is:
+    await haystacks.consoleLog(namespacePrefix, functionName, app_msg.csettingKeyIs + settingKey);
+    let settingIsStringValue = false;
+    let settingStringValueLength = 0;
+    let settingValue = appConfig[settingKey];
+    if (!Array.isArray(settingValue)) {
+      if (typeof settingValue === wrd.cstring) {
+        settingIsStringValue = true;
+        settingStringValueLength = settingValue.length;
+      }
+      if (settingValue && ((settingIsStringValue === true && settingStringValueLength < 70) || settingIsStringValue === false)) {
+        // settingValue is:
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.csettingValueIs + settingValue);
+        // Now we have eliminated all of the edge cases of long arrays or long strings!
+        // We should add the settingKey & settingValue to the refactoredAppConfig array as a new object.
+        refactoredAppConfig.push({Name: settingKey, Value: settingValue});
+      }
+    }
+  } // End-for (let settingKey in appConfig)
+  // refactoredAppConfig is:
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.crefactoredAppConfigIs + JSON.stringify(refactoredAppConfig))
+  await haystacks.consoleTableLog(namespacePrefix, refactoredAppConfig, [wrd.cName, wrd.cValue]);
+  // appConfig is:
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cappConfigIs + JSON.stringify(appConfig));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;

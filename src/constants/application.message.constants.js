@@ -55,3 +55,8 @@ export const capplicationMessage02 = wrd.cBEGIN + bas.cSpace + wrd.ccommand + ba
 export const capplicationMessage03 = wrd.cEND + bas.cSpace + wrd.ccommand + bas.cSpace + wrd.cparser; // END command parser
 export const capplicationMessage04 = wrd.cEND + bas.cSpace + wrd.cmain + bas.cSpace + wrd.cprogram + bas.cSpace + wrd.cloop; // END main program loop
 export const capplicationMessage05 = wrd.cExiting + bas.cSpace + wrd.cHay + bas.cDash + bas.cCA + bas.cF + bas.cSpace + wrd.capplication; // Exiting Hay-CAF application
+
+export const csettingKeyIs = wrd.csetting + wrd.cKey + sys.cSpaceIsColonSpace; // settingKey is:
+export const csettingValueIs = wrd.csetting + wrd.cValue + sys.cSpaceIsColonSpace; // settingValue is:
+export const crefactoredAppConfigIs = wrd.crefactored + wrd.cApp + wrd.cConfig + sys.cSpaceIsColonSpace; // refactoredAppConfig is:
+export const cappConfigIs = wrd.capp + wrd.cConfig + sys.cSpaceIsColonSpace; // appConfig is:
