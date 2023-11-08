@@ -230,6 +230,12 @@ async function test(inputData, inputMetaData) {
   // We can set re-run criteria or other rules to determine how to handle the failure.
   // OR move on to the next test.
 
+  // New TODO:
+  // TODO:
+  // Add a configuration setting, and configuration command to enable for slow execution.
+  // Add a configuration setting, and configuration command to enable multi-test execution as input to a single test call,
+  // or as part of the test runner driver-loop.
+
   let boilerPlateTestPathAndFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cboilerPlateTestPathAndFileName);
   let rootTestFolderPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
   let defaultTestBehaviorRunAllTests = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cdefaultRunAllTests);
