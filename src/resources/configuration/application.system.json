@@ -31,5 +31,6 @@
   "system.enableUserCommandsLogClearing": true,
   "system.enableAllCommandsLogClearing": true,
   "system.boilerPlateTestPathAndFileName": "C:/CAFfeinated/TestBureau/SethEden/Tests/Default.test.js",
-  "system.rootTestFolderPath": "C:/CAFfeinated/TestBureau/SethEden/Tests/Workflows"
+  "system.rootTestFolderPath": "C:/CAFfeinated/TestBureau/SethEden/Tests/Workflows",
+  "system.defaultRunAllTests": true
 }

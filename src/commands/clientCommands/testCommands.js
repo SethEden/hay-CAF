@@ -56,7 +56,12 @@ async function setBoilerPlateTestPathAndFileName(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = [true, ];
-  await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cboilerPlateTestPathAndFileName, inputData[1]);
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cboilerPlateTestPathAndFileName, inputData[1]);
+  } else {
+    // ERROR: Please enter a valid path and filename as input.
+    console.log(app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage);
+  }
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
@@ -90,7 +95,49 @@ async function setRootTestFolderPath(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = [true, ];
-  await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath, inputData[1]);
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath, inputData[1]);
+  } else {
+    // ERROR: Please enter a valid path as input.
+    console.log(app_msg.cErrorSetRootTestFolderPathMessage);
+  }
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
+ * @function setDefaultTestBehavior
+ * @description Changes a configuration boolean flag that controls if the default test command behavior is to run all tests or not.
+ * @param {array<string>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a a true or false to indicate if the default behavior of the test command is to
+ * run all the tests or not if no parameters are specified.
+ * inputData[0] === 'test'
+ * inputData[1] === 'true' or 'false' or some kind of 't' or 'f', 'on' or 'off'.
+ * @param {string} inputMetaData Not used for this command.
+ * @return {array<boolean,boolean>} An array with a boolean True or False value to
+ * indicate if the application should exit or not exit, followed by a string to report the status of the test, pass, fail, warning.
+ * @author Seth Hollingsead
+ * @date 2023/11/08
+ */
+async function setDefaultTestBehavior(inputData, inputMetaData) {
+  let functionName = setDefaultTestBehavior.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cdefaultRunAllTests, inputData[1]);
+    } else {
+      // ERROR: Please enter a valid input, true or false.
+      console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+    }
+  } else {
+    // ERROR: Please enter a valid input, true or false.
+    console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+  }  
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
@@ -126,7 +173,7 @@ async function printApplicationConfiguration(inputData, inputMetaData) {
         settingIsStringValue = true;
         settingStringValueLength = settingValue.length;
       }
-      if (settingValue && ((settingIsStringValue === true && settingStringValueLength < 70) || settingIsStringValue === false)) {
+      if (settingValue && ((settingIsStringValue === true && settingStringValueLength < 100) || settingIsStringValue === false)) {
         // settingValue is:
         await haystacks.consoleLog(namespacePrefix, functionName, app_msg.csettingValueIs + settingValue);
         // Now we have eliminated all of the edge cases of long arrays or long strings!
@@ -168,10 +215,12 @@ async function test(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = [true, ];
   let testStatus = wrd.cFAIL;
+  let arrayOfTestNamesToExecute = [];
   returnData[1] = testStatus;
   // TODO: 
-  // Get the paths for: crootTestFolderPath && cboilerPlateTestPathAndFileName
-  // rootTestFolderPath, needs to have all the files scanned and loaded into some kind of data structure.
+  // Get the paths for: crootTestFolderPath && cboilerPlateTestPathAndFileName DONE
+  // rootTestFolderPath, needs to have all the files scanned and loaded into some kind of data structure. DONE
+  // parse the array of file paths and file names to get an array of file names without the paths.
   // Take the input from the test and use it as a keyword look-up or try to apply it as a string filter for:
   // selecting an array of tests to execute, or a single test to execute. Whatever list of tests passes the string-filter matching criteria.
   // Build a for-loop that will loop over all the array of tests that need to be executed.
@@ -180,6 +229,96 @@ async function test(inputData, inputMetaData) {
   // Monitor the child process and determine when the test is done, resolve the promise with the pass-fail.
   // We can set re-run criteria or other rules to determine how to handle the failure.
   // OR move on to the next test.
+
+  let boilerPlateTestPathAndFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cboilerPlateTestPathAndFileName);
+  let rootTestFolderPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
+  let defaultTestBehaviorRunAllTests = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cdefaultRunAllTests);
+  // boilerPlateTestPathAndFileName is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'boilerPlateTestPathAndFileName is: ' + boilerPlateTestPathAndFileName);
+  // rootTestFolderPath is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'rootTestFolderPath is: ' + rootTestFolderPath);
+  // defaultTestBehaviorRunAllTests is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'defaultTestBehaviorRunAllTests is: ' + defaultTestBehaviorRunAllTests);
+
+  // commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.cisBoolean]);
+  let testWorkflowFiles = await haystacks.executeBusinessRules([rootTestFolderPath, ''], [biz.creadDirectoryContents]);
+  // testWorkflowFiles are:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFiles are: ' + JSON.stringify(testWorkflowFiles));
+
+  // NOTE: So first lets determine what the user entered, if the user has entered a test-term or test-keyword,
+  // we should use that keyword as a filter to the file path & file names array.
+  // If the user didn't enter anything then we need to check the default behavior setting to determine if we should run all tests or not.
+  // After we are done filtering or setting behavior we should have established an array of test names.
+  // Then we will iterate over that array to execute the tests.
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    // The user has entered something. Try to filter the testWorkflowFiles array based on this input.
+    for (let testFileNameKey in testWorkflowFiles) {
+      // testFileNameKey is:
+      await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameKey is: ' + testFileNameKey);
+      let testFileName = testWorkflowFiles[testFileNameKey];
+      // testFileName is:
+      await haystacks.consoleLog(namespacePrefix, functionName, 'testFileName is: ' + testFileName);
+      // Here we setup the filter search, just do a simple string search for now.
+      // We might want to consider allowing for more advanced filter options in the future, like regular expressions, etc...
+      // Or even running custom business logic for the filter by using dependency injection.
+      if (testFileName.toLowerCase().includes(inputData[1].toLowerCase())) {
+
+        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        let testFileNameWithoutExtension = await haystacks.executeBusinessRules([testFileName, ''], [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
+        // testFileNameWithoutExtension is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameWithoutExtension is: ' + testFileNameWithoutExtension);
+        // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
+        // and the testing framework would have trouble executing them anyway!
+        if (testFileNameWithoutExtension.includes(wrd.cTest + bas.cUnderscore) === true) {
+          let testWorkflowFileNameArray = testFileNameWithoutExtension.split(bas.cUnderscore); // Split the filename into an array so we can remove the prefix "Test_";
+          // testWorkflowFileNameArray is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileNameArray is: ' + JSON.stringify(testWorkflowFileNameArray));
+          testWorkflowFileNameArray.shift(); // Remove the "Test" prefix, this means we now just have the test name, not the file name.
+          arrayOfTestNamesToExecute.push(testWorkflowFileNameArray[0]); // Add the test name to the array of tests to execute.
+          // arrayOfTestNamesToExecute is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
+        }
+        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+      } // End-if (testFileName.includes(inputData[1]))
+    } // End-for (let testFileNameKey in testWorkflowFiles)
+  } else {
+    // The user didn't enter anything, so we will do the default behavior, according to the setting flag.
+    // default behavior should either be to execute all the tests or execute no tests.
+    if (defaultTestBehaviorRunAllTests === true) {
+      // Parse each test workflow file name and file path to just get the file name without the file extension.
+      for (let testWorkflowFileNameAndPathKey in testWorkflowFiles) { 
+        // testWorkflowFileNameAndPathKey is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileNameAndPathKey is: ' + testWorkflowFileNameAndPathKey);
+        let testWorkflowFile = testWorkflowFiles[testWorkflowFileNameAndPathKey];
+        // testWorkflowFile is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFile is: ' + testWorkflowFile);
+
+        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        let testWorkflowFileName = await haystacks.executeBusinessRules([testWorkflowFile, ''], [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
+        // testWorkflowFileName is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileName is: ' + testWorkflowFileName);
+        // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
+        // and the testing framework would have trouble executing them anyway!
+        if (testWorkflowFileName.includes(wrd.cTest + bas.cUnderscore) === true) {
+          let testFileNameArray = testWorkflowFileName.split(bas.cUnderscore); // Split the filename into an array so we can remove the prefix "Test_".
+          // testFileNameArray is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameArray is: ' + JSON.stringify(testFileNameArray));
+          testFileNameArray.shift(); // Remove the "Test" prefix, this means we now just have the test name, not the file name.
+          arrayOfTestNamesToExecute.push(testFileNameArray[0]); // Add the test name to the array of tests to execute.
+          // arrayOfTestNamesToExecute is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
+        } // End-if (testWorkflowFileName.includes(wrd.cTest + bas.cUnderscore) === true)
+        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+        
+      } // End-for (let testWorkflowFileNameAndPathKey in testWorkflowFiles)
+    } // End-if (defaultTestBehaviorRunAllTests === true)
+  }
+
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
@@ -188,6 +327,7 @@ async function test(inputData, inputMetaData) {
 export default {
   setBoilerPlateTestPathAndFileName,
   setRootTestFolderPath,
+  setDefaultTestBehavior,
   printApplicationConfiguration,
   test  
 }

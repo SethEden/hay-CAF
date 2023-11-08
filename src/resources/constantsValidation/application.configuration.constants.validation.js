@@ -20,5 +20,6 @@ import * as app_cfg from '../../constants/application.configuration.constants.js
  */
 export const applicationConfigurationConstantsValidation = [
   {Name: 'cboilerPlateTestPathAndFileName', Actual: app_cfg.cboilerPlateTestPathAndFileName, Expected: 'boilerPlateTestPathAndFileName'},
-  {Name: 'crootTestFolderPath', Actual: app_cfg.crootTestFolderPath, Expected: 'rootTestFolderPath'}
+  {Name: 'crootTestFolderPath', Actual: app_cfg.crootTestFolderPath, Expected: 'rootTestFolderPath'},
+  {Name: 'cdefaultRunAllTests', Actual: app_cfg.cdefaultRunAllTests, Expected: 'defaultRunAllTests'}
 ];

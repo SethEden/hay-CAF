@@ -52,6 +52,7 @@ const initApplicationCommandsLibrary = function() {
     // ***********************************************
     [app_cmd.csetBoilerPlateTestPathAndFileName]: (inputData, inputMetaData) => testCommands.setBoilerPlateTestPathAndFileName(inputData, inputMetaData),
     [app_cmd.csetRootTestFolderPath]: (inputData, inputMetaData) => testCommands.setRootTestFolderPath(inputData, inputMetaData),
+    [app_cmd.csetDefaultTestBehavior]: (inputData, inputMetaData) => testCommands.setDefaultTestBehavior(inputData, inputMetaData),
     [app_cmd.cprintApplicationConfiguration]: (inputData, inputMetaData) => testCommands.printApplicationConfiguration(inputData, inputMetaData),
     [app_cmd.ctest]: (inputData, inputMetaData) => testCommands.test(inputData, inputMetaData)
   }
