@@ -314,10 +314,13 @@ async function test(inputData, inputMetaData) {
         } // End-if (testWorkflowFileName.includes(wrd.cTest + bas.cUnderscore) === true)
         // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        
+
       } // End-for (let testWorkflowFileNameAndPathKey in testWorkflowFiles)
     } // End-if (defaultTestBehaviorRunAllTests === true)
   }
+
+  // The CMD CLI command format to use for executing a single test:
+  // testcafe chrome ./TestBureau/SethEden/Tests/Default.test.js --reporter html:results/SethEden/reports/20231108.html testName=Writings
 
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
