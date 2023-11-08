@@ -169,6 +169,17 @@ async function test(inputData, inputMetaData) {
   let returnData = [true, ];
   let testStatus = wrd.cFAIL;
   returnData[1] = testStatus;
+  // TODO: 
+  // Get the paths for: crootTestFolderPath && cboilerPlateTestPathAndFileName
+  // rootTestFolderPath, needs to have all the files scanned and loaded into some kind of data structure.
+  // Take the input from the test and use it as a keyword look-up or try to apply it as a string filter for:
+  // selecting an array of tests to execute, or a single test to execute. Whatever list of tests passes the string-filter matching criteria.
+  // Build a for-loop that will loop over all the array of tests that need to be executed.
+  // for each test in the array of tests, build a CLI command string to execute the test.
+  // Spawn a new CMD or BASH child-process with a promise and send the CLI command string to it to execute the test script/workflow.
+  // Monitor the child process and determine when the test is done, resolve the promise with the pass-fail.
+  // We can set re-run criteria or other rules to determine how to handle the failure.
+  // OR move on to the next test.
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
