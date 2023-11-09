@@ -22,5 +22,5 @@ export const applicationBusinessConstantsValidation = [
   // ********************************
   // test rules in order
   // ********************************
-  
+  {Name: 'cbuildArrayOfTestNames', Actual: app_biz.cbuildArrayOfTestNames, Expected: 'buildArrayOfTestNames'}
 ];

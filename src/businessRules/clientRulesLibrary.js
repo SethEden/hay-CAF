@@ -2,7 +2,7 @@
  * @file clientRulesLibrary.js
  * @module clientRulesLibrary
  * @description Contains all of the hay-CAF defined business rules as a map between function names and function calls.
- * @requires module:stallerRules
+ * @requires module:testRules
  * @requires module:application.business.constants
  * @requires module:application.constants
  * @requires {@link https://www.npmjs.com/package/@haystacks/constants|@haystacks/constants}
@@ -13,6 +13,7 @@
  */
 
 // Internal imports
+import * as testRules from './clientRules/testRules.js';
 import * as app_biz from '../constants/application.business.constants.js';
 import * as apc from '../constants/application.constants.js';
 // External imports
@@ -44,7 +45,7 @@ const initApplicationRulesLibrary = function () {
     // ***********************************************
     // test rules in order
     // ***********************************************
-    // [app_biz.ccustomEcho]: (inputData, inputMetaData) => clientStringParsing.customEcho(inputData, inputMetaData),
+    [app_biz.cbuildArrayOfTestNames]: (inputData, inputMetaData) => testRules.buildArrayOfTestNames(inputData, inputMetaData)
   };
 }
 

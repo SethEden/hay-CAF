@@ -4,7 +4,9 @@
  * @description Contains all client defined commands for execution of client test commands with various kinds of operations,
  * specific for GUI testing, API testing, etc...
  * @requires module:testBroker
- * @requires module:application.command.constants
+ * @requires module:application.business.constants
+ * @requires module:application.configuration.constants
+ * @requires module:application.constants
  * @requires module:application.message.constants
  * @requires module:application.system.constants
  * @requires {@link https://www.npmjs.com/package/@haystacks/async|@haystacks/async}
@@ -17,8 +19,9 @@
 
 // Internal imports
 import testBroker from '../../brokers/testBroker.js';
-import * as apc from '../../constants/application.constants.js';
+import * as app_biz from '../../constants/application.business.constants.js';
 import * as app_cfg from '../../constants/application.configuration.constants.js';
+import * as apc from '../../constants/application.constants.js';
 import * as app_msg from '../../constants/application.message.constants.js';
 import * as app_sys from '../../constants/application.system.constants.js';
 // External imports
@@ -271,23 +274,28 @@ async function test(inputData, inputMetaData) {
 
         // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        let testFileNameWithoutExtension = await haystacks.executeBusinessRules([testFileName, ''], [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
-        // testFileNameWithoutExtension is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameWithoutExtension is: ' + testFileNameWithoutExtension);
-        // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
-        // and the testing framework would have trouble executing them anyway!
-        if (testFileNameWithoutExtension.includes(wrd.cTest + bas.cUnderscore) === true) {
-          let testWorkflowFileNameArray = testFileNameWithoutExtension.split(bas.cUnderscore); // Split the filename into an array so we can remove the prefix "Test_";
-          // testWorkflowFileNameArray is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileNameArray is: ' + JSON.stringify(testWorkflowFileNameArray));
-          testWorkflowFileNameArray.shift(); // Remove the "Test" prefix, this means we now just have the test name, not the file name.
-          arrayOfTestNamesToExecute.push(testWorkflowFileNameArray[0]); // Add the test name to the array of tests to execute.
-          // arrayOfTestNamesToExecute is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
-        }
+        // let testFileNameWithoutExtension = await haystacks.executeBusinessRules([testFileName, ''], [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
+        // // testFileNameWithoutExtension is:
+        // await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameWithoutExtension is: ' + testFileNameWithoutExtension);
+        // // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
+        // // and the testing framework would have trouble executing them anyway!
+        // if (testFileNameWithoutExtension.includes(wrd.cTest + bas.cUnderscore) === true) {
+        //   let testWorkflowFileNameArray = testFileNameWithoutExtension.split(bas.cUnderscore); // Split the filename into an array so we can remove the prefix "Test_";
+        //   // testWorkflowFileNameArray is:
+        //   await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileNameArray is: ' + JSON.stringify(testWorkflowFileNameArray));
+        //   testWorkflowFileNameArray.shift(); // Remove the "Test" prefix, this means we now just have the test name, not the file name.
+        //   arrayOfTestNamesToExecute.push(testWorkflowFileNameArray[0]); // Add the test name to the array of tests to execute.
+        //   // arrayOfTestNamesToExecute is:
+        //   await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
+        // }
         // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
         // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+        console.log('app_biz.cbuildArrayOfTestNames resolves as: ' + app_biz.cbuildArrayOfTestNames);
+        // buildArrayOfTestNames: [Function: buildArrayOfTestNames]
+        // app_biz.cbuildArrayOfTestNames resolves as: buildArrayOfTestNames
+        arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
+        // arrayOfTestNamesToExecute is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
       } // End-if (testFileName.includes(inputData[1]))
     } // End-for (let testFileNameKey in testWorkflowFiles)
   } else {
