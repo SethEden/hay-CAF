@@ -25,6 +25,16 @@ export const cPluginsRegistryCommonPath = wrd.cplugins + bas.cForwardSlash + wrd
 export const cWorkflowsCommonPath = wrd.cworkflows + bas.cForwardSlash; // workflows/
 export const cThemesCommonPath = wrd.cthemes + bas.cForwardSlash; // themes/
 export const cReleasePath = wrd.crelease + bas.cForwardSlash; // release/
+export const cchrome = wrd.cchrome; // chrome
+export const cChrome = wrd.cChrome; // Chrome
+export const cedge = wrd.cedge; // edge
+export const cEdge = wrd.cEdge; // Edge
+export const cfirefox = wrd.cfirefox; // firefox
+export const cFirefox = wrd.cFireFox; // Firefox
+export const copera = wrd.copera; // opera
+export const cOpera = wrd.cOpera; // Opera
+export const csafari = wrd.csafari; // safari
+export const cSafari = wrd.cSafari; // Safari
 
 // Full Dev paths
 export const cFullDevResourcesPath = cAppDevPath + cResourcesCommonPath; // /src/resources/

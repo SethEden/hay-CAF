@@ -40,6 +40,8 @@ export const applicationCommandConstantsValidation = [
   {Name: 'csetBoilerPlateTestPathAndFileName', Actual: app_cmd.csetBoilerPlateTestPathAndFileName, Expected: 'setBoilerPlateTestPathAndFileName'},
   {Name: 'csetRootTestFolderPath', Actual: app_cmd.csetRootTestFolderPath, Expected: 'setRootTestFolderPath'},
   {Name: 'csetDefaultTestBehavior', Actual: app_cmd.csetDefaultTestBehavior, Expected: 'setDefaultTestBehavior'},
+  {Name: 'csetSlowExecutionConfiguration', Actual: app_cmd.csetSlowExecutionConfiguration, Expected: 'setSlowExecutionConfiguration'},
+  {Name: 'csetMultiTestExecutionConfiguration', Actual: app_cmd.csetMultiTestExecutionConfiguration, Expected: 'setMultiTestExecutionConfiguration'},
   {Name: 'cprintApplicationConfiguration', Actual: app_cmd.cprintApplicationConfiguration, Expected: 'printApplicationConfiguration'},
   {Name: 'ctest', Actual: app_cmd.ctest, Expected: 'test'},
   

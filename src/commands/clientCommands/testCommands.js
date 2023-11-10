@@ -19,6 +19,7 @@
 
 // Internal imports
 import testBroker from '../../brokers/testBroker.js';
+import testRules from '../../businessRules/clientRules/testRules.js';
 import * as app_biz from '../../constants/application.business.constants.js';
 import * as app_cfg from '../../constants/application.configuration.constants.js';
 import * as apc from '../../constants/application.constants.js';
@@ -147,6 +148,82 @@ async function setDefaultTestBehavior(inputData, inputMetaData) {
 }
 
 /**
+ * @function setSlowExecutionConfiguration
+ * @description Sets a configuration flag that will enable or disable the slow execution of scripts when
+ * the test command is generated and executed.
+ * @param {array<string>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a a true or false to indicate if the slow execution should be enabled or disabled.
+ * inputData[0] === 'setSlowExecutionConfiguration'
+ * inputData[1] === 'true' or 'false' or some kind of 't' or 'f', 'on' or 'off'.
+ * @param {string} inputMetaData Not used for this command.
+ * @return {array<boolean,boolean>} An array with a boolean True or False value to
+ * indicate if the application should exit or not exit.
+ * @author Seth Hollingsead
+ * @date 2023/11/10
+ */
+async function setSlowExecutionConfiguration(inputData, inputMetaData) {
+  let functionName = setSlowExecutionConfiguration.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cslowExecution, inputData[1]);
+    } else {
+      // ERROR: Please enter a valid input, true or false.
+      console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+    }
+  } else {
+    // ERROR: Please enter a valid input, true or false.
+    console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+  }  
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
+ * @function setMultiTestExecutionConfiguration
+ * @description Sets a configuration flag that determines if the tests from the test command after
+ * being filtered according to the user input, are issued to the test framework as a single test command where the names are comma delimited list,
+ * OR individual test commands are generated and issued to the test framework.
+ * @param {array<string>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a a true or false to indicate if tests should be executed all as a single test call,
+ * or as multiple test calls.
+ * inputData[0] === 'setMultiTestExecutionConfiguration'
+ * inputData[1] === 'true' or 'false' or some kind of 't' or 'f', 'on' or 'off'.
+ * @param {string} inputMetaData Not used for this command.
+ * @return {array<boolean,boolean>} An array with a boolean True or False value to
+ * indicate if the application should exit or not exit.
+ * @author Seth Hollingsead
+ * @date 2023/11/10
+ */
+async function setMultiTestExecutionConfiguration(inputData, inputMetaData) {
+  let functionName = setMultiTestExecutionConfiguration.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cmultiTestExecution, inputData[1]);
+    } else {
+      // ERROR: Please enter a valid input, true or false.
+      console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+    }
+  } else {
+    // ERROR: Please enter a valid input, true or false.
+    console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+  }  
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
  * @function printApplicationConfiguration
  * @description Prints out the current system.configuration settings in a table format,
  * that is easy to read and triage or debug the configuration by end users.
@@ -155,7 +232,7 @@ async function setDefaultTestBehavior(inputData, inputMetaData) {
  * @return {array<boolean,boolean>} An array with a boolean True or False value to
  * indicate if the application should exit or not exit.
  * @author Seth Hollingsead
- * @date 2023/011/01
+ * @date 2023/11/01
  */
 async function printApplicationConfiguration(inputData, inputMetaData) {
   let functionName = setBoilerPlateTestPathAndFileName.name;
@@ -223,10 +300,10 @@ async function test(inputData, inputMetaData) {
   // TODO: 
   // Get the paths for: crootTestFolderPath && cboilerPlateTestPathAndFileName DONE
   // rootTestFolderPath, needs to have all the files scanned and loaded into some kind of data structure. DONE
-  // parse the array of file paths and file names to get an array of file names without the paths.
-  // Take the input from the test and use it as a keyword look-up or try to apply it as a string filter for:
-  // selecting an array of tests to execute, or a single test to execute. Whatever list of tests passes the string-filter matching criteria.
-  // Build a for-loop that will loop over all the array of tests that need to be executed.
+  // parse the array of file paths and file names to get an array of file names without the paths. DONE
+  // Take the input from the test and use it as a keyword look-up or try to apply it as a string filter for: DONE
+  // selecting an array of tests to execute, or a single test to execute. Whatever list of tests passes the string-filter matching criteria. DONE
+  // Build a for-loop that will loop over all the array of tests that need to be executed. DONE
   // for each test in the array of tests, build a CLI command string to execute the test.
   // Spawn a new CMD or BASH child-process with a promise and send the CLI command string to it to execute the test script/workflow.
   // Monitor the child process and determine when the test is done, resolve the promise with the pass-fail.
@@ -271,29 +348,12 @@ async function test(inputData, inputMetaData) {
       // We might want to consider allowing for more advanced filter options in the future, like regular expressions, etc...
       // Or even running custom business logic for the filter by using dependency injection.
       if (testFileName.toLowerCase().includes(inputData[1].toLowerCase())) {
-
-        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        // let testFileNameWithoutExtension = await haystacks.executeBusinessRules([testFileName, ''], [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
-        // // testFileNameWithoutExtension is:
-        // await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameWithoutExtension is: ' + testFileNameWithoutExtension);
-        // // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
-        // // and the testing framework would have trouble executing them anyway!
-        // if (testFileNameWithoutExtension.includes(wrd.cTest + bas.cUnderscore) === true) {
-        //   let testWorkflowFileNameArray = testFileNameWithoutExtension.split(bas.cUnderscore); // Split the filename into an array so we can remove the prefix "Test_";
-        //   // testWorkflowFileNameArray is:
-        //   await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileNameArray is: ' + JSON.stringify(testWorkflowFileNameArray));
-        //   testWorkflowFileNameArray.shift(); // Remove the "Test" prefix, this means we now just have the test name, not the file name.
-        //   arrayOfTestNamesToExecute.push(testWorkflowFileNameArray[0]); // Add the test name to the array of tests to execute.
-        //   // arrayOfTestNamesToExecute is:
-        //   await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
-        // }
-        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        console.log('app_biz.cbuildArrayOfTestNames resolves as: ' + app_biz.cbuildArrayOfTestNames);
-        // buildArrayOfTestNames: [Function: buildArrayOfTestNames]
-        // app_biz.cbuildArrayOfTestNames resolves as: buildArrayOfTestNames
-        arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
+        // ****************************************************************************************************************
+        // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
+        // We are working to understand this and prevent it from becoming a bigger problem.
+        // ****************************************************************************************************************
+        // arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
+        arrayOfTestNamesToExecute = await testRules.buildArrayOfTestNames(testFileName, arrayOfTestNamesToExecute);
         // arrayOfTestNamesToExecute is:
         await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
       } // End-if (testFileName.includes(inputData[1]))
@@ -309,33 +369,27 @@ async function test(inputData, inputMetaData) {
         let testWorkflowFile = testWorkflowFiles[testWorkflowFileNameAndPathKey];
         // testWorkflowFile is:
         await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFile is: ' + testWorkflowFile);
-
-        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        let testWorkflowFileName = await haystacks.executeBusinessRules([testWorkflowFile, ''], [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
-        // testWorkflowFileName is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileName is: ' + testWorkflowFileName);
-        // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
-        // and the testing framework would have trouble executing them anyway!
-        if (testWorkflowFileName.includes(wrd.cTest + bas.cUnderscore) === true) {
-          let testFileNameArray = testWorkflowFileName.split(bas.cUnderscore); // Split the filename into an array so we can remove the prefix "Test_".
-          // testFileNameArray is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameArray is: ' + JSON.stringify(testFileNameArray));
-          testFileNameArray.shift(); // Remove the "Test" prefix, this means we now just have the test name, not the file name.
-          arrayOfTestNamesToExecute.push(testFileNameArray[0]); // Add the test name to the array of tests to execute.
-          // arrayOfTestNamesToExecute is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
-        } // End-if (testWorkflowFileName.includes(wrd.cTest + bas.cUnderscore) === true)
-        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        // REFACTOR %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+        // ****************************************************************************************************************
+        // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
+        // We are working to understand this and prevent it from becoming a bigger problem.
+        // ****************************************************************************************************************
+        // arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
+        arrayOfTestNamesToExecute = await testRules.buildArrayOfTestNames(testWorkflowFile, arrayOfTestNamesToExecute);
       } // End-for (let testWorkflowFileNameAndPathKey in testWorkflowFiles)
     } // End-if (defaultTestBehaviorRunAllTests === true)
   }
 
-  // The CMD CLI command format to use for executing a single test:
-  // testcafe chrome ./TestBureau/SethEden/Tests/Default.test.js --reporter html:results/SethEden/reports/20231108.html testName=Writings
+  for (let testNameKey in arrayOfTestNamesToExecute) {
+    // testNameKey is:
+    await haystacks.consoleLog(namespacePrefix, functionName, 'testNameKey is: ' + testNameKey);
+    let testName = arrayOfTestNamesToExecute[testNameKey];
+    // testName is:
+    await haystacks.consoleLog(namespacePrefix, functionName, 'testName is: ' + testName);
 
+    // The CMD CLI command format to use for executing a single test:
+    // testcafe chrome ./TestBureau/SethEden/Tests/Default.test.js --reporter html:results/SethEden/reports/20231108.html testName=Writings slowExe=true
+
+  } // End-for (let testNameKey in arrayOfTestNamesToExecute)
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
@@ -345,6 +399,8 @@ export default {
   setBoilerPlateTestPathAndFileName,
   setRootTestFolderPath,
   setDefaultTestBehavior,
+  setSlowExecutionConfiguration,
+  setMultiTestExecutionConfiguration,
   printApplicationConfiguration,
   test  
 }
