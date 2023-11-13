@@ -19,7 +19,6 @@
 
 // Internal imports
 import testBroker from '../../brokers/testBroker.js';
-import testRules from '../../businessRules/clientRules/testRules.js';
 import * as app_biz from '../../constants/application.business.constants.js';
 import * as app_cfg from '../../constants/application.configuration.constants.js';
 import * as apc from '../../constants/application.constants.js';
@@ -352,8 +351,7 @@ async function test(inputData, inputMetaData) {
         // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
         // We are working to understand this and prevent it from becoming a bigger problem.
         // ****************************************************************************************************************
-        // arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
-        arrayOfTestNamesToExecute = await testRules.buildArrayOfTestNames(testFileName, arrayOfTestNamesToExecute);
+        arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
         // arrayOfTestNamesToExecute is:
         await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
       } // End-if (testFileName.includes(inputData[1]))
@@ -373,8 +371,7 @@ async function test(inputData, inputMetaData) {
         // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
         // We are working to understand this and prevent it from becoming a bigger problem.
         // ****************************************************************************************************************
-        // arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
-        arrayOfTestNamesToExecute = await testRules.buildArrayOfTestNames(testWorkflowFile, arrayOfTestNamesToExecute);
+        arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
       } // End-for (let testWorkflowFileNameAndPathKey in testWorkflowFiles)
     } // End-if (defaultTestBehaviorRunAllTests === true)
   }
