@@ -58,6 +58,6 @@ async function buildArrayOfTestNames(inputData, inputMetaData) {
     return returnData;
 }
 
-export default {
+export {
     buildArrayOfTestNames
 };
