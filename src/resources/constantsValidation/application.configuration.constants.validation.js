@@ -23,5 +23,7 @@ export const applicationConfigurationConstantsValidation = [
   {Name: 'crootTestFolderPath', Actual: app_cfg.crootTestFolderPath, Expected: 'rootTestFolderPath'},
   {Name: 'cdefaultRunAllTests', Actual: app_cfg.cdefaultRunAllTests, Expected: 'defaultRunAllTests'},
   {Name: 'cslowExecution', Actual: app_cfg.cslowExecution, Expected: 'slowExecution'},
-  {Name: 'cmultiTestExecution', Actual: app_cfg.cmultiTestExecution, Expected: 'multiTestExecution'}
+  {Name: 'cmultiTestExecution', Actual: app_cfg.cmultiTestExecution, Expected: 'multiTestExecution'},
+  {Name: 'clistOfBrowsers', Actual: app_cfg.clistOfBrowsers, Expected: 'listOfBrowsers'},
+  {Name: 'cexecutionDriverEngine', Actual: app_cfg.cexecutionDriverEngine, Expected: 'executionDriverEngine'}
 ];

@@ -191,7 +191,7 @@ async function setSlowExecutionConfiguration(inputData, inputMetaData) {
  * OR individual test commands are generated and issued to the test framework.
  * @param {array<string>} inputData An array that could actually contain anything,
  * depending on what the user entered. But the function filters all of that internally and
- * extracts the case the user has entered a a true or false to indicate if tests should be executed all as a single test call,
+ * extracts the case the user has entered a true or false to indicate if tests should be executed all as a single test call,
  * or as multiple test calls.
  * inputData[0] === 'setMultiTestExecutionConfiguration'
  * inputData[1] === 'true' or 'false' or some kind of 't' or 'f', 'on' or 'off'.
@@ -218,6 +218,94 @@ async function setMultiTestExecutionConfiguration(inputData, inputMetaData) {
     // ERROR: Please enter a valid input, true or false.
     console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
   }  
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
+ * @function setBrowsersList
+ * @description Persists the user entered list of supported browsers to the system configuration setting used to generate the test command(s).
+ * @param {array<string>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a list of browser names, or a coma-separated list of browser names.
+ * inputData[0] === 'setBrowsersList'
+ * inputData[1] === 'chrome' or 'chrome,edge,firefox,safari,opera'
+ * inputData[n] === 'edge'...
+ * @param {string} inputMetaData Not used for this command.
+ * @return {array<boolean,boolean>} An array with a boolean True or False value to
+ * indicate if the application should exit or not exit.
+ * @author Seth Hollingsead
+ * @date 2023/11/13
+ */
+async function setBrowsersList(inputData, inputMetaData) {
+  let functionName = setBrowsersList.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  let browserList = '';
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    if (inputData[1].includes(bas.cComa) === true) {
+      browserList = inputData[1];
+    } else {
+      // The user has either entered only a single browser, or they have entered multiple browsers separated by spaces.
+      // In either case we just take the contents of the array, minus the first entry, and join them together as a coma-separated list.
+      // Then set this as the configuration setting.
+      inputData.shift();
+      browserList = inputData.join(bas.cComa);
+    }
+    await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.clistOfBrowsers, browserList);
+  } else {
+    // ERROR: Please enter a valid list of browser names to execute with.
+    console.log(app_msg.cErrorSetBrowserListMessage);
+  }
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
+ * @function setExecutionEngine
+ * @description Changes the configuration setting that allows the user to change or specify the test execution engine.
+ * In the future, driver engines supported may be: testCafe, Playwright, Cypress, WebDriverIO, Appium, NightwatchJS.
+ * However, this command is supplied to future proof the system so that when our next generation system becomes available,
+ * then we can easily support these extra driver engines. For now there is a filter in this function that forces the
+ * system to only accept the testcafe input, and as such testcafe is hard-coded in here, and a message will inform the user as such.
+ * @param {array<string>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a name of a test driver engine, such as testcafe, Playwright, Cypress, Webdriver, appium, nightwatch.
+ * However, we actually force & hard-code the value to testcafe and pop a message as described above.
+ * inputData[0] === 'setExecutionEngine'
+ * inputData[1] === 'testcafe', 'cypress', 'playwright', 'nightwatch', 'webdriver', 'appium'
+ * @param {string} inputMetaData Not used for this command.
+ * @author Seth Hollingsead
+ * @date 2023/11/13
+ */
+async function setExecutionEngine(inputData, inputMetaData) {
+  let functionName = setExecutionEngine.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    if (app_sys.cvalidExecutionEngines.includes(inputData[1])) {
+      // WARNING: All valid execution engines are not currently supported by our testing engine.
+      console.log('WARNING: All valid execution engines are not currently supported by our testing engine.');
+      // WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.
+      console.log('WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.');
+      // WARNING: The execution engine will be hard coded to testcafe for now.
+      console.log('WARNING: The execution engine will be hard coded to testcafe for now.');
+      // TODO: Change the below app_sys.ctestcafe to be dynamic once the new testing framework is implemented.
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine, app_sys.ctestcafe);
+    } else {
+      // ERROR: Please enter a valid execution engine such as:
+      console.log('ERROR: Please enter a valid execution engine such as: ' + app_sys.cvalidExecutionEngines);
+    }
+  } else {
+    // ERROR: Please enter a valid execution engine such as:
+    console.log('ERROR: Please enter a valid execution engine such as: ' + app_sys.cvalidExecutionEngines);
+  }
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
@@ -319,77 +407,135 @@ async function test(inputData, inputMetaData) {
   let boilerPlateTestPathAndFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cboilerPlateTestPathAndFileName);
   let rootTestFolderPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
   let defaultTestBehaviorRunAllTests = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cdefaultRunAllTests);
+  let slowExecution = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cslowExecution);
+  let multiTestExecution = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cmultiTestExecution);
+  let listOfBrowsers = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.clistOfBrowsers);
+  let executionEngine = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine);
+  let testCommandString = '';
+
+  // TODO: Remove this hard-coded filter ONLY once we have completed the implementation of our NEW testing framework that supports multiple testing engines (playright, cypress, webdriver, appium, testcafe).
+  // NOTE: I am going to hard-code the execution engine to testcafe, so even if the user changed it to something else, we are going to force-change and hard-code it here.
+  // We will also pop a message to inform the user that the only supported test execution engine is testcafe.
+  if (executionEngine !== app_sys.ctestcafe) {
+    // WARNING: All valid execution engines are not currently supported by our testing engine.
+    console.log('WARNING: All valid execution engines are not currently supported by our testing engine.');
+    // WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.
+    console.log('WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.');
+    // WARNING: The execution engine will be hard coded to testcafe for now.
+    console.log('WARNING: The execution engine will be hard coded to testcafe for now.');
+    executionEngine = app_sys.ctestcafe;
+  }
+
   // boilerPlateTestPathAndFileName is:
   await haystacks.consoleLog(namespacePrefix, functionName, 'boilerPlateTestPathAndFileName is: ' + boilerPlateTestPathAndFileName);
   // rootTestFolderPath is:
   await haystacks.consoleLog(namespacePrefix, functionName, 'rootTestFolderPath is: ' + rootTestFolderPath);
   // defaultTestBehaviorRunAllTests is:
   await haystacks.consoleLog(namespacePrefix, functionName, 'defaultTestBehaviorRunAllTests is: ' + defaultTestBehaviorRunAllTests);
+  // slowExecution is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'slowExecution is: ' + slowExecution);
+  // multiTestExecution is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'multiTestExecution is: ' + multiTestExecution);
+  // listOfBrowsers is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'listOfBrowsers is: ' + listOfBrowsers);
+  // executionEngine is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'executionEngine is: ' + executionEngine);
 
-  // commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.cisBoolean]);
-  let testWorkflowFiles = await haystacks.executeBusinessRules([rootTestFolderPath, ''], [biz.creadDirectoryContents]);
-  // testWorkflowFiles are:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFiles are: ' + JSON.stringify(testWorkflowFiles));
+  if (rootTestFolderPath !== '') {
+    // commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.cisBoolean]);
+    let testWorkflowFiles = await haystacks.executeBusinessRules([rootTestFolderPath, ''], [biz.creadDirectoryContents]);
+    // testWorkflowFiles are:
+    await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFiles are: ' + JSON.stringify(testWorkflowFiles));
 
-  // NOTE: So first lets determine what the user entered, if the user has entered a test-term or test-keyword,
-  // we should use that keyword as a filter to the file path & file names array.
-  // If the user didn't enter anything then we need to check the default behavior setting to determine if we should run all tests or not.
-  // After we are done filtering or setting behavior we should have established an array of test names.
-  // Then we will iterate over that array to execute the tests.
-  if (Array.isArray(inputData) && inputData.length >= 2) {
-    // The user has entered something. Try to filter the testWorkflowFiles array based on this input.
-    for (let testFileNameKey in testWorkflowFiles) {
-      // testFileNameKey is:
-      await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameKey is: ' + testFileNameKey);
-      let testFileName = testWorkflowFiles[testFileNameKey];
-      // testFileName is:
-      await haystacks.consoleLog(namespacePrefix, functionName, 'testFileName is: ' + testFileName);
-      // Here we setup the filter search, just do a simple string search for now.
-      // We might want to consider allowing for more advanced filter options in the future, like regular expressions, etc...
-      // Or even running custom business logic for the filter by using dependency injection.
-      if (testFileName.toLowerCase().includes(inputData[1].toLowerCase())) {
-        // ****************************************************************************************************************
-        // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
-        // We are working to understand this and prevent it from becoming a bigger problem.
-        // ****************************************************************************************************************
-        // arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
-        arrayOfTestNamesToExecute = await testRules.buildArrayOfTestNames(testFileName, arrayOfTestNamesToExecute);
-        // arrayOfTestNamesToExecute is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
-      } // End-if (testFileName.includes(inputData[1]))
-    } // End-for (let testFileNameKey in testWorkflowFiles)
-  } else {
-    // The user didn't enter anything, so we will do the default behavior, according to the setting flag.
-    // default behavior should either be to execute all the tests or execute no tests.
-    if (defaultTestBehaviorRunAllTests === true) {
-      // Parse each test workflow file name and file path to just get the file name without the file extension.
-      for (let testWorkflowFileNameAndPathKey in testWorkflowFiles) { 
-        // testWorkflowFileNameAndPathKey is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileNameAndPathKey is: ' + testWorkflowFileNameAndPathKey);
-        let testWorkflowFile = testWorkflowFiles[testWorkflowFileNameAndPathKey];
-        // testWorkflowFile is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFile is: ' + testWorkflowFile);
-        // ****************************************************************************************************************
-        // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
-        // We are working to understand this and prevent it from becoming a bigger problem.
-        // ****************************************************************************************************************
-        // arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
-        arrayOfTestNamesToExecute = await testRules.buildArrayOfTestNames(testWorkflowFile, arrayOfTestNamesToExecute);
-      } // End-for (let testWorkflowFileNameAndPathKey in testWorkflowFiles)
-    } // End-if (defaultTestBehaviorRunAllTests === true)
-  }
-
-  for (let testNameKey in arrayOfTestNamesToExecute) {
-    // testNameKey is:
-    await haystacks.consoleLog(namespacePrefix, functionName, 'testNameKey is: ' + testNameKey);
-    let testName = arrayOfTestNamesToExecute[testNameKey];
-    // testName is:
-    await haystacks.consoleLog(namespacePrefix, functionName, 'testName is: ' + testName);
+    // NOTE: So first lets determine what the user entered, if the user has entered a test-term or test-keyword,
+    // we should use that keyword as a filter to the file path & file names array.
+    // If the user didn't enter anything then we need to check the default behavior setting to determine if we should run all tests or not.
+    // After we are done filtering or setting behavior we should have established an array of test names.
+    // Then we will iterate over that array to execute the tests.
+    if (Array.isArray(inputData) && inputData.length >= 2) {
+      // The user has entered something. Try to filter the testWorkflowFiles array based on this input.
+      for (let testFileNameKey in testWorkflowFiles) {
+        // testFileNameKey is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameKey is: ' + testFileNameKey);
+        let testFileName = testWorkflowFiles[testFileNameKey];
+        // testFileName is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'testFileName is: ' + testFileName);
+        // Here we setup the filter search, just do a simple string search for now.
+        // We might want to consider allowing for more advanced filter options in the future, like regular expressions, etc...
+        // Or even running custom business logic for the filter by using dependency injection.
+        if (testFileName.toLowerCase().includes(inputData[1].toLowerCase())) {
+          // ****************************************************************************************************************
+          // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
+          // We are working to understand this and prevent it from becoming a bigger problem.
+          // ****************************************************************************************************************
+          // arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
+          arrayOfTestNamesToExecute = await testRules.buildArrayOfTestNames(testFileName, arrayOfTestNamesToExecute);
+          // arrayOfTestNamesToExecute is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
+        } // End-if (testFileName.includes(inputData[1]))
+      } // End-for (let testFileNameKey in testWorkflowFiles)
+    } else {
+      // The user didn't enter anything, so we will do the default behavior, according to the setting flag.
+      // default behavior should either be to execute all the tests or execute no tests.
+      if (defaultTestBehaviorRunAllTests === true) {
+        // Parse each test workflow file name and file path to just get the file name without the file extension.
+        for (let testWorkflowFileNameAndPathKey in testWorkflowFiles) { 
+          // testWorkflowFileNameAndPathKey is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileNameAndPathKey is: ' + testWorkflowFileNameAndPathKey);
+          let testWorkflowFile = testWorkflowFiles[testWorkflowFileNameAndPathKey];
+          // testWorkflowFile is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFile is: ' + testWorkflowFile);
+          // ****************************************************************************************************************
+          // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
+          // We are working to understand this and prevent it from becoming a bigger problem.
+          // ****************************************************************************************************************
+          // arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
+          arrayOfTestNamesToExecute = await testRules.buildArrayOfTestNames(testWorkflowFile, arrayOfTestNamesToExecute);
+        } // End-for (let testWorkflowFileNameAndPathKey in testWorkflowFiles)
+      } // End-if (defaultTestBehaviorRunAllTests === true)
+    }
 
     // The CMD CLI command format to use for executing a single test:
     // testcafe chrome ./TestBureau/SethEden/Tests/Default.test.js --reporter html:results/SethEden/reports/20231108.html testName=Writings slowExe=true
 
-  } // End-for (let testNameKey in arrayOfTestNamesToExecute)
+    // boilerPlateTestPathAndFileName
+    // rootTestFolderPath
+    // slowExecution
+    // multiTestExecution
+    // listOfBrowsers
+
+    if (listOfBrowsers !== '') {
+      // NOTE: At some point in the future hay-CAF will transition to using hayD-CAF rather than our current system.
+      // Then we can call test scripts using Playwright, Cypress, NightwatchJS, WebDriverIO, Appium and TestCafe.
+      // But for now I'm going to hard-code this to just using testcafe, because it's what we have, and it's what we can use.
+      // testCommandString = 
+
+      if (multiTestExecution === true) {
+        // Just join the arrayOfTestNamesToExecute into a coma separated list, easy-peazy
+        let listOfTestNamesToExecute = arrayOfTestNamesToExecute.join(bas.cComa);
+        // listOfTestNamesToExecute is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'listOfTestNamesToExecute is: ' + listOfTestNamesToExecute);
+
+      } else {
+        // We are going to execute each test individually in a loop.
+        for (let testNameKey in arrayOfTestNamesToExecute) {
+          // testNameKey is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testNameKey is: ' + testNameKey);
+          let testName = arrayOfTestNamesToExecute[testNameKey];
+          // testName is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testName is: ' + testName);
+          
+        } // End-for (let testNameKey in arrayOfTestNamesToExecute)
+      }
+    } else {
+      // ERROR: No browsers specified. Please set the list of browsers in the configuration setting:
+      console.log('ERROR: No browsers specified. Please set the list of browsers in the configuration setting: ' + app_cfg.clistOfBrowsers);
+    }
+  } else {
+    // ERROR: No test root path specified. Please set the path in the configuration setting:
+    console.log('ERROR: No test root path specified. Please set the path in the configuration setting: ' + app_cfg.crootTestFolderPath);
+  }
+  
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
@@ -401,6 +547,8 @@ export default {
   setDefaultTestBehavior,
   setSlowExecutionConfiguration,
   setMultiTestExecutionConfiguration,
+  setBrowsersList,
+  setExecutionEngine,
   printApplicationConfiguration,
   test  
 }

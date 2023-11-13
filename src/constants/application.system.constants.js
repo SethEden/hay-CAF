@@ -11,7 +11,7 @@
 
 // External imports
 import hayConst from '@haystacks/constants';
-const {bas, gen, wrd} = hayConst;
+const {bas, gen, phn, wrd} = hayConst;
 
 // hay-CAF system constants
 
@@ -31,3 +31,17 @@ export const capplication_configuration_constants_js = wrd.capplication + bas.cD
 export const capplication_constants_js = wrd.capplication + bas.cDot + wrd.cconstants + gen.cDotjs; // application.constants.js
 export const capplication_message_constants_js = wrd.capplication + bas.cDot + wrd.cmessage + bas.cDot + wrd.cconstants + gen.cDotjs; // application.message.constants.js
 export const capplication_system_constants_js = wrd.capplication + bas.cDot + wrd.csystem + bas.cDot + wrd.cconstants + gen.cDotjs; // application.system.constants.js
+
+// Test Drivers
+// NOTE: At some point in the future hay-CAF will transition to using hayD-CAF rather than our current system.
+// Then we can call test scripts using Playwright, Cypress, NightwatchJS, WebDriverIO, Appium and TestCafe.
+// But for now I'm going to hard-code this to just using testcafe, because it's what we have, and it's what we can use.
+// However, we will add them here so the system is ready to support them once we do finally get around to building our next generation test execution framework.
+export const ctestcafe = wrd.ctest + wrd.ccafe; // testcafe
+export const cplaywright = wrd.cplay + wrd.cwright; // playwright
+export const ccypress = wrd.ccypress; // cypress
+export const cwebdriver = wrd.cweb + wrd.cdriver; // webdriver
+export const cappium = wrd.capp + phn.cium; // appium
+export const cnightwatch = wrd.cnight + wrd.cwatch; // nightwatch
+
+export const cvalidExecutionEngines = ctestcafe + bas.cComa + cplaywright + bas.cComa + ccypress + bas.cComa + cwebdriver + bas.cComa + cappium + bas.cComa + cnightwatch; // testcafe,playwright,cypress,webdriver,appium,nightwatch

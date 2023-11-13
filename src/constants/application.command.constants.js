@@ -38,6 +38,8 @@ export const csetRootTestFolderPath = wrd.cset + wrd.cRoot + wrd.cTest + wrd.cFo
 export const csetDefaultTestBehavior = wrd.cset + wrd.cDefault + wrd.cTest + wrd.cBehavior; // setDefaultTestBehavior
 export const csetSlowExecutionConfiguration = wrd.cset + wrd.cSlow + wrd.cExecution + wrd.cConfiguration; // setSlowExecutionConfiguration
 export const csetMultiTestExecutionConfiguration = wrd.cset + wrd.cMulti + wrd.cTest + wrd.cExecution + wrd.cConfiguration; // setMultiTestExecutionConfiguration
+export const csetBrowsersList = wrd.cset + wrd.cBrowsers + wrd.cList; // setBrowsersList
+export const csetExecutionEngine = wrd.cset + wrd.cExecution + wrd.cEngine; // setExecutionEngine
 export const cprintApplicationConfiguration = wrd.cprint + wrd.cApplication + wrd.cConfiguration; // printApplicationConfiguration
 export const ctest = wrd.ctest; // test
 

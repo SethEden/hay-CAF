@@ -34,5 +34,7 @@
   "system.rootTestFolderPath": "C:/CAFfeinated/TestBureau/SethEden/Tests/Workflows",
   "system.defaultRunAllTests": true,
   "system.slowExecution": true,
-  "system.multiTestExecution": true
+  "system.multiTestExecution": true,
+  "system.listOfBrowsers": "chrome",
+  "system.executionDriverEngine": "testcafe"
 }

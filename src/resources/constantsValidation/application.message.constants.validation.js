@@ -60,5 +60,6 @@ export const applicationMessageConstantsValidation = [
 
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
   {Name: 'cErrorSetRootTestFolderPathMessage', Actual: app_msg.cErrorSetRootTestFolderPathMessage, Expected: 'ERROR: Please enter a valid path as input.'},
-  {Name: 'cErrorSetDefaultTestBehaviorMessage', Actual: app_msg.cErrorSetDefaultTestBehaviorMessage, Expected: 'ERROR: Please enter a valid input, true or false.'}
+  {Name: 'cErrorSetDefaultTestBehaviorMessage', Actual: app_msg.cErrorSetDefaultTestBehaviorMessage, Expected: 'ERROR: Please enter a valid input, true or false.'},
+  {Name: 'cErrorSetBrowserListMessage', Actual: app_msg.cErrorSetBrowserListMessage, Expected: 'ERROR: Please enter a valid list of browser names to execute with.'}
 ];
