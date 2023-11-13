@@ -311,6 +311,70 @@ async function setExecutionEngine(inputData, inputMetaData) {
 }
 
 /**
+ * @function setEnableReporterConfiguration
+ * @description Sets the configuration flag to enable or disable the test reporter setting.
+ * @param {string<array>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a true or false to indicate if tests should execute the test with a reporter string or not.
+ * inputData[0] === 'setEnableReporterConfiguration'
+ * inputData[1] === 'true' or 'false' or some kind of 't' or 'f', 'on' or 'off'.
+ * @param {string} inputMetaData Not used for this command.
+ * @author Seth Hollingsead
+ * @date 2023/11/13
+ */
+async function setEnableReporterConfiguration(inputData, inputMetaData) {
+  let functionName = setEnableReporterConfiguration.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cenableReporter, inputData[1]);
+    } else {
+      // ERROR: Please enter a valid input, true or false.
+      console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+    }
+  } else {
+    // ERROR: Please enter a valid input, true or false.
+    console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+  }  
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
+ * @function setReportPathConfiguration
+ * @description Sets the test report output path in the system configuration settings.
+ * @param {string<array>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a string to the path on their local system where
+ * they want the test reports to be saved to when the test is finished executing.
+ * inputData[0] === 'setReportPathConfiguration'
+ * inputData[1] === 'C:/CAFfeinated/results/SethEden/reports/'
+ * @param {string} inputMetaData Not used for this command.
+ * @author Seth Hollingsead
+ * @date 2023/11/13
+ */
+async function setReportPathConfiguration(inputData, inputMetaData) {
+  let functionName = setEnableReporterConfiguration.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.creportPath, inputData[1]);
+  } else {
+    // ERROR: Please enter a valid system path.
+    console.log('ERROR: Please enter a valid system path.');
+  }
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
  * @function printApplicationConfiguration
  * @description Prints out the current system.configuration settings in a table format,
  * that is easy to read and triage or debug the configuration by end users.
@@ -410,7 +474,10 @@ async function test(inputData, inputMetaData) {
   let multiTestExecution = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cmultiTestExecution);
   let listOfBrowsers = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.clistOfBrowsers);
   let executionEngine = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine);
+  let reportEnabled = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cenableReporter);
+  let reportPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.creportPath);
   let testCommandString = '';
+  let validTestParameters = false;
 
   // TODO: Remove this hard-coded filter ONLY once we have completed the implementation of our NEW testing framework that supports multiple testing engines (playright, cypress, webdriver, appium, testcafe).
   // NOTE: I am going to hard-code the execution engine to testcafe, so even if the user changed it to something else, we are going to force-change and hard-code it here.
@@ -501,11 +568,39 @@ async function test(inputData, inputMetaData) {
     // multiTestExecution
     // listOfBrowsers
 
-    if (listOfBrowsers !== '') {
+    if (executionEngine !== '' && listOfBrowsers !== '' && boilerPlateTestPathAndFileName !== '' && (reportEnabled === true) && (reportPath !== '')) {
+      validTestParameters = true;
+    } else {
+      if (listOfBrowsers === '') {
+        // ERROR: No browsers specified. Please set the list of browsers in the configuration setting:
+        console.log('ERROR: No browsers specified. Please set the list of browsers in the configuration setting: ' + app_cfg.clistOfBrowsers);
+      }
+      if (executionEngine === '') {
+        // ERROR: No execution engine is specified. Please set the execution engine in the configuration setting:
+        console.log('ERROR: No execution engine is specified. Please set the execution engine in the configuration setting: ' + app_cfg.cexecutionDriverEngine);
+      }
+      if (boilerPlateTestPathAndFileName === '') {
+        // ERROR: No boiler plate test path and file name were specified. Please set the boiler plate test path and file name in the configuration setting:
+        console.log('ERROR: No boiler plate test path and file name were specified. Please set the boiler plate test path and file name in the configuration setting: ' + app_cfg.cboilerPlateTestPathAndFileName);
+      }
+      if (reportEnabled === true && reportPath === '') {
+        // ERROR: No report path specified. Please set the report path in the configuration setting:
+        console.log('ERROR: No report path specified. Please set the report path in the configuration setting: ' + app_cfg.creportPath);
+      }
+    }
+
+    if (validTestParameters === true) {
       // NOTE: At some point in the future hay-CAF will transition to using hayD-CAF rather than our current system.
       // Then we can call test scripts using Playwright, Cypress, NightwatchJS, WebDriverIO, Appium and TestCafe.
       // But for now I'm going to hard-code this to just using testcafe, because it's what we have, and it's what we can use.
-      // testCommandString = 
+      testCommandString = executionEngine + bas.cSpace + listOfBrowsers + bas.cSpace + boilerPlateTestPathAndFileName + bas.cSpace;
+
+      if (reportEnabled === true) {
+        testCommandString = testCommandString + bas.cDoubleDash + wrd.creporter + bas.cSpace + wrd.chtml + bas.cColon + reportPath;
+        // Now we need to generate the test file name using a time stamp for the NOW moment.
+        // TODO: Generate a file name for the test report from the NOW moment.
+        
+      }
 
       if (multiTestExecution === true) {
         // Just join the arrayOfTestNamesToExecute into a coma separated list, easy-peazy
@@ -524,9 +619,6 @@ async function test(inputData, inputMetaData) {
           
         } // End-for (let testNameKey in arrayOfTestNamesToExecute)
       }
-    } else {
-      // ERROR: No browsers specified. Please set the list of browsers in the configuration setting:
-      console.log('ERROR: No browsers specified. Please set the list of browsers in the configuration setting: ' + app_cfg.clistOfBrowsers);
     }
   } else {
     // ERROR: No test root path specified. Please set the path in the configuration setting:
@@ -546,6 +638,8 @@ export default {
   setMultiTestExecutionConfiguration,
   setBrowsersList,
   setExecutionEngine,
+  setEnableReporterConfiguration,
+  setReportPathConfiguration,
   printApplicationConfiguration,
   test  
 }

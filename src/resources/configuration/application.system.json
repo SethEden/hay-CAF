@@ -36,5 +36,7 @@
   "system.slowExecution": true,
   "system.multiTestExecution": true,
   "system.listOfBrowsers": "chrome",
-  "system.executionDriverEngine": "testcafe"
+  "system.executionDriverEngine": "testcafe",
+  "system.enableReporter": true,
+  "system.reportPath": "C:/CAFfeinated/results/SethEden/reports/"
 }

@@ -44,6 +44,8 @@ export const applicationCommandConstantsValidation = [
   {Name: 'csetMultiTestExecutionConfiguration', Actual: app_cmd.csetMultiTestExecutionConfiguration, Expected: 'setMultiTestExecutionConfiguration'},
   {Name: 'csetBrowsersList', Actual: app_cmd.csetBrowsersList, Expected: 'setBrowsersList'},
   {Name: 'csetExecutionEngine', Actual: app_cmd.csetExecutionEngine, Expected: 'setExecutionEngine'},
+  {Name: 'setEnableReporterConfiguration', Actual: app_cmd.setEnableReporterConfiguration, Expected: 'setEnableReporterConfiguration'},
+  {Name: 'csetReportPathConfiguration', Actual: app_cmd.csetReportPathConfiguration, Expected: 'setReportPathConfiguration'},
   {Name: 'cprintApplicationConfiguration', Actual: app_cmd.cprintApplicationConfiguration, Expected: 'printApplicationConfiguration'},
   {Name: 'ctest', Actual: app_cmd.ctest, Expected: 'test'},
   

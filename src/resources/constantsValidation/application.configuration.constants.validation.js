@@ -25,5 +25,6 @@ export const applicationConfigurationConstantsValidation = [
   {Name: 'cslowExecution', Actual: app_cfg.cslowExecution, Expected: 'slowExecution'},
   {Name: 'cmultiTestExecution', Actual: app_cfg.cmultiTestExecution, Expected: 'multiTestExecution'},
   {Name: 'clistOfBrowsers', Actual: app_cfg.clistOfBrowsers, Expected: 'listOfBrowsers'},
-  {Name: 'cexecutionDriverEngine', Actual: app_cfg.cexecutionDriverEngine, Expected: 'executionDriverEngine'}
+  {Name: 'cexecutionDriverEngine', Actual: app_cfg.cexecutionDriverEngine, Expected: 'executionDriverEngine'},
+  {Name: 'cenableReporter', Actual: app_cfg.cenableReporter, Expected: 'enableReporter'}
 ];

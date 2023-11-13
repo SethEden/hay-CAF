@@ -19,3 +19,5 @@ export const cslowExecution = wrd.cslow + wrd.cExecution; // slowExecution
 export const cmultiTestExecution = wrd.cmulti + wrd.cTest + wrd.cExecution; // multiTestExecution
 export const clistOfBrowsers = wrd.clist + wrd.cOf + wrd.cBrowsers; // listOfBrowsers
 export const cexecutionDriverEngine = wrd.cexecution + wrd.cDriver + wrd.cEngine; // executionDriverEngine
+export const cenableReporter = wrd.cenable + wrd.cReporter; // enableReporter
+export const creportPath = wrd.creport + wrd.cPath; // reportPath

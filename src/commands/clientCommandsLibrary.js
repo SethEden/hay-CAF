@@ -57,6 +57,8 @@ const initApplicationCommandsLibrary = function() {
     [app_cmd.csetMultiTestExecutionConfiguration]: (inputData, inputMetaData) => testCommands.setMultiTestExecutionConfiguration(inputData, inputMetaData),
     [app_cmd.csetBrowsersList]: (inputData, inputMetaData) => testCommands.setBrowsersList(inputData, inputMetaData),
     [app_cmd.csetExecutionEngine]: (inputData, inputMetaData) => testCommands.setExecutionEngine(inputData, inputMetaData),
+    [app_cmd.csetEnableReporterConfiguration]: (inputData, inputMetaData) => testCommands.setEnableReporterConfiguration(inputData, inputMetaData),
+    [app_cmd.csetReportPathConfiguration]: (inputData, inputMetaData) => testCommands.setReportPathConfiguration(inputData, inputMetaData),
     [app_cmd.cprintApplicationConfiguration]: (inputData, inputMetaData) => testCommands.printApplicationConfiguration(inputData, inputMetaData),
     [app_cmd.ctest]: (inputData, inputMetaData) => testCommands.test(inputData, inputMetaData)
   }
