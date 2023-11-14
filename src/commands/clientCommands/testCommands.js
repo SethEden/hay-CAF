@@ -492,7 +492,7 @@ async function test(inputData, inputMetaData) {
   // Take the input from the test and use it as a keyword look-up or try to apply it as a string filter for: DONE
   // selecting an array of tests to execute, or a single test to execute. Whatever list of tests passes the string-filter matching criteria. DONE
   // Build a for-loop that will loop over all the array of tests that need to be executed. DONE
-  // for each test in the array of tests, build a CLI command string to execute the test.
+  // for each test in the array of tests, build a CLI command string to execute the test. DONE
   // Spawn a new CMD or BASH child-process with a promise and send the CLI command string to it to execute the test script/workflow.
   // Monitor the child process and determine when the test is done, resolve the promise with the pass-fail.
   // We can set re-run criteria or other rules to determine how to handle the failure.
@@ -607,12 +607,6 @@ async function test(inputData, inputMetaData) {
 
     // The CMD CLI command format to use for executing a single test:
     // testcafe chrome ./TestBureau/SethEden/Tests/Default.test.js slowExe=true --reporter html:results/SethEden/reports/20231108.html testName=Writings 
-
-    // boilerPlateTestPathAndFileName
-    // rootTestFolderPath
-    // slowExecution
-    // multiTestExecution
-    // listOfBrowsers
 
     if (executionEngine !== '' && listOfBrowsers !== '' && boilerPlateTestPathAndFileName !== '' && (reportEnabled === true && reportPath !== '')) {
       validTestParameters = true;
