@@ -17,3 +17,4 @@ const {wrd} = hayConst;
 // hay-CAF rules in order
 // ********************************
 export const cbuildArrayOfTestNames = wrd.cbuild + wrd.cArray + wrd.cOf + wrd.cTest + wrd.cNames; // buildArrayOfTestNames
+export const cexecuteTestCommand = wrd.cexecute + wrd.cTest + wrd.cCommand; // executeTestCommand

@@ -58,6 +58,29 @@ async function buildArrayOfTestNames(inputData, inputMetaData) {
     return returnData;
 }
 
+/**
+ * @function executeTestCommand
+ * @description Takes a command string and executes it on a CLI Windows CMD, BASH or PowerShell interface as a child process.
+ * @param {string} inputData The command string that should be executed in the child process.
+ * @param {string} inputMetaData The CLI type: Windows CMD, BASH or PowerShell.
+ * @return {boolean} True or False to indicate if the test passed successfully or not.
+ * @author Seth Hollingsead
+ * @date 2023/11/14
+ */
+async function executeTestCommand(inputData, inputMetaData) {
+    let functionName = executeTestCommand.name;
+    await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+    let returnData = false;
+    // TODO: Implement promise here to spawn a child CMD/Bash/PowerShell process and execute the command, determine if the test passes or fails.
+    // Return True or False based on the test passing or failing.
+    await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+    await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+    return returnData;
+}
+
 export {
-    buildArrayOfTestNames
+    buildArrayOfTestNames,
+    executeTestCommand
 };

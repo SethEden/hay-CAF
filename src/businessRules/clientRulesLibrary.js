@@ -45,7 +45,8 @@ const initApplicationRulesLibrary = function () {
     // ***********************************************
     // test rules in order
     // ***********************************************
-    [app_biz.cbuildArrayOfTestNames]: (inputData, inputMetaData) => testRules.buildArrayOfTestNames(inputData, inputMetaData)
+    [app_biz.cbuildArrayOfTestNames]: (inputData, inputMetaData) => testRules.buildArrayOfTestNames(inputData, inputMetaData),
+    [app_biz.cexecuteTestCommand]: (inputData, inputMetaData) => testRules.executeTestCommand(inputData, inputMetaData)
   };
 }
 

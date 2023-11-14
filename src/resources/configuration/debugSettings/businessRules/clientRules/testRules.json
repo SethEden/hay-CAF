@@ -24,5 +24,18 @@
   "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.buildArrayOfTestNames@ModuleFontBackgroundColor": "Default",
   "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.buildArrayOfTestNames@FunctionFontBackgroundColor": "Default",
   "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.buildArrayOfTestNames@MessageFontBackgroundColor": "Default",
-  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.buildArrayOfTestNames@DataFontBackgroundColor": "Default"
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.buildArrayOfTestNames@DataFontBackgroundColor": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand": true,
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@ModuleFontStyle": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@FunctionFontStyle": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@MessageFontStyle": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@DataFontStyle": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@ModuleFontColor": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@FunctionFontColor": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@MessageFontColor": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@DataFontColor": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@ModuleFontBackgroundColor": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@FunctionFontBackgroundColor": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@MessageFontBackgroundColor": "Default",
+  "debugFunctions|debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand@DataFontBackgroundColor": "Default"
 }

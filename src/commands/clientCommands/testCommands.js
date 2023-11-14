@@ -479,6 +479,7 @@ async function test(inputData, inputMetaData) {
   let testCommandString = '';
   let testReporterCommandString = '';
   let validTestParameters = false;
+  let testPassed = false;
 
   // TODO: Remove this hard-coded filter ONLY once we have completed the implementation of our NEW testing framework that supports multiple testing engines (playright, cypress, webdriver, appium, testcafe).
   // NOTE: I am going to hard-code the execution engine to testcafe, so even if the user changed it to something else, we are going to force-change and hard-code it here.
@@ -637,6 +638,8 @@ async function test(inputData, inputMetaData) {
         testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + listOfTestNamesToExecute;
         // testCommandString is:
         await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
+        testPassed = await haystacks.executeBusinessRules([testCommandString, ''], [app_biz.cexecuteTestCommand]);
+        // TODO: Handle any test re-run logic here.
       } else {
         // We are going to execute each test individually in a loop.
         for (let testNameKey in arrayOfTestNamesToExecute) {
@@ -658,6 +661,8 @@ async function test(inputData, inputMetaData) {
           testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + testName;
           // testCommandString is:
           await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
+          testPassed = await haystacks.executeBusinessRules([testCommandString, ''], [app_biz.cexecuteTestCommand]);
+          // TODO: Handle any test re-run logic here.
         } // End-for (let testNameKey in arrayOfTestNamesToExecute)
       }
     }
