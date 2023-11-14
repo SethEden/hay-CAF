@@ -45,3 +45,5 @@ export const cappium = wrd.capp + phn.cium; // appium
 export const cnightwatch = wrd.cnight + wrd.cwatch; // nightwatch
 
 export const cvalidExecutionEngines = ctestcafe + bas.cComa + cplaywright + bas.cComa + ccypress + bas.cComa + cwebdriver + bas.cComa + cappium + bas.cComa + cnightwatch; // testcafe,playwright,cypress,webdriver,appium,nightwatch
+export const cslowExe = wrd.cslow + gen.cExe; // slowExe
+export const ctestName = wrd.ctest + wrd.cName; // testName

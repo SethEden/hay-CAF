@@ -51,5 +51,7 @@ export const applicationSystemConstantsValidation = [
   {Name: 'cappium', Actual: app_sys.cappium, Expected: 'appium'},
   {Name: 'cnightwatch', Actual: app_sys.cnightwatch, Expected: 'nightwatch'},
 
-  {Name: 'cvalidExecutionEngines', Actual: app_sys.cvalidExecutionEngines, Expected: 'testcafe,playwright,cypress,webdriver,appium,nightwatch'}
+  {Name: 'cvalidExecutionEngines', Actual: app_sys.cvalidExecutionEngines, Expected: 'testcafe,playwright,cypress,webdriver,appium,nightwatch'},
+  {Name: 'cslowExe', Actual: app_sys.cslowExe, Expected: 'slowExe'},
+  {Name: 'ctestName', Actual: app_sys.ctestName, Expected: 'testName'}
 ];

@@ -29,7 +29,7 @@ import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
 import path from 'path';
 
-const {bas, biz, msg, wrd} = hayConst;
+const {bas, biz, gen, msg, wrd} = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 // application.hay-CAF.commands.clientCommands.testCommands.
 const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas.cDot + wrd.ccommands + bas.cDot + wrd.cclient + wrd.cCommands + bas.cDot + baseFileName + bas.cDot;
@@ -463,9 +463,9 @@ async function test(inputData, inputMetaData) {
 
   // New TODO:
   // TODO:
-  // Add a configuration setting, and configuration command to enable for slow execution.
-  // Add a configuration setting, and configuration command to enable multi-test execution as input to a single test call,
-  // or as part of the test runner driver-loop.
+  // Add a configuration setting, and configuration command to enable for slow execution. DONE
+  // Add a configuration setting, and configuration command to enable multi-test execution as input to a single test call, DONE
+  // or as part of the test runner driver-loop. DONE
 
   let boilerPlateTestPathAndFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cboilerPlateTestPathAndFileName);
   let rootTestFolderPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
@@ -477,6 +477,7 @@ async function test(inputData, inputMetaData) {
   let reportEnabled = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cenableReporter);
   let reportPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.creportPath);
   let testCommandString = '';
+  let testReporterCommandString = '';
   let validTestParameters = false;
 
   // TODO: Remove this hard-coded filter ONLY once we have completed the implementation of our NEW testing framework that supports multiple testing engines (playright, cypress, webdriver, appium, testcafe).
@@ -560,7 +561,7 @@ async function test(inputData, inputMetaData) {
     }
 
     // The CMD CLI command format to use for executing a single test:
-    // testcafe chrome ./TestBureau/SethEden/Tests/Default.test.js --reporter html:results/SethEden/reports/20231108.html testName=Writings slowExe=true
+    // testcafe chrome ./TestBureau/SethEden/Tests/Default.test.js slowExe=true --reporter html:results/SethEden/reports/20231108.html testName=Writings 
 
     // boilerPlateTestPathAndFileName
     // rootTestFolderPath
@@ -568,7 +569,7 @@ async function test(inputData, inputMetaData) {
     // multiTestExecution
     // listOfBrowsers
 
-    if (executionEngine !== '' && listOfBrowsers !== '' && boilerPlateTestPathAndFileName !== '' && (reportEnabled === true) && (reportPath !== '')) {
+    if (executionEngine !== '' && listOfBrowsers !== '' && boilerPlateTestPathAndFileName !== '' && (reportEnabled === true && reportPath !== '')) {
       validTestParameters = true;
     } else {
       if (listOfBrowsers === '') {
@@ -596,10 +597,24 @@ async function test(inputData, inputMetaData) {
       testCommandString = executionEngine + bas.cSpace + listOfBrowsers + bas.cSpace + boilerPlateTestPathAndFileName + bas.cSpace;
 
       if (reportEnabled === true) {
-        testCommandString = testCommandString + bas.cDoubleDash + wrd.creporter + bas.cSpace + wrd.chtml + bas.cColon + reportPath;
+        // NOTE: In the future we might want to enhance this to allow for different report types such as XML or JSON.
+        // For now we are hard-coding it to html.
+        testReporterCommandString = bas.cDoubleDash + wrd.creporter + bas.cSpace + wrd.chtml + bas.cColon + reportPath;
         // Now we need to generate the test file name using a time stamp for the NOW moment.
-        // TODO: Generate a file name for the test report from the NOW moment.
-        
+        let currentTimeStamp = await haystacks.executeBusinessRules([gen.cYYYYMMDD_HHmmss_SSS, ''], [biz.cgetNowMoment]);
+        // let currentTimeStamp = await haystacks.executeBusinessRules([currentTimeStampRaw, gen.cYYYYMMDD_HHmmss_SSS], [biz.creformatDeltaTime]);
+        // currentTimeStamp is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'currentTimeStamp is: ' + currentTimeStamp);
+        if (!testReporterCommandString.indexOf(bas.cForwardSlash, testReporterCommandString.length)) {
+          testReporterCommandString = testReporterCommandString + bas.cForwardSlash;
+        }
+        testReporterCommandString = testReporterCommandString + currentTimeStamp;
+        // NOTE: We want to add the test name as part of the report, but we will need to this below when we are generating the final test command.
+        // testReporterCommandString is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'testReporterCommandString is: ' + testReporterCommandString);
+      }
+      if (slowExecution === true) {
+        testCommandString = testCommandString + app_sys.cslowExe + bas.cEqual + gen.ctrue + bas.cSpace;
       }
 
       if (multiTestExecution === true) {
@@ -607,7 +622,21 @@ async function test(inputData, inputMetaData) {
         let listOfTestNamesToExecute = arrayOfTestNamesToExecute.join(bas.cComa);
         // listOfTestNamesToExecute is:
         await haystacks.consoleLog(namespacePrefix, functionName, 'listOfTestNamesToExecute is: ' + listOfTestNamesToExecute);
-
+        if (reportEnabled === true) {
+          // NOTE: Here we cannot make the list of test names to execute as part of the report filename, because the list could be long, and the file name cannot be too long.
+          // So just append the file extension.
+          // NOTE: In the future we might want to enhance this to allow for different report types such as XML or JSON.
+          // For now we are hard-coding it to html.
+          testReporterCommandString = testReporterCommandString + bas.cDot + wrd.chtml;
+          // testReporterCommandString is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testReporterCommandString is: ' + testReporterCommandString);
+          testCommandString = testCommandString + bas.cSpace + testReporterCommandString + bas.cSpace;
+          // testCommandString is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
+        }
+        testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + listOfTestNamesToExecute;
+        // testCommandString is:
+        await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
       } else {
         // We are going to execute each test individually in a loop.
         for (let testNameKey in arrayOfTestNamesToExecute) {
@@ -616,7 +645,19 @@ async function test(inputData, inputMetaData) {
           let testName = arrayOfTestNamesToExecute[testNameKey];
           // testName is:
           await haystacks.consoleLog(namespacePrefix, functionName, 'testName is: ' + testName);
-          
+          if (reportEnabled === true) {
+            // NOTE: In the future we might want to enhance this to allow for different report types such as XML or JSON.
+            // For now we are hard-coding it to html.
+            testReporterCommandString = testReporterCommandString + bas.cUnderscore + testName + bas.cDot + wrd.chtml;
+            // testReporterCommandString is:
+            await haystacks.consoleLog(namespacePrefix, functionName, 'testReporterCommandString is: ' + testReporterCommandString);
+            testCommandString = testCommandString + bas.cSpace + testReporterCommandString + bas.cSpace;
+            // testCommandString is:
+            await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
+          }
+          testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + testName;
+          // testCommandString is:
+          await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
         } // End-for (let testNameKey in arrayOfTestNamesToExecute)
       }
     }
