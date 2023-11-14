@@ -38,5 +38,6 @@
   "system.listOfBrowsers": "chrome",
   "system.executionDriverEngine": "testcafe",
   "system.enableReporter": true,
-  "system.reportPath": "C:/CAFfeinated/results/SethEden/reports/"
+  "system.reportPath": "C:/CAFfeinated/results/SethEden/reports/",
+  "system.cmdType": "CMD"
 }

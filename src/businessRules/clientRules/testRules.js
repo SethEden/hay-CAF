@@ -4,6 +4,7 @@
  * @description Contains all client defined business rules for the hay-CAF application.
  * @requires module:application.constants
  * @requires module:application.message.constants
+ * @requires module:application.system.constants
  * @requires {@link https://www.npmjs.com/package/@haystacks/async|@haystacks/async}
  * @requires {@link https://www.npmjs.com/package/@haystacks/constants|@haystacks/constants}
  * @requires {@link https://www.npmjs.com/package/path|path}
@@ -15,12 +16,13 @@
 // Internal imports
 import * as apc from '../../constants/application.constants.js';
 import * as app_msg from '../../constants/application.message.constants.js';
+import * as app_sys from '../../constants/application.system.constants.js';
 // External imports
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
 import path from 'path';
 
-const {bas, biz, msg, wrd} = hayConst;
+const {bas, biz, msg, sys, wrd} = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 // application.hay-CAF.businessRules.clientRules.testRules.
 const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas.cDot + wrd.cbusiness + wrd.cRules + bas.cDot + wrd.cclient + wrd.cRules + bas.cDot + baseFileName + bas.cDot;
@@ -73,8 +75,37 @@ async function executeTestCommand(inputData, inputMetaData) {
     await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
     await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
     let returnData = false;
-    // TODO: Implement promise here to spawn a child CMD/Bash/PowerShell process and execute the command, determine if the test passes or fails.
-    // Return True or False based on the test passing or failing.
+    if (inputData && inputMetaData) {
+        switch (inputMetaData.toLowerCase()) {
+            case sys.ccmd:
+                // TODO: Spawn the Windows CMD child process and execute the command against that.
+                break;
+            case sys.cbash:
+                // TODO: Spawn the bash child process and execute the command against that.
+                break;
+            case sys.cpowershell:
+                // TODO: Spawn the powershell child process and execute the command against that.
+                break;
+            default:
+                // ERROR: You must specify a test type to execute. Command type is:
+                console.log('ERROR: You must specify a test command to execute. Command is: ' + inputMetaData);
+                // Valid command types are:
+                console.log('Valid command types are: ' + app_sys.cvalidCommandTypes);
+                break;
+        }
+        // TODO: Return True or False based on the test passing or failing.
+    } else {
+        if (!inputData) {
+            // ERROR: You must specify a test command to execute. Command is:
+            console.log('ERROR: You must specify a test command to execute. Command is: ' + inputData);
+        }
+        if (!inputMetaData) {
+            // ERROR: You must specify a test type to execute. Command type is:
+            console.log('ERROR: You must specify a test command to execute. Command is: ' + inputMetaData);
+            // Valid command types are:
+            console.log('Valid command types are: ' + app_sys.cvalidCommandTypes);
+        }
+    }
     await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
     await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
     return returnData;

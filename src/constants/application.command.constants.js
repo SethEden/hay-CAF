@@ -13,7 +13,7 @@
 
 // External imports
 import hayConst from '@haystacks/constants';
-const {bas, wrd} = hayConst;
+const {bas, gen, wrd} = hayConst;
 
 // ********************************
 // ApplicationSystem Commands in order
@@ -42,6 +42,7 @@ export const csetBrowsersList = wrd.cset + wrd.cBrowsers + wrd.cList; // setBrow
 export const csetExecutionEngine = wrd.cset + wrd.cExecution + wrd.cEngine; // setExecutionEngine
 export const csetEnableReporterConfiguration = wrd.cset + wrd.cEnable + wrd.cReporter + wrd.cConfiguration; // setEnableReporterConfiguration
 export const csetReportPathConfiguration = wrd.cset + wrd.cReport + wrd.cPath + wrd.cConfiguration; // setReportPathConfiguration
+export const csetCmdType = wrd.cset + gen.ccmd + wrd.cType; // setCmdType
 export const cprintApplicationConfiguration = wrd.cprint + wrd.cApplication + wrd.cConfiguration; // printApplicationConfiguration
 export const ctest = wrd.ctest; // test
 

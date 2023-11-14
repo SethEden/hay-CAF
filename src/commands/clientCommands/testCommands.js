@@ -375,6 +375,43 @@ async function setReportPathConfiguration(inputData, inputMetaData) {
 }
 
 /**
+ * @function setCmdType
+ * @description Sets a configuration setting that allows the user to change the cmd type that should be used when executing the test command.
+ * Options are like: Windows CMD, Bash, PowerShell.
+ * @param {array<string>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a string of the name of the command system that should be used when executing the child process to run the test command.
+ * inputData[0] === 'setReportPathConfiguration'
+ * inputData[1] === 'CMD', 'Bash', 'PowerShell'
+ * @param {string} inputMetaData Not used for this command.
+ * @return {array<boolean,boolean>} An array with a boolean True or False value to
+ * indicate if the application should exit or not exit.
+ * @author Seth Hollingsead
+ * @date 2023/11/14
+ */
+async function setCmdType(inputData, inputMetaData) {
+  let functionName = setCmdType.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    if (app_sys.cvalidCommandTypes.includes(inputData[1]) === true) {
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ccmdType, inputData[1]);
+    } else {
+      // ERROR: Please enter a valid command type. Valid types are:
+      console.log('ERROR: Please enter a valid system path. Valid types are: ' + app_sys.cvalidCommandTypes);
+    }
+  } else {
+    // ERROR: Please enter a valid command type. Valid types are:
+    console.log('ERROR: Please enter a valid system path. Valid types are: ' + app_sys.cvalidCommandTypes);
+  }
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
  * @function printApplicationConfiguration
  * @description Prints out the current system.configuration settings in a table format,
  * that is easy to read and triage or debug the configuration by end users.
@@ -476,6 +513,7 @@ async function test(inputData, inputMetaData) {
   let executionEngine = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine);
   let reportEnabled = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cenableReporter);
   let reportPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.creportPath);
+  let commandType = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.ccmdType);
   let testCommandString = '';
   let testReporterCommandString = '';
   let validTestParameters = false;
@@ -508,6 +546,12 @@ async function test(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, 'listOfBrowsers is: ' + listOfBrowsers);
   // executionEngine is:
   await haystacks.consoleLog(namespacePrefix, functionName, 'executionEngine is: ' + executionEngine);
+  // reportEnabled is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'reportEnabled is: ' + reportEnabled);
+  // reportPath is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'reportPath is: ' + reportPath);
+  // commandType is:
+  await haystacks.consoleLog(namespacePrefix, functionName, 'commandType is: ' + commandType);
 
   if (rootTestFolderPath !== '') {
     // commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.cisBoolean]);
@@ -638,7 +682,7 @@ async function test(inputData, inputMetaData) {
         testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + listOfTestNamesToExecute;
         // testCommandString is:
         await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
-        testPassed = await haystacks.executeBusinessRules([testCommandString, ''], [app_biz.cexecuteTestCommand]);
+        testPassed = await haystacks.executeBusinessRules([testCommandString, commandType], [app_biz.cexecuteTestCommand]);
         // TODO: Handle any test re-run logic here.
       } else {
         // We are going to execute each test individually in a loop.
@@ -661,7 +705,7 @@ async function test(inputData, inputMetaData) {
           testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + testName;
           // testCommandString is:
           await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
-          testPassed = await haystacks.executeBusinessRules([testCommandString, ''], [app_biz.cexecuteTestCommand]);
+          testPassed = await haystacks.executeBusinessRules([testCommandString, commandType], [app_biz.cexecuteTestCommand]);
           // TODO: Handle any test re-run logic here.
         } // End-for (let testNameKey in arrayOfTestNamesToExecute)
       }
@@ -686,6 +730,7 @@ export default {
   setExecutionEngine,
   setEnableReporterConfiguration,
   setReportPathConfiguration,
+  setCmdType,
   printApplicationConfiguration,
   test  
 }
