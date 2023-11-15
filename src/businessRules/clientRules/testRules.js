@@ -21,6 +21,7 @@ import * as app_sys from '../../constants/application.system.constants.js';
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
 import path from 'path';
+import { spawn } from "child_process";
 
 const {bas, biz, msg, sys, wrd} = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
@@ -79,12 +80,18 @@ async function executeTestCommand(inputData, inputMetaData) {
         switch (inputMetaData.toLowerCase()) {
             case sys.ccmd:
                 // TODO: Spawn the Windows CMD child process and execute the command against that.
+                result = await spawnCmdProcess(inputData, inputMetaData);
+                await haystacks.consoleLog(namespacePrefix, functionName, "CMD result is: " + result.toString());
                 break;
             case sys.cbash:
                 // TODO: Spawn the bash child process and execute the command against that.
+                result = await spawnCmdProcess(inputData, inputMetaData);
+                await haystacks.consoleLog(namespacePrefix, functionName, "CMD result is: " + result.toString());
                 break;
             case sys.cpowershell:
                 // TODO: Spawn the powershell child process and execute the command against that.
+                result = await spawnCmdProcess(inputData, inputMetaData);
+                await haystacks.consoleLog(namespacePrefix, functionName, "CMD result is: " + result.toString());
                 break;
             default:
                 // ERROR: You must specify a test type to execute. Command type is:
@@ -109,6 +116,29 @@ async function executeTestCommand(inputData, inputMetaData) {
     await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
     await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
     return returnData;
+}
+
+/**
+ * @function spawnCmdProcess 
+ * @description Takes a command string and executes it on a CLI Windows CMD, BASH or PowerShell interface as a child process.
+ * @param {string} inputData The command string that should be executed in the child process.
+ * @param {string} inputMetaData The CLI type: Windows CMD, BASH or PowerShell.
+ * @return {string} The string that excuted command result
+ * @author Json Howard
+ * @date 2023/11/15
+ */
+function spawnCmdProcess(inputData, inputMetaData) {
+    return new Promise((resolve, reject) => {
+        try {
+            const runCommand = spawn(inputMetaData, ['/K', inputData]);
+            runCommand.stdout.on('data', data => resolve(data.toString()));
+            runCommand.on('error', err => {
+                throw new Error(err.message);
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
 }
 
 export {

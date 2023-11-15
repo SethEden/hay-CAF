@@ -18,3 +18,4 @@ const {wrd} = hayConst;
 // ********************************
 export const cbuildArrayOfTestNames = wrd.cbuild + wrd.cArray + wrd.cOf + wrd.cTest + wrd.cNames; // buildArrayOfTestNames
 export const cexecuteTestCommand = wrd.cexecute + wrd.cTest + wrd.cCommand; // executeTestCommand
+export const cspawnCmdProcess = wrd.cspawn + wrd.cCmd + wrd.cProcess; // spawnCmdProcess

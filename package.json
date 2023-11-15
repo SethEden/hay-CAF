@@ -46,6 +46,7 @@
   "dependencies": {
     "@haystacks/async": ">=0.2.11",
     "@haystacks/constants": ">=0.2.11",
+    "child_process": "^1.0.2",
     "dotenv": "^16.0.3"
   },
   "devDependencies": {
