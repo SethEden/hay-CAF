@@ -77,6 +77,7 @@ async function executeTestCommand(inputData, inputMetaData) {
     await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
     let returnData = false;
     if (inputData && inputMetaData) {
+        let result;
         switch (inputMetaData.toLowerCase()) {
             case sys.ccmd:
                 // TODO: Spawn the Windows CMD child process and execute the command against that.
@@ -130,11 +131,30 @@ async function executeTestCommand(inputData, inputMetaData) {
 function spawnCmdProcess(inputData, inputMetaData) {
     return new Promise((resolve, reject) => {
         try {
+            // Execute inputData command on child process on a CLI windows CMS, BASH or PowerShell
             const runCommand = spawn(inputMetaData, ['/K', inputData]);
-            runCommand.stdout.on('data', data => resolve(data.toString()));
+
+            // Get Data of child process command then if data is not setted , get out the function
+            runCommand.stdout.on('data', (data) => {
+                console.log('child process data: ' + data.toString());
+            });
+
+            // Get error of child process command then get out function
             runCommand.on('error', err => {
                 throw new Error(err.message);
             });
+
+            // Get event of kill child precess then get out function
+            runCommand.on('exit', (code) => {
+                console.log('child process exited with code: ' + code);
+                resolve(code.toString());
+            });
+
+            // if there's no action within 4 mins, kill child process and get out function
+            setTimeout(() => {
+                console.log('Ending terminal session');
+                runCommand.stdin.end();
+            }, 240000);
         } catch (e) {
             reject(e);
         }
@@ -143,5 +163,6 @@ function spawnCmdProcess(inputData, inputMetaData) {
 
 export {
     buildArrayOfTestNames,
-    executeTestCommand
+    executeTestCommand,
+    spawnCmdProcess,
 };
