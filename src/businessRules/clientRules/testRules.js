@@ -17,6 +17,7 @@
 import * as apc from '../../constants/application.constants.js';
 import * as app_msg from '../../constants/application.message.constants.js';
 import * as app_sys from '../../constants/application.system.constants.js';
+import * as app_cfg from '../../constants/application.configuration.constants.js';
 // External imports
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
@@ -124,17 +125,31 @@ async function executeTestCommand(inputData, inputMetaData) {
  * @description Takes a command string and executes it on a CLI Windows CMD, BASH or PowerShell interface as a child process.
  * @param {string} inputData The command string that should be executed in the child process.
  * @param {string} inputMetaData The CLI type: Windows CMD, BASH or PowerShell.
- * @return {string} The string that excuted command result
+ * @return {string} The string that exceuted command result
  * @author Json Howard
  * @date 2023/11/15
  */
-function spawnCmdProcess(inputData, inputMetaData) {
-    return new Promise((resolve, reject) => {
+async function spawnCmdProcess(inputData, inputMetaData) {
+    return new Promise(async (resolve, reject) => {
         try {
-            // Execute inputData command on child process on a CLI windows CMS, BASH or PowerShell
-            const runCommand = spawn(inputMetaData, ['/K', inputData]);
+            // Get rootPath of hay-CAF repository
+            let rootPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
+            rootPath = rootPath.slice(0, rootPath.indexOf("CAFfeinated") + 12);
 
-            // Get Data of child process command then if data is not setted , get out the function
+            // setting args for run command
+            const args = ['/K', 'start cmd.exe', '/K'];
+            const words = inputData.split(" ");
+            words.map((word) => {
+                if (word != '') 
+                    args.push(word);
+            });
+
+            // Run command with args and rootPath
+            const runCommand = spawn('cmd', args, {
+                cwd: rootPath
+            });
+
+            // Get Data of child process command then if data was not setted , get out the function
             runCommand.stdout.on('data', (data) => {
                 console.log('child process data: ' + data.toString());
             });
