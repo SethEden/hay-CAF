@@ -22,7 +22,7 @@ import * as app_cfg from '../../constants/application.configuration.constants.js
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
 import path from 'path';
-import { spawn } from "child_process";
+import childProcess from "child_process";
 
 const {bas, biz, msg, sys, wrd} = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
@@ -136,39 +136,21 @@ async function spawnCmdProcess(inputData, inputMetaData) {
             let rootPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
             rootPath = rootPath.slice(0, rootPath.indexOf("CAFfeinated") + 12);
 
-            // setting args for run command
-            const args = ['/K', 'start cmd.exe', '/K'];
-            const words = inputData.split(" ");
-            words.map((word) => {
-                if (word != '') 
-                    args.push(word);
-            });
-
             // Run command with args and rootPath
-            const runCommand = spawn('cmd', args, {
-                cwd: rootPath
+            let command  = 'start cmd.exe /k ' + inputData;
+            const runCommand = childProcess.exec(command, {
+                cwd: rootPath,
+            });
+            
+            runCommand.on("close", () => {
+                runCommand.stdin.end();
+                resolve(true);
             });
 
-            // Get Data of child process command then if data was not setted , get out the function
-            runCommand.stdout.on('data', (data) => {
-                console.log('child process data: ' + data.toString());
-            });
-
-            // Get error of child process command then get out function
-            runCommand.on('error', err => {
-                throw new Error(err.message);
-            });
-
-            // Get event of kill child precess then get out function
-            runCommand.on('exit', (code) => {
-                console.log('child process exited with code: ' + code);
-                resolve(code.toString());
-            });
-
-            // if there's no action within 4 mins, kill child process and get out function
             setTimeout(() => {
                 console.log('Ending terminal session');
                 runCommand.stdin.end();
+                resolve(true);
             }, 240000);
         } catch (e) {
             reject(e);
