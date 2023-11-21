@@ -24,7 +24,7 @@ import hayConst from '@haystacks/constants';
 import path from 'path';
 import childProcess from "child_process";
 
-const {bas, biz, msg, sys, wrd} = hayConst;
+const { bas, biz, msg, sys, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 // application.hay-CAF.businessRules.clientRules.testRules.
 const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas.cDot + wrd.cbusiness + wrd.cRules + bas.cDot + wrd.cclient + wrd.cRules + bas.cDot + baseFileName + bas.cDot;
@@ -139,18 +139,20 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     let childProcessLimitTime = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime);
     await haystacks.consoleLog(namespacePrefix, functionName, `childProcessLimitTime: ${childProcessLimitTime}`);
 
+    // Get rootPath of hay-CAF repository.
+    let rootPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
+    rootPath = rootPath.slice(0, rootPath.indexOf("CAFfeinated") + 12);
+
+    // Run command with rootPath.
+    let command = 'start cmd.exe /c ' + inputData;
+    const runCommand = childProcess.exec(command, {
+        cwd: rootPath,
+    });
+
+    
+
     return new Promise(async (resolve, reject) => {
         try {
-            // Get rootPath of hay-CAF repository.
-            let rootPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
-            rootPath = rootPath.slice(0, rootPath.indexOf("CAFfeinated") + 12);
-
-            // Run command with rootPath.
-            let command  = 'start cmd.exe /c ' + inputData;
-            const runCommand = childProcess.exec(command, {
-                cwd: rootPath,
-            });
-            
             // Call exitChildProcess function when close command window.
             runCommand.on("close", async (code, signal) => {
                 await haystacks.consoleLog(namespacePrefix, functionName, `Code is: ${code}`);
@@ -164,14 +166,6 @@ async function spawnCmdProcess(inputData, inputMetaData) {
                 exitChildProcess();
             });
 
-            // Exit child process when there's no actions while 4 mins.
-            setTimeout(() => {
-                if (!runCommand.stdin.closed) {
-                    console.log('Ending terminal session');
-                    exitChildProcess();
-                }
-            }, childProcessLimitTime);
-
             // End process and Resolve function.
             const exitChildProcess = async () => {
                 await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + "true");
@@ -180,8 +174,19 @@ async function spawnCmdProcess(inputData, inputMetaData) {
                 runCommand.stdin.end();
                 resolve(true);
             }
+
+            // Exit child process when there's no actions while 4 mins.
+            setTimeout(() => {
+                if (!runCommand.stdin.closed) {
+                    console.log('Ending terminal session');
+                    exitChildProcess();
+                }
+            }, childProcessLimitTime);
         } catch (e) {
             reject(e);
+        } finally {
+            runCommand.kill();
+            runCommand.stdin.end();
         }
     });
 }
