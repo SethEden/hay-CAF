@@ -375,6 +375,37 @@ async function setReportPathConfiguration(inputData, inputMetaData) {
 }
 
 /**
+ * @function setChildProcessLimitTime
+ * @description Sets the test report output path in the system configuration settings.
+ * @param {string<array>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case the user has entered a string child process limit time
+ * they want the test limit time to be saved to when the test is finished executing.
+ * inputData[0] === 'setChildProcessLimitTime'
+ * inputData[1] === '240000'
+ * @param {string} inputMetaData Not used for this command.
+ * @return {boolean} boolean True or False value to
+ * @author Seth Hollingsead
+ * @date 2023/11/13
+ */
+async function setChildProcessLimitTime(inputData, inputMetaData) {
+  let functionName = setChildProcessLimitTime.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = true;
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime, inputData[1]);
+  } else {
+    // ERROR: Please enter a valid process time.
+    console.log('Error: Please enter a valid process time.');
+  }
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
  * @function setCmdType
  * @description Sets a configuration setting that allows the user to change the cmd type that should be used when executing the test command.
  * Options are like: Windows CMD, Bash, PowerShell.
@@ -724,6 +755,7 @@ export default {
   setExecutionEngine,
   setEnableReporterConfiguration,
   setReportPathConfiguration,
+  setChildProcessLimitTime,
   setCmdType,
   printApplicationConfiguration,
   test  

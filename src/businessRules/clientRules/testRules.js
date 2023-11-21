@@ -130,28 +130,56 @@ async function executeTestCommand(inputData, inputMetaData) {
  * @date 2023/11/15
  */
 async function spawnCmdProcess(inputData, inputMetaData) {
+    let functionName = spawnCmdProcess.name;
+    await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+
+    // Get childProcessLimitTime from configuration.
+    let childProcessLimitTime = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime);
+    await haystacks.consoleLog(namespacePrefix, functionName, `childProcessLimitTime: ${childProcessLimitTime}`);
+
     return new Promise(async (resolve, reject) => {
         try {
-            // Get rootPath of hay-CAF repository
+            // Get rootPath of hay-CAF repository.
             let rootPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
             rootPath = rootPath.slice(0, rootPath.indexOf("CAFfeinated") + 12);
 
-            // Run command with args and rootPath
-            let command  = 'start cmd.exe /k ' + inputData;
+            // Run command with rootPath.
+            let command  = 'start cmd.exe /c ' + inputData;
             const runCommand = childProcess.exec(command, {
                 cwd: rootPath,
             });
             
-            runCommand.on("close", () => {
-                runCommand.stdin.end();
-                resolve(true);
+            // Call exitChildProcess function when close command window.
+            runCommand.on("close", async (code, signal) => {
+                await haystacks.consoleLog(namespacePrefix, functionName, `Code is: ${code}`);
+                await haystacks.consoleLog(namespacePrefix, functionName, `Signal is: ${signal}`);
+                exitChildProcess();
             });
 
+            // Call exit childProcess when error occurred.
+            runCommand.on("error", async () => {
+                await haystacks.consoleLog(namespacePrefix, functionName, "Child Process Error.");
+                exitChildProcess();
+            });
+
+            // Exit child process when there's no actions while 4 mins.
             setTimeout(() => {
-                console.log('Ending terminal session');
+                if (!runCommand.stdin.closed) {
+                    console.log('Ending terminal session');
+                    exitChildProcess();
+                }
+            }, childProcessLimitTime);
+
+            // End process and Resolve function.
+            const exitChildProcess = async () => {
+                await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + "true");
+                await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+                runCommand.kill();
                 runCommand.stdin.end();
                 resolve(true);
-            }, 240000);
+            }
         } catch (e) {
             reject(e);
         }

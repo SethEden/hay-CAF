@@ -59,6 +59,7 @@ const initApplicationCommandsLibrary = function() {
     [app_cmd.csetExecutionEngine]: (inputData, inputMetaData) => testCommands.setExecutionEngine(inputData, inputMetaData),
     [app_cmd.csetEnableReporterConfiguration]: (inputData, inputMetaData) => testCommands.setEnableReporterConfiguration(inputData, inputMetaData),
     [app_cmd.csetReportPathConfiguration]: (inputData, inputMetaData) => testCommands.setReportPathConfiguration(inputData, inputMetaData),
+    [app_cmd.csetChildProcessLimitTime]: (inputData, inputMetaData) => testCommands.setChildProcessLimitTime(inputData, inputMetaData),
     [app_cmd.csetCmdType]: (inputData, inputMetaData) => testCommands.setCmdType(inputData, inputMetaData),
     [app_cmd.cprintApplicationConfiguration]: (inputData, inputMetaData) => testCommands.printApplicationConfiguration(inputData, inputMetaData),
     [app_cmd.ctest]: (inputData, inputMetaData) => testCommands.test(inputData, inputMetaData)

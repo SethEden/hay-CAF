@@ -28,5 +28,6 @@ export const applicationConfigurationConstantsValidation = [
   {Name: 'cexecutionDriverEngine', Actual: app_cfg.cexecutionDriverEngine, Expected: 'executionDriverEngine'},
   {Name: 'cenableReporter', Actual: app_cfg.cenableReporter, Expected: 'enableReporter'},
   {Name: 'creportPath', Actual: app_cfg.creportPath, Expected: 'reportPath'},
+  {Name: 'cchildProcessLimitTime', Actual: app_cfg.cchildProcessLimitTime, Expected: 'childProcessLimitTime'},
   {Name: 'ccmdType', Actual: app_cfg.ccmdType, Expected: 'cmdType'}
 ];

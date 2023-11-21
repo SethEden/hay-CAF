@@ -42,6 +42,7 @@ export const csetBrowsersList = wrd.cset + wrd.cBrowsers + wrd.cList; // setBrow
 export const csetExecutionEngine = wrd.cset + wrd.cExecution + wrd.cEngine; // setExecutionEngine
 export const csetEnableReporterConfiguration = wrd.cset + wrd.cEnable + wrd.cReporter + wrd.cConfiguration; // setEnableReporterConfiguration
 export const csetReportPathConfiguration = wrd.cset + wrd.cReport + wrd.cPath + wrd.cConfiguration; // setReportPathConfiguration
+export const csetChildProcessLimitTime = wrd.cset + wrd.cChild + wrd.cProcess + wrd.cLimit + wrd.cTime; // setChildProcessLimitTime
 export const csetCmdType = wrd.cset + gen.ccmd + wrd.cType; // setCmdType
 export const cprintApplicationConfiguration = wrd.cprint + wrd.cApplication + wrd.cConfiguration; // printApplicationConfiguration
 export const ctest = wrd.ctest; // test
