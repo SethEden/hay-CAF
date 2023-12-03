@@ -34,7 +34,7 @@ import url from 'url';
 import dotenv from 'dotenv';
 import path from 'path';
 
-const {bas, cmd, msg, sys, wrd} = hayConst;
+const {bas, cmd, msg, sys, wrd, biz} = hayConst;
 let rootPath = '';
 let baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 // application.hay-CAF
@@ -168,7 +168,7 @@ async function application() {
     if (process.argv[2].includes(bas.cDash) === true ||
     process.argv[2].includes(bas.cForwardSlash) === true ||
     process.argv[2].includes(bas.cBackSlash) === true) {
-      commandToExecute = await haystacks.executeBusinessRule([process.argv, ''], [biz.caggregateCommandArguments]);
+      commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.caggregateCommandArguments]);
     } else {
       commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.caggregateCommandArguments]);
     }
