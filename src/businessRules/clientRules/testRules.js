@@ -22,10 +22,18 @@ import * as app_cfg from '../../constants/application.configuration.constants.js
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
 import path from 'path';
-import childProcess from "child_process";
+import { fork } from 'child_process';
 
 const { bas, biz, msg, sys, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
+
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const SpawnProcess = `${__dirname}/../../childProcess/SpawnProcess.js`;
+
 // application.hay-CAF.businessRules.clientRules.testRules.
 const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas.cDot + wrd.cbusiness + wrd.cRules + bas.cDot + wrd.cclient + wrd.cRules + bas.cDot + baseFileName + bas.cDot;
 
@@ -39,160 +47,113 @@ const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas
  * @date 2023/11/09
  */
 async function buildArrayOfTestNames(inputData, inputMetaData) {
-    let functionName = buildArrayOfTestNames.name;
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
-    let returnData = inputMetaData;
-    let testFileName = await haystacks.executeBusinessRules([inputData, ''], [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
-    // testFileName is:
-    await haystacks.consoleLog(namespacePrefix, functionName, 'testFileName is: ' + testFileName);
-    // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
-    // and the testing framework would have trouble executing them anyway!
-    if (testFileName.includes(wrd.cTest + bas.cUnderscore) === true) {
-        let testFileNameArray = testFileName.split(bas.cUnderscore); // Split the filename into an array so we can remove the prefix "Test_".
-        // testFileNameArray is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameArray is: ' + JSON.stringify(testFileNameArray));
-        testFileNameArray.shift(); // Remove the "Test" prefix, this means we now just have the test name, not the file name.
-        returnData.push(testFileNameArray[0]); // Ad the test name to the array of tests to execute.
-        await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
-    } // End-if (testFileName.includes(wrd.cTest + bas.cUnderscore) === true)
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
-    return returnData;
+  // let functionName = buildarrayoftestnames.name;
+  // await haystacks.consolelog(namespaceprefix,functionName,msg.cbegin_function,);
+  // await haystacks.consolelog(namespaceprefix,functionName,msg.cinputdatais + json.stringify(inputdata),);
+  // await haystacks.consolelog(namespaceprefix,functionName,msg.cinputmetadatais + inputmetadata,);
+  let returnData = inputMetaData;
+  let testfilename = await haystacks.executeBusinessRules([inputData, ''],[biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
+
+  // testFileName is:
+  // await haystacks.consoleLog(namespacePrefix,functionName,'testFileName is: ' + testFileName);
+  // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
+  // and the testing framework would have trouble executing them anyway!
+  if (testfilename.includes(wrd.cTest + bas.cUnderscore) === true) {
+    let testFileNameArray = testfilename.split(bas.cUnderscore); // Split the filename into an array so we can remove the prefix "Test_".
+    // testFileNameArray is:
+    // await haystacks.consoleLog(namespace,functionName,'testFileNameArray is: ' + JSON.stringify(testFileNameArray));
+    testFileNameArray.shift(); // Remove the "Test" prefix, this means we now just have the test name, not the file name.
+    returnData.push(testFileNameArray[0]); // Ad the test name to the array of tests to execute.
+    // await haystacks.consoleLog(names,functionName,msg.creturnDataIs + JSON.stringify(returnData));
+  } // End-if (testFileName.includes(wrd.cTest + bas.cUnderscore) === true)
+  // await haystacks.consoleLog(namespacePrefix,functionName,msg.creturnDataIs + JSON.stringify(returnData));
+  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
 }
 
 /**
  * @function executeTestCommand
  * @description Takes a command string and executes it on a CLI Windows CMD, BASH or PowerShell interface as a child process.
  * @param {string} inputData The command string that should be executed in the child process.
- * @param {string} inputMetaData The CLI type: Windows CMD, BASH or PowerShell.
+ * @param {string} inputMetaData This is not used in this business rule.
  * @return {boolean} True or False to indicate if the test passed successfully or not.
  * @author Seth Hollingsead
  * @date 2023/11/14
  */
-async function executeTestCommand(inputData, inputMetaData) {
-    let functionName = executeTestCommand.name;
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
-    let returnData = false;
-    if (inputData && inputMetaData) {
-        let result;
-        switch (inputMetaData.toLowerCase()) {
-            case sys.ccmd:
-                // TODO: Spawn the Windows CMD child process and execute the command against that.
-                result = await spawnCmdProcess(inputData, inputMetaData);
-                await haystacks.consoleLog(namespacePrefix, functionName, "CMD result is: " + result.toString());
-                break;
-            case sys.cbash:
-                // TODO: Spawn the bash child process and execute the command against that.
-                result = await spawnCmdProcess(inputData, inputMetaData);
-                await haystacks.consoleLog(namespacePrefix, functionName, "CMD result is: " + result.toString());
-                break;
-            case sys.cpowershell:
-                // TODO: Spawn the powershell child process and execute the command against that.
-                result = await spawnCmdProcess(inputData, inputMetaData);
-                await haystacks.consoleLog(namespacePrefix, functionName, "CMD result is: " + result.toString());
-                break;
-            default:
-                // ERROR: You must specify a test type to execute. Command type is:
-                console.log('ERROR: You must specify a test command to execute. Command is: ' + inputMetaData);
-                // Valid command types are:
-                console.log('Valid command types are: ' + app_sys.cvalidCommandTypes);
-                break;
-        }
-        // TODO: Return True or False based on the test passing or failing.
-    } else {
-        if (!inputData) {
-            // ERROR: You must specify a test command to execute. Command is:
-            console.log('ERROR: You must specify a test command to execute. Command is: ' + inputData);
-        }
-        if (!inputMetaData) {
-            // ERROR: You must specify a test type to execute. Command type is:
-            console.log('ERROR: You must specify a test command to execute. Command is: ' + inputMetaData);
-            // Valid command types are:
-            console.log('Valid command types are: ' + app_sys.cvalidCommandTypes);
-        }
+async function executeTestCommand(inputData, inputMetaData = '') {
+  // let functionName = executetestcommand.name;
+  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  // await haystacks.consoleLog(namespacePre , functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = false;
+  if (inputData) {
+    // Spawns child process using appropriate shell (based on detected OS) and executes input command 
+    returnData = spawnCmdProcess(inputData).then(r => r);
+    // await haystacks.consoleLog(namespacePrefix,functionName,'CMD result is: ' + result.toString());
+
+    // console.log('Valid command types are: ' + app_sys.cvalidCommandTypes);
+    // TODO: Return True or False based on the test passing or failing.
+  } else {
+    // TODO: check for supported OS's
+    if (!inputData) {
+      // ERROR: You must specify a test command to execute. Command is:
+      console.log('Your Operating System is not yet supported');
     }
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+    // await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+    // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
     return returnData;
+  }
 }
 
 /**
- * @function spawnCmdProcess 
- * @description Takes a command string and executes it on a CLI Windows CMD, BASH or PowerShell interface as a child process.
+ * @function spawnCmdProcess
+ * @description Detects the OS and creates a temporary shell script which executes the given command string in a child process's terminal
  * @param {string} inputData The command string that should be executed in the child process.
- * @param {string} inputMetaData The CLI type: Windows CMD, BASH or PowerShell.
+ * @param {string} inputMetaData This is not used in this business rule.
  * @return {string} The string that exceuted command result
- * @author Json Howard
- * @date 2023/11/15
+ * @author Karl-Edward Jean-Mehu
+ * @date 2023/12/03
  */
-async function spawnCmdProcess(inputData, inputMetaData) {
-    let functionName = spawnCmdProcess.name;
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
-    await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+async function spawnCmdProcess(inputData, inputMetaData = '') {
+  try {
+    const functionName = spawnCmdProcess.name;
 
-    // Get childProcessLimitTime from configuration.
-    let childProcessLimitTime = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime);
-    await haystacks.consoleLog(namespacePrefix, functionName, `childProcessLimitTime: ${childProcessLimitTime}`);
+    const _rootPath = await haystacks.getConfigurationSetting(
+      wrd.csystem,
+      app_cfg.crootTestFolderPath,
+    );
 
-    // Get rootPath of hay-CAF repository.
-    let rootPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
-    rootPath = rootPath.slice(0, rootPath.indexOf("CAFfeinated") + 12);
+    const normalizedPath = path.normalize(_rootPath);
+    const directories = normalizedPath.split(path.sep);
+    const targetIndex = directories.indexOf('CAFfeinated') + 1;
+    const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
+    const childProcess = fork(SpawnProcess, [inputData, CAFfeinatedPath]);
 
-    // Run command with rootPath.
-    let command = 'start cmd.exe /c ' + inputData;
-    const runCommand = childProcess.exec(command, {
-        cwd: rootPath,
-    });
+    return new Promise((resolve, reject) => {
+        childProcess.on('data', async (msg) => {
+          if (msg === 'done') { 
+            console.log('Resolving spawned process')
+            resolve(true)
+          }
+          console.log(`Message from child: ${msg}`);
+          haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${msg}`);
+        });
 
-    
-
-    return new Promise(async (resolve, reject) => {
-        try {
-            // Call exitChildProcess function when close command window.
-            runCommand.on("close", async (code, signal) => {
-                await haystacks.consoleLog(namespacePrefix, functionName, `Code is: ${code}`);
-                await haystacks.consoleLog(namespacePrefix, functionName, `Signal is: ${signal}`);
-                exitChildProcess();
-            });
-
-            // Call exit childProcess when error occurred.
-            runCommand.on("error", async () => {
-                await haystacks.consoleLog(namespacePrefix, functionName, "Child Process Error.");
-                exitChildProcess();
-            });
-
-            // End process and Resolve function.
-            const exitChildProcess = async () => {
-                await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + "true");
-                await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
-                runCommand.kill();
-                runCommand.stdin.end();
-                resolve(true);
-            }
-
-            // Exit child process when there's no actions while 4 mins.
-            setTimeout(() => {
-                if (!runCommand.stdin.closed) {
-                    console.log('Ending terminal session');
-                    exitChildProcess();
-                }
-            }, childProcessLimitTime);
-        } catch (e) {
-            reject(e);
-        } finally {
-            runCommand.kill();
-            runCommand.stdin.end();
-        }
-    });
-}
+        // Child process exited
+        childProcess.on('exit', async (code, signal) => {
+          haystacks.consoleLog(
+            namespacePrefix,
+            functionName,
+            `Code is: ${code} and Signal ${signal}`,
+          );
+        });
+  });
+  } catch (e) {
+    console.log(e)
+  }}
 
 export {
-    buildArrayOfTestNames,
-    executeTestCommand,
-    spawnCmdProcess,
+  executeTestCommand,
+  buildArrayOfTestNames,
+  spawnCmdProcess
 };
