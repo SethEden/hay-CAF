@@ -22,6 +22,7 @@ import * as app_cfg from '../../constants/application.configuration.constants.js
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
 import path from 'path';
+import process from 'process'
 import { fork } from 'child_process';
 
 const { bas, biz, msg, sys, wrd } = hayConst;
@@ -118,6 +119,9 @@ async function spawnCmdProcess(inputData, inputMetaData = '') {
   try {
     const functionName = spawnCmdProcess.name;
 
+    // Main / grandparent process PID
+    const grandParentPid = process.pid;
+
     const _rootPath = await haystacks.getConfigurationSetting(
       wrd.csystem,
       app_cfg.crootTestFolderPath,
@@ -127,7 +131,7 @@ async function spawnCmdProcess(inputData, inputMetaData = '') {
     const directories = normalizedPath.split(path.sep);
     const targetIndex = directories.indexOf('CAFfeinated') + 1;
     const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
-    const childProcess = fork(SpawnProcess, [inputData, CAFfeinatedPath]);
+    const childProcess = fork(SpawnProcess, [inputData, { CAFfeinatedPath, grandParentPid }] );
 
     return new Promise((resolve, reject) => {
         childProcess.on('data', async (msg) => {
@@ -138,6 +142,12 @@ async function spawnCmdProcess(inputData, inputMetaData = '') {
           console.log(`Message from child: ${msg}`);
           haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${msg}`);
         });
+
+      childProcess.on('message', msg => {
+        const message = msg.toString('utf-8')
+        console.log('Message')
+        console.log(JSON.stringify(message, null, 2))
+      })
 
         // Child process exited
         childProcess.on('exit', async (code, signal) => {

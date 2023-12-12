@@ -11,3 +11,4 @@ documentation/*
 *.html
 *.HTML
 bin/
+*.sh
