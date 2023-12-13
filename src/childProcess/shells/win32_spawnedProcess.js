@@ -3,10 +3,25 @@ import childProcess from 'child_process';
 export function shell(shellCommandToRun, options = {shell: 'powershell'}) {
   let spawnOptions;
 
+  // 'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-Command',
+  // 'C:/Proj/hay-CAF/src/childProcess/shells/powershellScript.ps1'], {stdio: ['pipe', 'pipe', 'pipe', 'ipc'], shell: true}
+
+  // 'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'bypass', '-File',
+  // 'C:/Proj/hay-CAF/src/childProcess/shells/powershellScript.ps1'], {stdio: ['pipe', 'pipe', 'pipe', 'ipc'], shell: true}
+
+  // Launching Powershell, but not executing the script
+  // 'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+  // '& .\\C:/Proj/hay-CAF/src/childProcess/shells/powershellScript.ps1'], {stdio: ['pipe', 'pipe', 'pipe', 'ipc'], shell: true}
+
+  // New Attempt: Not quite working
+  // 'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+  // 'Invoke-Expression', '-Path', '.\\C:/Proj/hay-CAF/src/childProcess/shells/powershellScript.ps1'], {stdio: ['pipe', 'pipe', 'pipe', 'ipc'], shell: true}
+
   switch('powershell'){
     case 'powershell':
       spawnOptions = [ 
-        'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoProfile', '-Command', shellCommandToRun], {stdio: ['pipe', 'pipe', 'pipe', 'ipc'], shell: true}
+        'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass',
+        'Invoke-Expression', '-Command', '"C:/Proj/hay-CAF/src/childProcess/shells/powershellScript.ps1"'], {shell: true}
       ]     
       break;
     case 'cmd':
