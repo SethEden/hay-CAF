@@ -12,3 +12,4 @@ documentation/*
 *.HTML
 bin/
 *.sh
+!preinstall.sh
