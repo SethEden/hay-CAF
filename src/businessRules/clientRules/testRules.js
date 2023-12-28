@@ -22,11 +22,15 @@ import * as app_cfg from '../../constants/application.configuration.constants.js
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
 import path from 'path';
-import process from 'process'
+import process from 'process';
 import { fork } from 'child_process';
+import com_server from '../../childProcess/com_protocol_server.js';
 
 const { bas, biz, msg, sys, wrd } = hayConst;
-const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
+const baseFileName = path.basename(
+  import.meta.url,
+  path.extname(import.meta.url),
+);
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -36,7 +40,19 @@ const __dirname = dirname(__filename);
 const SpawnProcess = `${__dirname}/../../childProcess/SpawnProcess.js`;
 
 // application.hay-CAF.businessRules.clientRules.testRules.
-const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas.cDot + wrd.cbusiness + wrd.cRules + bas.cDot + wrd.cclient + wrd.cRules + bas.cDot + baseFileName + bas.cDot;
+const namespacePrefix =
+  wrd.capplication +
+  bas.cDot +
+  apc.cApplicationName +
+  bas.cDot +
+  wrd.cbusiness +
+  wrd.cRules +
+  bas.cDot +
+  wrd.cclient +
+  wrd.cRules +
+  bas.cDot +
+  baseFileName +
+  bas.cDot;
 
 /**
  * @function buildArrayOfTestNames
@@ -53,7 +69,10 @@ async function buildArrayOfTestNames(inputData, inputMetaData) {
   // await haystacks.consolelog(namespaceprefix,functionName,msg.cinputdatais + json.stringify(inputdata),);
   // await haystacks.consolelog(namespaceprefix,functionName,msg.cinputmetadatais + inputmetadata,);
   let returnData = inputMetaData;
-  let testfilename = await haystacks.executeBusinessRules([inputData, ''],[biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName]);
+  let testfilename = await haystacks.executeBusinessRules(
+    [inputData, ''],
+    [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName],
+  );
 
   // testFileName is:
   // await haystacks.consoleLog(namespacePrefix,functionName,'testFileName is: ' + testFileName);
@@ -87,23 +106,45 @@ async function executeTestCommand(inputData, inputMetaData = '') {
   // await haystacks.consoleLog(namespacePre , functionName, msg.cinputDataIs + JSON.stringify(inputData));
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = false;
-  if (inputData) {
-    // Spawns child process using appropriate shell (based on detected OS) and executes input command 
-    returnData = spawnCmdProcess(inputData).then(r => r);
-    // await haystacks.consoleLog(namespacePrefix,functionName,'CMD result is: ' + result.toString());
+  const platform = process.platform.toLowerCase();
+  const supportedPlatforms = ['darwin', 'win32', 'linux'];
 
-    // console.log('Valid command types are: ' + app_sys.cvalidCommandTypes);
-    // TODO: Return True or False based on the test passing or failing.
-  } else {
-    // TODO: check for supported OS's
-    if (!inputData) {
-      // ERROR: You must specify a test command to execute. Command is:
-      console.log('Your Operating System is not yet supported');
+  // Returned test result from spawnCmdProcess
+  let testResult = false;
+
+  if (supportedPlatforms.includes(platform)) {
+    if (inputData) {
+      inputMetaData = inputMetaData.toLowerCase();
+
+      // Check options for Win32
+      // This will be ignored on other platforms for now
+      if (
+        platform === 'win32' &&
+        !app_sys.cvalidCommandTypes.split(',').includes(inputMetaData)
+      ) {
+        // ERROR: You must specify a test type to execute. Command type is:
+        console.log(
+          'ERROR: You must specify a test command to execute. Command is: ' +
+            inputMetaData,
+        );
+        // Valid command types are:
+        console.log('Valid command types are: ' + app_sys.cvalidCommandTypes);
+      } else {
+        // Spawns child process using appropriate shell (based on detected OS) and executes input command
+        // TODO: Return True or False based on the test passing or failing.
+        testResult = spawnCmdProcess(inputData, inputMetaData).then((r) => r);
+      }
+    } else {
+      console.log(
+        `ERROR: You must specify a test command to execute. Command is: ${inputMetaData}`,
+      );
     }
-    // await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
-    // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
-    return returnData;
+  } else {
+    console.log(`ERROR: You're system is not yet supported!`);
   }
+  // await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
 }
 
 /**
@@ -115,9 +156,12 @@ async function executeTestCommand(inputData, inputMetaData = '') {
  * @author Karl-Edward Jean-Mehu
  * @date 2023/12/03
  */
-async function spawnCmdProcess(inputData, inputMetaData = '') {
+async function spawnCmdProcess(inputData, inputMetaData) {
   try {
     const functionName = spawnCmdProcess.name;
+
+    // Start communication protocol Server
+    com_server();
 
     // Main / grandparent process PID
     const grandParentPid = process.pid;
@@ -131,39 +175,33 @@ async function spawnCmdProcess(inputData, inputMetaData = '') {
     const directories = normalizedPath.split(path.sep);
     const targetIndex = directories.indexOf('CAFfeinated') + 1;
     const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
-    const childProcess = fork(SpawnProcess, [inputData, { CAFfeinatedPath, grandParentPid }] );
+    const childProcess = fork(SpawnProcess, [
+      inputData,
+      { CAFfeinatedPath, grandParentPid },
+      { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] },
+    ]);
 
-    return new Promise((resolve, reject) => {
-        childProcess.on('data', async (msg) => {
-          if (msg === 'done') { 
-            console.log('Resolving spawned process')
-            resolve(true)
-          }
-          console.log(`Message from child: ${msg}`);
-          haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${msg}`);
-        });
+    childProcess.on('data', (chunk) => {
+      const message = chunk.toString();
+      console.log(`Message from child: ${message}`);
+      // haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${message}`);
+    });
 
-      childProcess.on('message', msg => {
-        const message = msg.toString('utf-8')
-        console.log('Message')
-        console.log(JSON.stringify(message, null, 2))
-      })
+    childProcess.on('error', (error) => {
+      console.log(`Error: ${error}`);
+      // haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${message}`);
+    });
 
-        // Child process exited
-        childProcess.on('exit', async (code, signal) => {
-          haystacks.consoleLog(
-            namespacePrefix,
-            functionName,
-            `Code is: ${code} and Signal ${signal}`,
-          );
-        });
-  });
+    // Child process exited
+    childProcess.on('exit', (code, signal) => {
+      // Display only unsuccessful exit codes
+      if (code !== 0) {
+        console.log(`Exited with code, ${code}, and signal ${signal}!`);
+      }
+    });
   } catch (e) {
-    console.log(e)
-  }}
+    console.log(e);
+  }
+}
 
-export {
-  executeTestCommand,
-  buildArrayOfTestNames,
-  spawnCmdProcess
-};
+export { executeTestCommand, buildArrayOfTestNames, spawnCmdProcess };
