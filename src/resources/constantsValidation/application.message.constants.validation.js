@@ -57,6 +57,8 @@ export const applicationMessageConstantsValidation = [
   {Name: 'csettingValueIs', Actual: app_msg.csettingValueIs, Expected: 'settingValue is: '},
   {Name: 'crefactoredAppConfigIs', Actual: app_msg.crefactoredAppConfigIs, Expected: 'refactoredAppConfig is: '},
   {Name: 'cappConfigIs', Actual: app_msg.cappConfigIs, Expected: 'appConfig is: '},
+  {Name: 'cshellCommandToRunIs', Actual: app_msg.cshellCommandToRunIs, Expected: 'shellCommandToRun is: '},
+  {Name: 'coptionsIs', Actual: 'Options is: '},
 
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
   {Name: 'cErrorSetRootTestFolderPathMessage', Actual: app_msg.cErrorSetRootTestFolderPathMessage, Expected: 'ERROR: Please enter a valid path as input.'},

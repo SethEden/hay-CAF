@@ -1,6 +1,13 @@
+/**
+ * @file spawnProcess.js
+ * @description Creates a socket server through which clients will communicate.
+ * @author Karl-Edward F.P. Jean-Mehu
+ * @date 2023/12/29
+ * @copyright Copyright © 2023-… by Karl-Edward F.P. Jean-Mehu. All rights reserved.
+ */
 import process from 'process';
 const DEV_MODE = process.env.NODE_ENV?.toLowerCase() === 'development';
-const platformFunctionName = `${process.platform}_spawnedProcess`;
+const platformFunctionName = `${process.platform}SpawnedProcess`;
 const shellScript = await (async () => {
   const mod = `./shells/${platformFunctionName}.js`;
   return import(mod);
@@ -23,4 +30,4 @@ if (typeof shellScript['shell'] !== 'function') {
 }
 
 if (DEV_MODE) console.log(`Spawning ${process.platform} process...`);
-shellScript['shell'](commandToRun, rootPath);
+(async () => { await shellScript['shell'](commandToRun, rootPath); } )()

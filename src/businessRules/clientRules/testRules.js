@@ -24,7 +24,7 @@ import hayConst from '@haystacks/constants';
 import path from 'path';
 import process from 'process';
 import { fork } from 'child_process';
-import com_server from '../../childProcess/com_protocol_server.js';
+import socketsServer from '../../childProcess/socketsServer.js';
 
 const { bas, biz, msg, sys, wrd } = hayConst;
 const baseFileName = path.basename(
@@ -37,7 +37,7 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const SpawnProcess = `${__dirname}/../../childProcess/SpawnProcess.js`;
+const spawnProcess = `${__dirname}/../../childProcess/spawnProcess.js`;
 
 // application.hay-CAF.businessRules.clientRules.testRules.
 const namespacePrefix =
@@ -157,43 +157,59 @@ async function executeTestCommand(inputData, inputMetaData = '') {
  * @date 2023/12/03
  */
 async function spawnCmdProcess(inputData, inputMetaData) {
+  // const functionName = spawnCmdProcess.name;
+  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + inputData );
+  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData );
   try {
-    const functionName = spawnCmdProcess.name;
 
     // Start communication protocol Server
-    com_server();
+    const socketServer = new socketsServer();
+    socketServer.connect();
 
     // Main / grandparent process PID
     const grandParentPid = process.pid;
 
+    // Obtain root path for haystacks
     const _rootPath = await haystacks.getConfigurationSetting(
       wrd.csystem,
       app_cfg.crootTestFolderPath,
     );
 
+    // Obtain the absolute path for CAFfeinated
     const normalizedPath = path.normalize(_rootPath);
     const directories = normalizedPath.split(path.sep);
     const targetIndex = directories.indexOf('CAFfeinated') + 1;
     const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
-    const childProcess = fork(SpawnProcess, [
+
+    // Spawns a fork (independent) process
+    const childProcess = fork(spawnProcess, [
       inputData,
       { CAFfeinatedPath, grandParentPid },
       { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] },
     ]);
 
+    // Handler for incoming data from child process
     childProcess.on('data', (chunk) => {
+      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
+      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cdataIs + chunk.toString() );
       const message = chunk.toString();
       console.log(`Message from child: ${message}`);
       // haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${message}`);
     });
 
+    // Error handler on child process
     childProcess.on('error', (error) => {
+      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
+      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + JSON.stringify(error) );
       console.log(`Error: ${error}`);
       // haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${message}`);
     });
 
     // Child process exited
     childProcess.on('exit', (code, signal) => {
+      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
+      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cexitIs + JSON.stringify(error) );
       // Display only unsuccessful exit codes
       if (code !== 0) {
         console.log(`Exited with code, ${code}, and signal ${signal}!`);
