@@ -24,8 +24,14 @@ export default function com_server() {
       client.on('data', (chunk) => {
         buffer = Buffer.concat([buffer, chunk]);
         try {
-          const json = JSON.parse(buffer.toString());
-          console.log(json);
+          // const json = JSON.parse(buffer.toString());
+          const json = safeJsonParse(chunk);
+          // const {message, level, color} = (json);
+          // console.log('json is: ', json);
+          if (!json['data'] && json['message']) {
+            const jsonMessage = json['message'];
+            console.log(JSON.stringify(jsonMessage));
+          }
 
           // reset buffer
           buffer = Buffer.from('');
@@ -45,10 +51,23 @@ export default function com_server() {
     // Cleanup tasks
     process.on('SIGINT', () => {
       console.log('\r\nDisconnecting gracefully');
+      process.exit();
     });
 
     server.listen(SOCKET.port, SOCKET.host);
   } catch (e) {
     if (e.code !== 'ENOENT') console.error(e);
   }
+}
+
+function safeJsonParse(data) {
+  let parsed;
+
+  try {
+    parsed = JSON.parse(data);
+  } catch (e) {
+    parsed = JSON.parse(JSON.stringify(data));
+  }
+
+  return parsed;
 }
