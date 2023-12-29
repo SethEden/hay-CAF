@@ -24,7 +24,7 @@ import hayConst from '@haystacks/constants';
 import path from 'path';
 import process from 'process';
 import { fork } from 'child_process';
-import com_server from '../../childProcess/com_protocol_server.js';
+import socketsServer from '../../childProcess/socketsServer.js';
 
 const { bas, biz, msg, sys, wrd } = hayConst;
 const baseFileName = path.basename(
@@ -161,7 +161,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     const functionName = spawnCmdProcess.name;
 
     // Start communication protocol Server
-    com_server();
+    socketsServer();
 
     // Main / grandparent process PID
     const grandParentPid = process.pid;
