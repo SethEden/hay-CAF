@@ -37,7 +37,7 @@ import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const SpawnProcess = `${__dirname}/../../childProcess/SpawnProcess.js`;
+const spawnProcess = `${__dirname}/../../childProcess/spawnProcess.js`;
 
 // application.hay-CAF.businessRules.clientRules.testRules.
 const namespacePrefix =
@@ -175,7 +175,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     const directories = normalizedPath.split(path.sep);
     const targetIndex = directories.indexOf('CAFfeinated') + 1;
     const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
-    const childProcess = fork(SpawnProcess, [
+    const childProcess = fork(spawnProcess, [
       inputData,
       { CAFfeinatedPath, grandParentPid },
       { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] },
