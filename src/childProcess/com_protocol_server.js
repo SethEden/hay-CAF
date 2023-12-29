@@ -1,26 +1,10 @@
 import process from 'process';
 import { Server } from 'net';
-import { unlinkSync, writeFileSync, existsSync } from 'fs';
-import path from 'path';
-import os from 'os';
 import { Buffer } from 'buffer';
 
-// Get OS temp directory
-const tempDir = os.tmpdir();
-
-// Socket handle / file path
-const SOCKET_HANDLE = path.join(tempDir, 'logs.sock');
-if (!existsSync(SOCKET_HANDLE)) {
-  writeFileSync(SOCKET_HANDLE, '');
-}
-
-// Deletes Socket file
-const cleanup = () => {
-  path.exists(SOCKET_HANDLE, (exists) => {
-    if (exists) {
-      unlinkSync(SOCKET_HANDLE);
-    }
-  });
+const SOCKET = {
+  host: '127.0.0.1',
+  port: 3000,
 };
 
 // Logger Server
@@ -28,8 +12,6 @@ export default function com_server() {
   const server = Server({});
 
   try {
-    unlinkSync(SOCKET_HANDLE);
-
     server.on('error', console.error);
     server.on('listening', () => console.log('\r\nListening...'));
     server.on('connection', (client) => {
@@ -57,17 +39,15 @@ export default function com_server() {
       });
     });
     server.on('close', (code, signal) => {
-      // cleanup();
       process.exit(0);
     });
 
     // Cleanup tasks
     process.on('SIGINT', () => {
       console.log('\r\nDisconnecting gracefully');
-      cleanup();
     });
 
-    server.listen(SOCKET_HANDLE);
+    server.listen(SOCKET.port, SOCKET.host);
   } catch (e) {
     if (e.code !== 'ENOENT') console.error(e);
   }
