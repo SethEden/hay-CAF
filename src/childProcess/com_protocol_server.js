@@ -1,14 +1,15 @@
+import process from 'process';
 import { Server } from 'net';
 import { unlinkSync, writeFileSync, existsSync } from 'fs';
 import path from 'path';
 import os from 'os';
+import { Buffer } from 'buffer';
 
 // Get OS temp directory
 const tempDir = os.tmpdir();
 
 // Socket handle / file path
 const SOCKET_HANDLE = path.join(tempDir, 'logs.sock');
-
 if (!existsSync(SOCKET_HANDLE)) {
   writeFileSync(SOCKET_HANDLE, '');
 }
@@ -17,7 +18,7 @@ if (!existsSync(SOCKET_HANDLE)) {
 const cleanup = () => {
   path.exists(SOCKET_HANDLE, (exists) => {
     if (exists) {
-      fs.unlinkSync(SOCKET_HANDLE);
+      unlinkSync(SOCKET_HANDLE);
     }
   });
 };
@@ -34,13 +35,21 @@ export default function com_server() {
     server.on('connection', (client) => {
       console.log('\r\nConnection...');
 
-      let chunks = [];
+      // let chunks = [];
+      let buffer = Buffer.from('');
 
       client.on('error', console.error);
       client.on('data', (chunk) => {
-        chunks.push(chunk);
-        const jsonstring = JSON.parse(chunk);
-        console.log(jsonstring);
+        buffer = Buffer.concat([buffer, chunk]);
+        try {
+          const json = JSON.parse(buffer.toString());
+          console.log(json);
+
+          // reset buffer
+          buffer = Buffer.from('');
+        } catch (e) {
+          throw new Error(e);
+        }
       });
       client.on('end', () => {
         // TODO: idea - Create file, email or even sms reports
@@ -55,7 +64,7 @@ export default function com_server() {
     // Cleanup tasks
     process.on('SIGINT', () => {
       console.log('\r\nDisconnecting gracefully');
-      // cleanup();
+      cleanup();
     });
 
     server.listen(SOCKET_HANDLE);
