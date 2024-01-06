@@ -95,12 +95,12 @@ async function buildArrayOfTestNames(inputData, inputMetaData) {
  * @function executeTestCommand
  * @description Takes a command string and executes it on a CLI Windows CMD, BASH or PowerShell interface as a child process.
  * @param {string} inputData The command string that should be executed in the child process.
- * @param {string} inputMetaData This is not used in this business rule.
+ * @param {'cmd'|'bash'|'powershell'} inputMetaData The command type to be used to spawn a child process 
  * @return {boolean} True or False to indicate if the test passed successfully or not.
  * @author Seth Hollingsead
  * @date 2023/11/14
  */
-async function executeTestCommand(inputData, inputMetaData = '') {
+async function executeTestCommand(inputData, inputMetaData) {
   // let functionName = executetestcommand.name;
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   // await haystacks.consoleLog(namespacePre , functionName, msg.cinputDataIs + JSON.stringify(inputData));
@@ -112,27 +112,24 @@ async function executeTestCommand(inputData, inputMetaData = '') {
   // Returned test result from spawnCmdProcess
   let testResult = false;
 
+  // Ensures the user is using a supported platform / OS.
   if (supportedPlatforms.includes(platform)) {
-    if (inputData) {
-      inputMetaData = inputMetaData.toLowerCase();
+    if (inputData && inputMetaData) {
+      inputMetaData = String(inputMetaData).toLowerCase().trim() || '';
 
-      // Check options for Win32
-      // This will be ignored on other platforms for now
-      if (
-        platform === 'win32' &&
-        !app_sys.cvalidCommandTypes.split(',').includes(inputMetaData)
-      ) {
+      // Validates the selected command type
+      if (inputMetaData === '' || !app_sys.cvalidCommandTypes.split(',').includes(inputMetaData)) {
         // ERROR: You must specify a test type to execute. Command type is:
         console.log(
           'ERROR: You must specify a test command to execute. Command is: ' +
             inputMetaData,
         );
         // Valid command types are:
-        console.log('Valid command types are: ' + app_sys.cvalidCommandTypes);
+        console.log('Valid command types are: ' + app_sys.cvalidCommandTypes.split(',').join(', '));
       } else {
-        // Spawns child process using appropriate shell (based on detected OS) and executes input command
-        // TODO: Return True or False based on the test passing or failing.
-        testResult = spawnCmdProcess(inputData, inputMetaData).then((r) => r);
+        // Spawns child process using appropriate shell and executes input command
+        // TODO: Return true or false based on the test passing or failing.
+        testResult = await spawnCmdProcess(inputData, inputMetaData);
       }
     } else {
       console.log(
@@ -140,7 +137,7 @@ async function executeTestCommand(inputData, inputMetaData = '') {
       );
     }
   } else {
-    console.log(`ERROR: You're system is not yet supported!`);
+    console.log(`ERROR: You're system, ${platform} is not yet supported!`);
   }
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
@@ -167,9 +164,6 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     const socketServer = new socketsServer();
     socketServer.connect();
 
-    // Main / grandparent process PID
-    const grandParentPid = process.pid;
-
     // Obtain root path for haystacks
     const _rootPath = await haystacks.getConfigurationSetting(
       wrd.csystem,
@@ -182,10 +176,16 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     const targetIndex = directories.indexOf('CAFfeinated') + 1;
     const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
 
+    // Serialize shell options
+    const serializedOptions = JSON.stringify({ 
+      shell: inputMetaData,
+      CAFfeinatedPath
+    });
+
     // Spawns a fork (independent) process
     const childProcess = fork(spawnProcess, [
       inputData,
-      { CAFfeinatedPath, grandParentPid },
+      serializedOptions,
       { stdio: ['pipe', 'pipe', 'pipe', 'ipc'] },
     ]);
 

@@ -60,14 +60,11 @@ function isExecutableExists(pathToShellExecutable) {
  * @author Karl-Edward FP Jean-Mehu
  * @date 2023/01/02
  */
-export async function shell(shellCommandToRun, options = {shell: 'bash'}) {
+export async function shell(shellCommandToRun, options) {
   let functionName = shell.name;
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   // await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cshellCommandToRunIs + shellCommandToRun);
   
-  // Normalize options
-  options.shell = options.shell.toLowerCase();
-
   // Shell object
   let shellscript = null;
 

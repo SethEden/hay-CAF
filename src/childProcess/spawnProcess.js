@@ -16,13 +16,12 @@ const shellScript = await (async () => {
 if (!process.argv || process.argv.length <= 2) {
   throw new Error('Child process command string not defined.');
 }
-
 const temp = process.argv.slice(2);
 const commandToRun = temp[0];
-const rootPath = temp[1];
+const shellOptions = JSON.parse(temp[1]);
 
 // Throws an error if the function process for the
-// detected OS if missing
+// detected OS is missing
 // creates and returns the command to be spawned in child
 if (typeof shellScript['shell'] !== 'function') {
   console.log(`type : ${shellScript['shell']}`);
@@ -30,4 +29,4 @@ if (typeof shellScript['shell'] !== 'function') {
 }
 
 if (DEV_MODE) console.log(`Spawning ${process.platform} process...`);
-(async () => { await shellScript['shell'](commandToRun, rootPath); } )()
+(async () => { await shellScript['shell'](commandToRun, shellOptions); } )()
