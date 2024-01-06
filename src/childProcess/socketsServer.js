@@ -125,6 +125,8 @@ export default function socketsServer() {
         // console.log('BEGIN childProcess.shells.socketsServer.connection.end event');
         isConnected = false;
         console.log('\r\nServer connection has ended!');
+        process.stdout.write('>');
+        return true;
       });
       // console.log('END childProcess.shells.socketsServer.connection.end event');
     });

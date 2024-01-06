@@ -203,6 +203,8 @@ async function spawnCmdProcess(inputData, inputMetaData) {
       // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
       // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + JSON.stringify(error) );
       console.log(`Error: ${error}`);
+      process.stdout.write(">");
+      return false;
       // haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${message}`);
     });
 
@@ -213,6 +215,8 @@ async function spawnCmdProcess(inputData, inputMetaData) {
       // Display only unsuccessful exit codes
       if (code !== 0) {
         console.log(`Exited with code, ${code}, and signal ${signal}!`);
+        process.stdout.write(">");
+        return false;
       }
     });
   } catch (e) {
