@@ -130,13 +130,13 @@ export function shell(shellCommandToRun, options) {
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     fs.writeSync(shellscript.fd, scriptContent);
-    // console.log(`Script content is: ${scriptContent}`)
+    console.log(`Script content is: ${scriptContent}`)
 
     // Add temp file to options
     spawnOptions[1].push(shellscript.name);
 
     // Check and proceed if the temporary
-    // file has successfuly been written
+    // file has successfully been written
     if (fs.existsSync(shellscript.name)) {
 
       // Ensure the use of a single shell instance 

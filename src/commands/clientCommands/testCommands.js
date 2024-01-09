@@ -290,20 +290,20 @@ async function setExecutionEngine(inputData, inputMetaData) {
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (app_sys.cvalidExecutionEngines.includes(inputData[1])) {
       // WARNING: All valid execution engines are not currently supported by our testing engine.
-      console.log('WARNING: All valid execution engines are not currently supported by our testing engine.');
+      console.log(app_msg.csetExecutionEngineMessage01);
       // WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.
-      console.log('WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.');
+      console.log(app_msg.csetExecutionEngineMessage02);
       // WARNING: The execution engine will be hard coded to testcafe for now.
-      console.log('WARNING: The execution engine will be hard coded to testcafe for now.');
+      console.log(app_msg.csetExecutionEngineMessage03);
       // TODO: Change the below app_sys.ctestcafe to be dynamic once the new testing framework is implemented.
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine, app_sys.ctestcafe);
     } else {
       // ERROR: Please enter a valid execution engine such as:
-      console.log('ERROR: Please enter a valid execution engine such as: ' + app_sys.cvalidExecutionEngines);
+      console.log(app_msg.csetExecutionEngineMessage04 + app_sys.cvalidExecutionEngines);
     }
   } else {
     // ERROR: Please enter a valid execution engine such as:
-    console.log('ERROR: Please enter a valid execution engine such as: ' + app_sys.cvalidExecutionEngines);
+    console.log(app_msg.csetExecutionEngineMessage04 + app_sys.cvalidExecutionEngines);
   }
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
@@ -367,7 +367,7 @@ async function setReportPathConfiguration(inputData, inputMetaData) {
     await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.creportPath, inputData[1]);
   } else {
     // ERROR: Please enter a valid system path.
-    console.log('ERROR: Please enter a valid system path.');
+    console.log(app_msg.csetReportPathConfigurationMessage01);
   }
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
@@ -398,7 +398,7 @@ async function setChildProcessLimitTime(inputData, inputMetaData) {
     await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime, inputData[1]);
   } else {
     // ERROR: Please enter a valid process time.
-    console.log('Error: Please enter a valid process time.');
+    console.log(app_msg.csetChildProcessLimitTimeMessage01);
   }
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
@@ -431,11 +431,11 @@ async function setCmdType(inputData, inputMetaData) {
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ccmdType, inputData[1]);
     } else {
       // ERROR: Please enter a valid command type. Valid types are:
-      console.log('ERROR: Please enter a valid system path. Valid types are: ' + app_sys.cvalidCommandTypes);
+      console.log(app_msg.csetCommandTypeMessage01 + app_sys.cvalidCommandTypes);
     }
   } else {
     // ERROR: Please enter a valid command type. Valid types are:
-    console.log('ERROR: Please enter a valid system path. Valid types are: ' + app_sys.cvalidCommandTypes);
+    console.log(app_msg.csetCommandTypeMessage01 + app_sys.cvalidCommandTypes);
   }
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
@@ -529,12 +529,6 @@ async function test(inputData, inputMetaData) {
   // We can set re-run criteria or other rules to determine how to handle the failure.
   // OR move on to the next test.
 
-  // New TODO:
-  // TODO:
-  // Add a configuration setting, and configuration command to enable for slow execution. DONE
-  // Add a configuration setting, and configuration command to enable multi-test execution as input to a single test call, DONE
-  // or as part of the test runner driver-loop. DONE
-
   let boilerPlateTestPathAndFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cboilerPlateTestPathAndFileName);
   let rootTestFolderPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);
   let defaultTestBehaviorRunAllTests = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cdefaultRunAllTests);
@@ -555,40 +549,40 @@ async function test(inputData, inputMetaData) {
   // We will also pop a message to inform the user that the only supported test execution engine is testcafe.
   if (executionEngine !== app_sys.ctestcafe) {
     // WARNING: All valid execution engines are not currently supported by our testing engine.
-    console.log('WARNING: All valid execution engines are not currently supported by our testing engine.');
+    console.log(app_msg.csetExecutionEngineMessage01);
     // WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.
-    console.log('WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.');
+    console.log(app_msg.csetExecutionEngineMessage02);
     // WARNING: The execution engine will be hard coded to testcafe for now.
-    console.log('WARNING: The execution engine will be hard coded to testcafe for now.');
+    console.log(app_msg.csetExecutionEngineMessage03);
     executionEngine = app_sys.ctestcafe;
   }
 
   // boilerPlateTestPathAndFileName is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'boilerPlateTestPathAndFileName is: ' + boilerPlateTestPathAndFileName);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cboilerPlateTestPathAndFileNameIs + boilerPlateTestPathAndFileName);
   // rootTestFolderPath is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'rootTestFolderPath is: ' + rootTestFolderPath);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.crootTestFolderPathIs + rootTestFolderPath);
   // defaultTestBehaviorRunAllTests is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'defaultTestBehaviorRunAllTests is: ' + defaultTestBehaviorRunAllTests);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cdefaultTestBehaviorRunAllTestsIs + defaultTestBehaviorRunAllTests);
   // slowExecution is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'slowExecution is: ' + slowExecution);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cslowExecutionIs + slowExecution);
   // multiTestExecution is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'multiTestExecution is: ' + multiTestExecution);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cmultiTestExecutionIs + multiTestExecution);
   // listOfBrowsers is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'listOfBrowsers is: ' + listOfBrowsers);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.clistOfBrowsersIs + listOfBrowsers);
   // executionEngine is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'executionEngine is: ' + executionEngine);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cexecutionEngineIs + executionEngine);
   // reportEnabled is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'reportEnabled is: ' + reportEnabled);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.creportEnabledIs + reportEnabled);
   // reportPath is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'reportPath is: ' + reportPath);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.creportPathIs + reportPath);
   // commandType is:
-  await haystacks.consoleLog(namespacePrefix, functionName, 'commandType is: ' + commandType);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ccommandTypeIs + commandType);
 
   if (rootTestFolderPath !== '') {
     // commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.cisBoolean]);
     let testWorkflowFiles = await haystacks.executeBusinessRules([rootTestFolderPath, ''], [biz.creadDirectoryContents]);
     // testWorkflowFiles are:
-    await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFiles are: ' + JSON.stringify(testWorkflowFiles));
+    await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestWorkflowFilesAre + JSON.stringify(testWorkflowFiles));
 
     // NOTE: So first lets determine what the user entered, if the user has entered a test-term or test-keyword,
     // we should use that keyword as a filter to the file path & file names array.
@@ -599,10 +593,10 @@ async function test(inputData, inputMetaData) {
       // The user has entered something. Try to filter the testWorkflowFiles array based on this input.
       for (let testFileNameKey in testWorkflowFiles) {
         // testFileNameKey is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testFileNameKey is: ' + testFileNameKey);
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestFileNameKeyIs + testFileNameKey);
         let testFileName = testWorkflowFiles[testFileNameKey];
         // testFileName is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testFileName is: ' + testFileName);
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestFileNameIs + testFileName);
         // Here we setup the filter search, just do a simple string search for now.
         // We might want to consider allowing for more advanced filter options in the future, like regular expressions, etc...
         // Or even running custom business logic for the filter by using dependency injection.
@@ -613,7 +607,7 @@ async function test(inputData, inputMetaData) {
           // ****************************************************************************************************************
           arrayOfTestNamesToExecute = await haystacks.executeBusinessRules([testFileName, arrayOfTestNamesToExecute], [app_biz.cbuildArrayOfTestNames]);
           // arrayOfTestNamesToExecute is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'arrayOfTestNamesToExecute is: ' + JSON.stringify(arrayOfTestNamesToExecute));
+          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.carrayOfTestNamesToExecuteIs + JSON.stringify(arrayOfTestNamesToExecute));
         } // End-if (testFileName.includes(inputData[1]))
       } // End-for (let testFileNameKey in testWorkflowFiles)
     } else {
@@ -623,10 +617,10 @@ async function test(inputData, inputMetaData) {
         // Parse each test workflow file name and file path to just get the file name without the file extension.
         for (let testWorkflowFileNameAndPathKey in testWorkflowFiles) { 
           // testWorkflowFileNameAndPathKey is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFileNameAndPathKey is: ' + testWorkflowFileNameAndPathKey);
+          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestWorkflowFileNameAndPathKeyIs + testWorkflowFileNameAndPathKey);
           let testWorkflowFile = testWorkflowFiles[testWorkflowFileNameAndPathKey];
           // testWorkflowFile is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testWorkflowFile is: ' + testWorkflowFile);
+          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestWorkflowFileIs + testWorkflowFile);
           // ****************************************************************************************************************
           // NOTE: The below call to executeBusinessRules, is failing for unknown reason, we are working on trying to figure out why.
           // We are working to understand this and prevent it from becoming a bigger problem.
@@ -644,19 +638,19 @@ async function test(inputData, inputMetaData) {
     } else {
       if (listOfBrowsers === '') {
         // ERROR: No browsers specified. Please set the list of browsers in the configuration setting:
-        console.log('ERROR: No browsers specified. Please set the list of browsers in the configuration setting: ' + app_cfg.clistOfBrowsers);
+        console.log(app_msg.ctestMessage01 + app_cfg.clistOfBrowsers);
       }
       if (executionEngine === '') {
         // ERROR: No execution engine is specified. Please set the execution engine in the configuration setting:
-        console.log('ERROR: No execution engine is specified. Please set the execution engine in the configuration setting: ' + app_cfg.cexecutionDriverEngine);
+        console.log(app_msg.ctestMessage02 + app_cfg.cexecutionDriverEngine);
       }
       if (boilerPlateTestPathAndFileName === '') {
         // ERROR: No boiler plate test path and file name were specified. Please set the boiler plate test path and file name in the configuration setting:
-        console.log('ERROR: No boiler plate test path and file name were specified. Please set the boiler plate test path and file name in the configuration setting: ' + app_cfg.cboilerPlateTestPathAndFileName);
+        console.log(app_msg.ctestMessage03 + app_cfg.cboilerPlateTestPathAndFileName);
       }
       if (reportEnabled === true && reportPath === '') {
         // ERROR: No report path specified. Please set the report path in the configuration setting:
-        console.log('ERROR: No report path specified. Please set the report path in the configuration setting: ' + app_cfg.creportPath);
+        console.log(app_msg.ctestMessage04 + app_cfg.creportPath);
       }
     }
 
@@ -674,14 +668,14 @@ async function test(inputData, inputMetaData) {
         let currentTimeStamp = await haystacks.executeBusinessRules([gen.cYYYYMMDD_HHmmss_SSS, ''], [biz.cgetNowMoment]);
         // let currentTimeStamp = await haystacks.executeBusinessRules([currentTimeStampRaw, gen.cYYYYMMDD_HHmmss_SSS], [biz.creformatDeltaTime]);
         // currentTimeStamp is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'currentTimeStamp is: ' + currentTimeStamp);
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ccurrentTimeStampIs + currentTimeStamp);
         if (!testReporterCommandString.indexOf(bas.cForwardSlash, testReporterCommandString.length)) {
           testReporterCommandString = testReporterCommandString + bas.cForwardSlash;
         }
         testReporterCommandString = testReporterCommandString + currentTimeStamp;
         // NOTE: We want to add the test name as part of the report, but we will need to this below when we are generating the final test command.
         // testReporterCommandString is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testReporterCommandString is: ' + testReporterCommandString);
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestReporterCommandStringIs + testReporterCommandString);
       }
       if (slowExecution === true) {
         testCommandString = testCommandString + app_sys.cslowExe + bas.cEqual + gen.ctrue + bas.cSpace;
@@ -691,7 +685,7 @@ async function test(inputData, inputMetaData) {
         // Just join the arrayOfTestNamesToExecute into a coma separated list, easy-peazy
         let listOfTestNamesToExecute = arrayOfTestNamesToExecute.join(bas.cComa);
         // listOfTestNamesToExecute is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'listOfTestNamesToExecute is: ' + listOfTestNamesToExecute);
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.clistOfTestNamesToExecuteIs + listOfTestNamesToExecute);
         if (reportEnabled === true) {
           // NOTE: Here we cannot make the list of test names to execute as part of the report filename, because the list could be long, and the file name cannot be too long.
           // So just append the file extension.
@@ -699,37 +693,37 @@ async function test(inputData, inputMetaData) {
           // For now we are hard-coding it to html.
           testReporterCommandString = testReporterCommandString + bas.cDot + wrd.chtml;
           // testReporterCommandString is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testReporterCommandString is: ' + testReporterCommandString);
+          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestReporterCommandStringIs + testReporterCommandString);
           testCommandString = testCommandString + bas.cSpace + testReporterCommandString + bas.cSpace;
           // testCommandString is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
+          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestCommandStringIs + testCommandString);
         }
         testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + listOfTestNamesToExecute;
         // testCommandString is:
-        await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestCommandStringIs + testCommandString);
         testPassed = await haystacks.executeBusinessRules([testCommandString, commandType], [app_biz.cexecuteTestCommand]);
         // TODO: Handle any test re-run logic here.
       } else {
         // We are going to execute each test individually in a loop.
         for (let testNameKey in arrayOfTestNamesToExecute) {
           // testNameKey is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testNameKey is: ' + testNameKey);
+          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestNameKeyIs + testNameKey);
           let testName = arrayOfTestNamesToExecute[testNameKey];
           // testName is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testName is: ' + testName);
+          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestNameIs + testName);
           if (reportEnabled === true) {
             // NOTE: In the future we might want to enhance this to allow for different report types such as XML or JSON.
             // For now we are hard-coding it to html.
             testReporterCommandString = testReporterCommandString + bas.cUnderscore + testName + bas.cDot + wrd.chtml;
             // testReporterCommandString is:
-            await haystacks.consoleLog(namespacePrefix, functionName, 'testReporterCommandString is: ' + testReporterCommandString);
+            await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestReporterCommandStringIs + testReporterCommandString);
             testCommandString = testCommandString + bas.cSpace + testReporterCommandString + bas.cSpace;
             // testCommandString is:
-            await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
+            await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestCommandStringIs + testCommandString);
           }
           testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + testName;
           // testCommandString is:
-          await haystacks.consoleLog(namespacePrefix, functionName, 'testCommandString is: ' + testCommandString);
+          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestCommandStringIs + testCommandString);
           testPassed = await haystacks.executeBusinessRules([testCommandString, commandType], [app_biz.cexecuteTestCommand]);
           // TODO: Handle any test re-run logic here.
         } // End-for (let testNameKey in arrayOfTestNamesToExecute)
@@ -737,7 +731,7 @@ async function test(inputData, inputMetaData) {
     }
   } else {
     // ERROR: No test root path specified. Please set the path in the configuration setting:
-    console.log('ERROR: No test root path specified. Please set the path in the configuration setting: ' + app_cfg.crootTestFolderPath);
+    console.log(app_msg.ctestMessage05 + app_cfg.crootTestFolderPath);
   }
   
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
