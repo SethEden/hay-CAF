@@ -94,18 +94,35 @@ export function shell(shellCommandToRun, options) {
           'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass',
           'Invoke-Expression', '-Command' ], {shell: true}
         ]     
+        // Script extention
+        tempFileOptions.postfix = '.ps1';
+
         // Powershell command to execute commands
         scriptContent = `& "${shellCommandToRun}"`;
+        break;
 
-        break;
       case 'cmd':
-        spawnOptions = []     
+        spawnOptions = ['start', []]     
+
+        // Powershell command to execute commands
+        scriptContent = `cls && ${shellCommandToRun}`;
+
+        // Script extention
+        tempFileOptions.postfix = '.bat';
         break;
+
       case 'bash':
-        spawnOptions = []     
+        spawnOptions = ['start', ['bash', '/c']];
+
+        // Bash command to execute commands
+        scriptContent = `
+          #!/usr/bin/env bash
+          "clear -x; ${shellCommandToRun}"
+        `.trim();
         break;
+
       default:
-        console.log('Selected shell not found.')
+        throw new Error('Selected shell not found.')
     }
 
     // Write shell script to
@@ -129,6 +146,9 @@ export function shell(shellCommandToRun, options) {
           }
         });
       } else {
+
+          // Opening [bash|powershell and etc]
+          process.stdout.write(`Opening ${options.shell}`);
           child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1))
 
           // Handles actions taken when
