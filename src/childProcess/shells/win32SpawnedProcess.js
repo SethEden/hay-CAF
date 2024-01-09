@@ -106,7 +106,7 @@ export function shell(shellCommandToRun, options) {
         spawnOptions = ['start', []]     
 
         // Powershell command to execute commands
-        scriptContent = `cls && ${shellCommandToRun}`;
+        scriptContent = shellCommandToRun;
 
         // Script extention
         tempFileOptions.postfix = '.bat';
@@ -133,7 +133,7 @@ export function shell(shellCommandToRun, options) {
     // console.log(`Script content is: ${scriptContent}`)
 
     // Add temp file to options
-    spawnOptions[1].push(shellscript.fd);
+    spawnOptions[1].push(shellscript.name);
 
     // Check and proceed if the temporary
     // file has successfuly been written
