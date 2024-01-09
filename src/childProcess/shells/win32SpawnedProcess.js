@@ -99,7 +99,7 @@ export function shell(shellCommandToRun, options) {
         tempFileOptions.postfix = '.ps1';
 
         // Powershell command to execute commands
-        scriptContent = `& "${shellCommandToRun}"`;
+        scriptContent = `& ${shellCommandToRun}`;
         break;
 
       case 'cmd':
