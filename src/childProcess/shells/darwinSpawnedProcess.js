@@ -116,6 +116,7 @@ export async function shell(shellCommandToRun, options) {
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     fs.writeSync(shellscript.fd, scriptContent);
+    // console.log(`Script content is: ${scriptContent}`)
 
     // Check and proceed if the temporary
     // file has successfuly been written

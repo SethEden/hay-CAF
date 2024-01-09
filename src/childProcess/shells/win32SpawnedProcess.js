@@ -88,6 +88,7 @@ export function shell(shellCommandToRun, options) {
     // based on the user selected shell.
     let spawnOptions;
     let scriptContent = shellCommandToRun;
+
     switch(options.shell){
       case 'powershell':
         spawnOptions = [ 
@@ -129,6 +130,7 @@ export function shell(shellCommandToRun, options) {
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     fs.writeSync(shellscript.fd, scriptContent);
+    // console.log(`Script content is: ${scriptContent}`)
 
     // Add temp file to options
     spawnOptions[1].push(shellscript.fd);
