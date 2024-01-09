@@ -76,18 +76,5 @@
   "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.disconnect@ModuleFontBackgroundColor": "Default",
   "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.disconnect@FunctionFontBackgroundColor": "Default",
   "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.disconnect@MessageFontBackgroundColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.disconnect@DataFontBackgroundColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message": true,
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@ModuleFontStyle": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@FunctionFontStyle": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@MessageFontStyle": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@DataFontStyle": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@ModuleFontColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@FunctionFontColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@MessageFontColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@DataFontColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@ModuleFontBackgroundColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@FunctionFontBackgroundColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@MessageFontBackgroundColor": "Default",
-  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.message@DataFontBackgroundColor": "Default"
+  "debugEvents|debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.disconnect@DataFontBackgroundColor": "Default"
 }
