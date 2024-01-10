@@ -98,7 +98,7 @@ export function shell(shellCommandToRun, options) {
           'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass',
           'Invoke-Expression', '-Command' ], {shell: true}
         ]     
-        // Script extention
+        // Script extension
         tempFileOptions.postfix = '.ps1';
 
         // Powershell command to execute commands
@@ -106,12 +106,15 @@ export function shell(shellCommandToRun, options) {
         break;
 
       case 'cmd':
-        spawnOptions = ['start', []]     
+        spawnOptions = ['cmd', ['/c']];
 
         // Powershell command to execute commands
-        scriptContent = shellCommandToRun;
+        // scriptContent = shellCommandToRun;
+        // scriptContent = `start /wait ${shellCommandToRun}`;
+        scriptContent = `start /wait ${shellCommandToRun}`;
+        // scriptContent = 'start /wait';
 
-        // Script extention
+        // Script extension
         tempFileOptions.postfix = '.bat';
         break;
 
@@ -133,13 +136,13 @@ export function shell(shellCommandToRun, options) {
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     fs.writeSync(shellscript.fd, scriptContent);
-    // console.log(`Script content is: ${scriptContent}`)
+    console.log(`Script content is: ${scriptContent}`)
 
     // Add temp file to options
     spawnOptions[1].push(shellscript.name);
 
     // Check and proceed if the temporary
-    // file has successfuly been written
+    // file has successfully been written
     if (fs.existsSync(shellscript.name)) {
 
       // Ensure the use of a single shell instance 

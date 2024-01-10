@@ -1,0 +1,1 @@
+C:\CAFfeinated\node_modules\.bin\testcafe chrome C:/CAFfeinated/TestBureau/SethEden/Tests/Default.test.js  --reporter html:C:/CAFfeinated/results/SethEden/reports/20231214-171902-804.html testName=Software

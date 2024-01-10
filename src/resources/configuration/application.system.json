@@ -30,15 +30,15 @@
   "system.logAllCommands": true,
   "system.enableUserCommandsLogClearing": true,
   "system.enableAllCommandsLogClearing": true,
-  "system.boilerPlateTestPathAndFileName": "/Users/WebbratStudios/Documents/dev/vagrant/www/clients/hs/CAFfeinated/TestBureau/SethEden/Tests/Default.test.js",
-  "system.rootTestFolderPath": "/Users/WebbratStudios/Documents/dev/vagrant/www/clients/hs/CAFfeinated/TestBureau/SethEden/Tests/Workflows",
+  "system.boilerPlateTestPathAndFileName": "C:/CAFfeinated/TestBureau/SethEden/Tests/Default.test.js",
+  "system.rootTestFolderPath": "C:/CAFfeinated/TestBureau/SethEden/Tests/Workflows",
   "system.defaultRunAllTests": true,
   "system.slowExecution": false,
   "system.multiTestExecution": true,
   "system.listOfBrowsers": "firefox",
   "system.executionDriverEngine": "testcafe",
   "system.enableReporter": true,
-  "system.reportPath": "/Users/WebbratStudios/Documents/dev/vagrant/www/clients/hs/CAFfeinated/results/SethEden/reports/",
+  "system.reportPath": "C:/CAFfeinated/results/SethEden/reports/",
   "system.childProcessLimitTime": 240000,
-  "system.cmdType": "CMD"
+  "system.cmdType": "Powershell"
 }
