@@ -38,6 +38,7 @@ const namespacePrefix = wrd.cframework + bas.cDot + wrd.cchild + wrd.cProcess + 
 
 // Checks whether the provided Shell
 // executable exists and is executable
+// TODO: check each executable before running commands
 function isExecutableExists(pathToShellExecutable) {
   try {
     // Check if the file exists
@@ -89,6 +90,8 @@ export function shell(shellCommandToRun, options) {
     let spawnOptions;
     let scriptContent = shellCommandToRun;
 
+    // TODO: Add auto matic retry if 
+    // desired shell don't work.
     switch(options.shell){
       case 'powershell':
         spawnOptions = [ 
