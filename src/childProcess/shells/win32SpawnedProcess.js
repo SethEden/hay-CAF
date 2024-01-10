@@ -103,12 +103,15 @@ export function shell(shellCommandToRun, options) {
         break;
 
       case 'cmd':
-        spawnOptions = ['start', []]     
+        spawnOptions = ['cmd', ['/c']];
 
         // Powershell command to execute commands
-        scriptContent = shellCommandToRun;
+        // scriptContent = shellCommandToRun;
+        // scriptContent = `start /wait ${shellCommandToRun}`;
+        scriptContent = `start /wait ${shellCommandToRun}`;
+        // scriptContent = 'start /wait';
 
-        // Script extention
+        // Script extension
         tempFileOptions.postfix = '.bat';
         break;
 
