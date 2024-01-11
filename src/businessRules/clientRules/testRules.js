@@ -175,9 +175,10 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     const directories = normalizedPath.split(path.sep);
     const targetIndex = directories.indexOf('CAFfeinated') + 1;
     const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
+    console.log(`CAFfeinatePath is: ${CAFfeinatedPath}`);
 
     // Set CAFfeinated dir as CWD 
-    process.chdir(CAFfeinatedPath)
+    // process.chdir(CAFfeinatedPath);
 
     // Serialize shell options
     const serializedOptions = JSON.stringify({ 
