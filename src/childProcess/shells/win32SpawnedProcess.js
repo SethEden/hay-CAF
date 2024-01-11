@@ -95,14 +95,13 @@ export function shell(shellCommandToRun, options) {
     switch(options.shell){
       case 'powershell':
         spawnOptions = [ 
-          'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass',
-          'Invoke-Expression', '-Command' ], {shell: true}
+          'start', ['&'], {shell: true}
         ]     
         // Script extension
         tempFileOptions.postfix = '.ps1';
 
         // Powershell command to execute commands
-        scriptContent = `& ${shellCommandToRun}`;
+        scriptContent = shellCommandToRun;
         break;
 
       case 'cmd':
