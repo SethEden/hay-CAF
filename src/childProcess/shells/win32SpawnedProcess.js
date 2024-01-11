@@ -95,13 +95,15 @@ export function shell(shellCommandToRun, options) {
     switch(options.shell){
       case 'powershell':
         spawnOptions = [ 
-          'start', [], {shell: true}
+          'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
         ]     
         // Script extension
         tempFileOptions.postfix = '.ps1';
 
         // Powershell command to execute commands
-        scriptContent = `& '{shellCommandToRun}'`;
+        scriptContent = `
+        Set-Location "${options.CAFfeinatedPath}"
+        ${shellCommandToRun}`;
         break;
 
       case 'cmd':
@@ -135,7 +137,7 @@ export function shell(shellCommandToRun, options) {
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     fs.writeSync(shellscript.fd, scriptContent);
-    console.log(`Script content is: ${scriptContent}`)
+    console.log(`\r\nScript content is: ${scriptContent}`)
 
     // Add temp file to options
     spawnOptions[1].push(shellscript.name);
@@ -155,8 +157,12 @@ export function shell(shellCommandToRun, options) {
       } else {
 
           // Opening [bash|powershell and etc]
-          process.stdout.write(`Opening ${options.shell}`);
-          child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1))
+          process.stdout.write(`\r\nOpening ${options.shell}`);
+          // child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1));
+          const spawnOptionsLen = spawnOptions.length;
+          let spawnOptionsString2 = [...spawnOptions.slice(1, spawnOptionsLen), `"${spawnOptions[-1]}"`].join(' ');
+          process.stdout.write(`\r\nspawn command is: ${spawnOptions[0]} ${spawnOptionsString2}`);
+          child = childProcess.spawn(spawnOptions[0], ...[spawnOptions.slice(1, spawnOptionsLen), `"${spawnOptions[-1]}"`]);
 
           // Handles actions taken when
           // errors occurs on child process
@@ -188,7 +194,7 @@ export function shell(shellCommandToRun, options) {
     }
 
   } catch (error) {
-    console.log(`Error on shell: ${error.message}`);
+    console.log(`\r\nError on shell: ${error.message}`);
   }
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function); 
 }
