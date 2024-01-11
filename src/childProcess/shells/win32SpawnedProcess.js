@@ -63,7 +63,7 @@ function isExecutableExists(pathToShellExecutable) {
  * @author Karl-Edward FP Jean-Mehu
  * @date 2023/01/02
  */
-export function shell(shellCommandToRun, options) {
+export async function shell(shellCommandToRun, options) {
   let functionName = shell.name;
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   // await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cshellCommandToRunIs + shellCommandToRun);
@@ -136,7 +136,7 @@ export function shell(shellCommandToRun, options) {
     // Write shell script to
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
-    fs.writeFile(shellscript.fd, scriptContent, 'utf8', (error) => {
+    await fs.writeFile(shellscript.fd, scriptContent, 'utf8', (error) => {
     console.log(`\r\nScript content is: ${scriptContent}`)
 
     // Add temp file to options
