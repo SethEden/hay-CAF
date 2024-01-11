@@ -136,7 +136,7 @@ export function shell(shellCommandToRun, options) {
     // Write shell script to
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
-    fs.writeSync(shellscript.fd, scriptContent);
+    fs.writeFile(shellscript.fd, scriptContent, 'utf8', (error) => {
     console.log(`\r\nScript content is: ${scriptContent}`)
 
     // Add temp file to options
@@ -144,7 +144,10 @@ export function shell(shellCommandToRun, options) {
 
     // Check and proceed if the temporary
     // file has successfully been written
-    if (fs.existsSync(shellscript.name)) {
+    if (error) {
+      process.stdout.write(`\r\nError creating temp file: ${error}`)
+    } else {
+      process.stdout.write(`\r\nTmp file uccessfully written: ${shellscript.name})
 
       // Ensure the use of a single shell instance 
       let child;
@@ -192,9 +195,10 @@ export function shell(shellCommandToRun, options) {
         });
       }
     }
+  })
 
-  } catch (error) {
-    console.log(`\r\nError on shell: ${error.message}`);
+} catch (error) {
+    process.stdout.write(`\r\nError on shell: ${error.message}`)
   }
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function); 
 }
