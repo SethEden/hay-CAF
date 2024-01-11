@@ -82,46 +82,57 @@ export async function shell(shellCommandToRun, options) {
       throw new Error('Shell command not defined');
     }
 
-    // NOTE: Igore this for now
-    // shellCommandToRun = `
-    // # List of common shell executables
-    // shells=("bash" "zsh" "fish" "dash" "ksh" "tcsh" "ash" "sh")
+    // Sets the shell used to invoke the desired command
+    // based on the user selected shell.
+    let spawnOptions;
+    let scriptContent = shellCommandToRun;
+    switch(options.shell){
+      case 'powershell':
+        spawnOptions = ['sh', []]     
 
-    // # Iterate through the list of shells
-    // for shell in "${shells[@]}"; do
-    // if command -v "$shell" &> /dev/null; then
-    // echo "Using shell, $shell"
-    // # Do something with the found shell, e.g., execute a command
-    // ${shellCommandToRun}
-    // exit 0
-    // fi
-    // echo "No supported shells found"
-    // done
-    // `
+        // Powershell command to execute commands
+        scriptContent = `
+          #!/usr/bin/env bash
+          osascript -e 'tell application "Terminal"
+              if not (exists window 1) then reopen
+              activate
+              do script "pwsh /c ${shellCommandToRun}" in window 1
+           end tell'
+        `.trim();
+        break;
 
-    let scriptContent = `
-    tell application "Terminal"
-        if not (exists window 1) then reopen
-        activate
-        do script "clear -x; ${shellCommandToRun}" in window 1
-      end tell
-    `.trim();
-
-    scriptContent = `
-      #!/usr/bin/env bash
-      osascript -e '${scriptContent}'
-    `;
+      case 'cmd':
+        spawnOptions = []     
+        break;
+      case 'bash':
+        spawnOptions = ['sh', []]     
+        scriptContent = `
+          #!/usr/bin/env bash
+          osascript -e 'tell application "Terminal"
+              if not (exists window 1) then reopen
+              activate
+              do script "clear -x; ${shellCommandToRun}" in window 1
+           end tell'
+        `.trim();
+        break;
+      default:
+        console.log('Selected shell not found.')
+    }
 
     // Write shell script to
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     fs.writeSync(shellscript.fd, scriptContent);
-    // console.log(`Script content is: ${scriptContent}`)
+    console.log(`Script content is: ${scriptContent}`)
+
+    // Add temporary file to options
+    spawnOptions[1].push(shellscript.name);
+    console.log(shellscript.name)
 
     // Check and proceed if the temporary
     // file has successfuly been written
     if (fs.existsSync(shellscript.name)) {
-      const child = childProcess.spawn('sh', [shellscript.name], {
+      const child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1), {
         stdio: 'pipe',
       });
 
@@ -148,7 +159,12 @@ export async function shell(shellCommandToRun, options) {
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
         if (process['send']) process.send('\r\nExiting child process');
-        shellscript.removeCallback();
+        if (options.debug.keepTmpFile){
+          console.log(`Dry deleting tmp file, ${shellscript.name}`)
+        } else {
+          console.log(`Deleting tmp file, ${shellscript.name}`)
+          shellscript.removeCallback();
+        }
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
       });
     } else {

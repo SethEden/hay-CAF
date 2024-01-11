@@ -176,13 +176,13 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     const targetIndex = directories.indexOf('CAFfeinated') + 1;
     const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
 
-    // Set CAFfeinated dir as CWD 
-    process.chdir(CAFfeinatedPath)
-
     // Serialize shell options
     const serializedOptions = JSON.stringify({ 
       shell: inputMetaData,
-      CAFfeinatedPath
+      CAFfeinatedPath,
+      debug: {
+        keepTmpFile: false
+      }
     });
 
     // Spawns a fork (independent) process
