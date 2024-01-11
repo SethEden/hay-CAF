@@ -95,13 +95,13 @@ export function shell(shellCommandToRun, options) {
     switch(options.shell){
       case 'powershell':
         spawnOptions = [ 
-          'start', ['&'], {shell: true}
+          'start', [], {shell: true}
         ]     
         // Script extension
         tempFileOptions.postfix = '.ps1';
 
         // Powershell command to execute commands
-        scriptContent = shellCommandToRun;
+        scriptContent = `& '{shellCommandToRun}'`;
         break;
 
       case 'cmd':
