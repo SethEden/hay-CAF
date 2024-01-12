@@ -107,7 +107,12 @@ export async function shell(shellCommandToRun, options) {
         //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression'], {shell: true}
         // ];
 
-        // MOSTLY WORKING!!!!
+        // MOSTLY WORKING from DOS to Powershell!!!!
+        // spawnOptions = [ 
+        //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
+        // ];
+
+        // Possibly fully working DOS to Powershell!! WORKING ALL THE WAY, but without ECHO in child process
         spawnOptions = [ 
           'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
         ];
@@ -115,10 +120,24 @@ export async function shell(shellCommandToRun, options) {
         // Script extension
         tempFileOptions.postfix = '.ps1';
 
-        // Powershell command to execute commands
+        // Powershell command to execute commands - fully working DOS to Powershell!! WORKING ALL THE WAY, but without ECHO in child process
+        // scriptContent = `
+        // Set-Location "${options.CAFfeinatedPath}"
+        // Write-Host ${shellCommandToRun}`;
+
         scriptContent = `
-        Set-Location "${options.CAFfeinatedPath}"
-        ${shellCommandToRun}`;
+          Set-Location "${options.CAFfeinatedPath}"
+          $process = ${shellCommandToRun}
+          while (!$process.HasExited) {
+              $output = $process.StandardOutput.ReadLine()
+              if ($output -ne $null) {
+                  Write-Host $output
+              }
+          }
+          while (!$process.StandardOutput.EndOfStream) {
+              $output = $process.StandardOutput.ReadLine()
+              Write-Host $output
+          }`;
         
         // Add temp file to options, but add quotes around the script file name and path.
         // spawnOptions[1].push(`"${shellscript.name}"`);
@@ -161,13 +180,15 @@ export async function shell(shellCommandToRun, options) {
     shellscript = tmp.fileSync(tempFileOptions);
     console.log(`\r\nconsoleLog: shellScript file name is: ${shellscript.name}`);
     process.stdout.write(`\r\nprocess.stdout.write: shellScript file name is: ${shellscript.name}`);
-    await fs.writeFile(shellscript.fd, scriptContent, 'utf8', (error) => {
+    await fs.writeFile(shellscript.fd, scriptContent, 'utf8', async (error) => {
+      await fs.close(shellscript.fd); // Close the file explicitly to avoid confusion.
       console.log(`\r\nScript content is: ${scriptContent}`);
 
       // Add temp file to options
       // spawnOptions[1].push(shellscript.name); // DOS
       // spawnOptions[1].push(`\\" {${shellscript.name}}\\"`); // REALLY CLOSE!!!!
-      spawnOptions[1].push(`\\" {& '${shellscript.name}'}\\"`);
+      // spawnOptions[1].push(`\\" {& '${shellscript.name}'}\\"`); // Mostly working DOS to Powershell
+      spawnOptions[1].push(`\\"@(${shellscript.name})\\"`); // Possibly fully working DOS to Powershell ! WORKING ALL THE WAY, but without ECHO in child process
 
       // Check and proceed if the temporary
       // file has successfully been written
