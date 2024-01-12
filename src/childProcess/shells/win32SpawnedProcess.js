@@ -165,6 +165,7 @@ export async function shell(shellCommandToRun, options) {
       console.log(`\r\nScript content is: ${scriptContent}`);
 
       // Add temp file to options
+      // spawnOptions[1].push(shellscript.name); // DOS
       // spawnOptions[1].push(`\\" {${shellscript.name}}\\"`); // REALLY CLOSE!!!!
       spawnOptions[1].push(`\\" {& '${shellscript.name}'}\\"`);
 
