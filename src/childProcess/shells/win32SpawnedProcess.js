@@ -117,6 +117,10 @@ export async function shell(shellCommandToRun, options) {
           'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
         ];
 
+        // spawnOptions = [ // Didn't work
+        //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-RedirectStandardOutput', 'Invoke-Expression', '-Command'], {shell: true}
+        // ];
+
         // Script extension
         tempFileOptions.postfix = '.ps1';
 
