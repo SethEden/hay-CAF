@@ -376,7 +376,7 @@ async function setReportPathConfiguration(inputData, inputMetaData) {
 
 /**
  * @function setChildProcessLimitTime
- * @description Sets the test report output path in the system configuration settings.
+ * @description Sets the test process timeout time before the test will automatically fail.
  * @param {string<array>} inputData An array that could actually contain anything,
  * depending on what the user entered. But the function filters all of that internally and
  * extracts the case the user has entered a string child process limit time

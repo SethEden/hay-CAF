@@ -92,11 +92,26 @@ export async function shell(shellCommandToRun, options) {
 
     // TODO: Add auto matic retry if 
     // desired shell don't work.
-    switch(options.shell){
+    switch(options.shell) {
       case 'powershell':
+        // spawnOptions = [ 
+        //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
+        // ];
+        // spawnOptions = [ 
+        //   'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
+        // ];
+        // spawnOptions = [ 
+        //   'start', ['powershell', '-NoExit', 'Set-ExecutionPolicy', 'RemoteSigned', '-Command'], {shell: true}
+        // ];
+        // spawnOptions = [ 
+        //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression'], {shell: true}
+        // ];
+
+        // MOSTLY WORKING!!!!
         spawnOptions = [ 
           'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
-        ]     
+        ];
+
         // Script extension
         tempFileOptions.postfix = '.ps1';
 
@@ -104,6 +119,9 @@ export async function shell(shellCommandToRun, options) {
         scriptContent = `
         Set-Location "${options.CAFfeinatedPath}"
         ${shellCommandToRun}`;
+        
+        // Add temp file to options, but add quotes around the script file name and path.
+        // spawnOptions[1].push(`"${shellscript.name}"`);
         break;
 
       case 'cmd':
@@ -112,11 +130,13 @@ export async function shell(shellCommandToRun, options) {
         // Powershell command to execute commands
         // scriptContent = shellCommandToRun;
         // scriptContent = `start /wait ${shellCommandToRun}`;
-        scriptContent = `start /wait ${shellCommandToRun}`;
+        scriptContent = `cd ${options.CAFfeinatedPath} && start /wait ${shellCommandToRun}`;
         // scriptContent = 'start /wait';
 
         // Script extension
         tempFileOptions.postfix = '.bat';
+        // Add temp file to options, but don't add quotes around the script file name and path.
+        // spawnOptions[1].push(shellscript.name);
         break;
 
       case 'bash':
@@ -127,6 +147,9 @@ export async function shell(shellCommandToRun, options) {
           #!/usr/bin/env bash
           "clear -x; ${shellCommandToRun}"
         `.trim();
+
+        // Add temp file to options, but add quotes around the script file name and path.
+        // spawnOptions[1].push(`"${shellscript.name}"`);
         break;
 
       default:
@@ -136,36 +159,40 @@ export async function shell(shellCommandToRun, options) {
     // Write shell script to
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
+    console.log(`\r\nconsoleLog: shellScript file name is: ${shellscript.name}`);
+    process.stdout.write(`\r\nprocess.stdout.write: shellScript file name is: ${shellscript.name}`);
     await fs.writeFile(shellscript.fd, scriptContent, 'utf8', (error) => {
-    console.log(`\r\nScript content is: ${scriptContent}`)
+      console.log(`\r\nScript content is: ${scriptContent}`);
 
-    // Add temp file to options
-    spawnOptions[1].push(shellscript.name);
+      // Add temp file to options
+      // spawnOptions[1].push(`\\" {${shellscript.name}}\\"`); // REALLY CLOSE!!!!
+      spawnOptions[1].push(`\\" {& '${shellscript.name}'}\\"`);
 
-    // Check and proceed if the temporary
-    // file has successfully been written
-    if (error) {
-      process.stdout.write(`\r\nError creating temp file: ${error}`)
-    } else {
-      process.stdout.write(`\r\nTmp file uccessfully written: ${shellscript.name})
-
-      // Ensure the use of a single shell instance 
-      let child;
-      if (child && !child.killed) {
-        child.stdin.write(`${scriptContent}\n`, 'utf-8', (err) => {
-          if (err) {
-            console.log(err);
-          }
-        });
+      // Check and proceed if the temporary
+      // file has successfully been written
+      if (error) {
+        process.stdout.write(`\r\nError creating temp file: ${error}`);
       } else {
+        process.stdout.write(`\r\nTmp file successfully written: ${shellscript.name}`);
 
+        // Ensure the use of a single shell instance 
+        let child;
+        if (child && !child.killed) {
+          child.stdin.write(`${scriptContent}\n`, 'utf-8', (err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+        } else {
           // Opening [bash|powershell and etc]
           process.stdout.write(`\r\nOpening ${options.shell}`);
-          // child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1));
-          const spawnOptionsLen = spawnOptions.length;
-          let spawnOptionsString2 = [...spawnOptions.slice(1, spawnOptionsLen), `"${spawnOptions[-1]}"`].join(' ');
-          process.stdout.write(`\r\nspawn command is: ${spawnOptions[0]} ${spawnOptionsString2}`);
-          child = childProcess.spawn(spawnOptions[0], ...[spawnOptions.slice(1, spawnOptionsLen), `"${spawnOptions[-1]}"`]);
+          let spawnOptionsString = spawnOptions[0] + ' ' + [...spawnOptions.slice(1)].join(' ');
+          process.stdout.write(`\r\nspawn command is: ${spawnOptionsString}`);
+          child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1));
+          // const spawnOptionsLen = spawnOptions.length;
+          // let spawnOptionsString2 = [...spawnOptions.slice(1, spawnOptionsLen), `"${spawnOptions[-1]}"`].join(' ');
+          // process.stdout.write(`\r\nspawn command is: ${spawnOptions[0]} ${spawnOptionsString2}`);
+          // child = childProcess.spawn(spawnOptions[0], ...[spawnOptions.slice(1, spawnOptionsLen), `"${spawnOptions[-1]}"`]);
 
           // Handles actions taken when
           // errors occurs on child process
@@ -177,27 +204,26 @@ export async function shell(shellCommandToRun, options) {
           // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
           });
 
-        child.on('disconnect', async () => {
-          let eventName = bas.cDot + wrd.cdisconnect;
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-          if (process['send']) process.send('\r\nChild disconnected');
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
-        });
+          child.on('disconnect', async () => {
+            let eventName = bas.cDot + wrd.cdisconnect;
+            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
+            if (process['send']) process.send('\r\nChild disconnected');
+            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+          });
 
-        child.on('exit', async (code, signal) => {
-          let eventName = bas.cDot + wrd.cexit;
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
-          if (process['send']) process.send('\r\nExiting child process');
-          shellscript.removeCallback();
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
-        });
+          child.on('exit', async (code, signal) => {
+            let eventName = bas.cDot + wrd.cexit;
+            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
+            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
+            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
+            if (process['send']) process.send('\r\nExiting child process');
+            // shellscript.removeCallback();
+            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+          });
+        }
       }
-    }
-  })
-
-} catch (error) {
+    })
+  } catch (error) {
     process.stdout.write(`\r\nError on shell: ${error.message}`)
   }
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function); 
