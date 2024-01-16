@@ -426,9 +426,9 @@ async function setCmdType(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = [true, ];
-  if (Array.isArray(inputData) && inputData.length >= 2) {
-    if (app_sys.cvalidCommandTypes.includes(inputData[1]) === true) {
-      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ccmdType, inputData[1]);
+  if (Array.isArray(inputData) && inputData.length >= 1) {
+    if (app_sys.cvalidCommandTypes.includes(inputData[1].toLowerCase()) === true) {
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ccmdType, inputData[1].toLowerCase());
     } else {
       // ERROR: Please enter a valid command type. Valid types are:
       console.log(app_msg.csetCommandTypeMessage01 + app_sys.cvalidCommandTypes);

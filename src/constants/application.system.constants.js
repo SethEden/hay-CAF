@@ -48,4 +48,4 @@ export const cslowExe = wrd.cslow + gen.cExe; // slowExe
 export const ctestName = wrd.ctest + wrd.cName; // testName
 
 // Command Types
-export const cvalidCommandTypes = sys.ccmd + bas.cComa + sys.cbash + bas.cComa + sys.cpowershell; // cmd,bash,powershell
+export const cvalidCommandTypes = sys.cdos + bas.cComa + sys.ccmd + bas.cComa + sys.cbash + bas.cComa + sys.cpowershell; // dos,cmd,bash,powershell
