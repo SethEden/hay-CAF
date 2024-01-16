@@ -94,126 +94,28 @@ export async function shell(shellCommandToRun, options) {
     // desired shell don't work.
     switch(options.shell) {
       case 'powershell':
-        // spawnOptions = [ 
-        //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
-        // ];
-        // spawnOptions = [ 
-        //   'start', ['C:/Windows/System32/WindowsPowerShell/v1.0/powershell.exe', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
-        // ];
-        // spawnOptions = [ 
-        //   'start', ['powershell', '-NoExit', 'Set-ExecutionPolicy', 'RemoteSigned', '-Command'], {shell: true}
-        // ];
-        // spawnOptions = [ 
-        //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression'], {shell: true}
-        // ];
-
-        // MOSTLY WORKING from DOS to Powershell!!!!
         spawnOptions = [ 
           'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
         ];
 
-        // Possibly fully working DOS to Powershell!! WORKING ALL THE WAY, but without ECHO in child process
-        // No difference from the line above. I believe we were just using this line as our experimental prototype sandbox.
-        // spawnOptions = [ 
-        //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', 'Invoke-Expression', '-Command'], {shell: true}
-        // ];
-
-        // spawnOptions = [ // Didn't work
-        //   'start', ['powershell', '-NoExit', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-RedirectStandardOutput', 'Invoke-Expression', '-Command'], {shell: true}
-        // ];
-
         // Script extension
         tempFileOptions.postfix = '.ps1';
 
-        // Powershell command to execute commands - fully working DOS to Powershell!! WORKING ALL THE WAY, but without ECHO in child process
+        // Powershell command to execute commands
         scriptContent = `
         Set-Location "${options.CAFfeinatedPath}"
         ${shellCommandToRun}`;
-
-        // Causes an infinite loop and doesn't output the testcafe output as its running anyway.
-        // scriptContent = `
-        //   Set-Location "${options.CAFfeinatedPath}"
-        //   $process = ${shellCommandToRun}
-        //   while (!$process.HasExited) {
-        //       $output = $process.StandardOutput.ReadLine()
-        //       if ($output -ne $null) {
-        //           Write-Host $output
-        //       }
-        //   }
-        //   while (!$process.StandardOutput.EndOfStream) {
-        //       $output = $process.StandardOutput.ReadLine()
-        //       Write-Host $output
-        //   }`;
-
-        // Also goes into an infinite loop before even starting the script
-        // scriptContent = `
-        //   Set-Location "${options.CAFfeinatedPath}"
-        //   # Start the external program and redirect its output to a stream
-        //   $process = Start-Process -FilePath ${shellCommandToRun} -PassThru -RedirectStandardOutput (New-Object System.IO.MemoryStream)
-
-        //   # Create a StreamReader to continuously read the output stream
-        //   $reader = New-Object System.IO.StreamReader($process.StandardOutput.BaseStream)
-
-        //   # Continuously read and print the output stream
-        //   while (-not $reader.EndOfStream) {
-        //       $outputLine = $reader.ReadLine()
-        //       Write-Output $outputLine
-        //   }
-
-        //   # Close the reader and the process
-        //   $reader.Close()
-        //   $process.WaitForExit()
-        //   $process.Close()
-        // `;
-
-        // Also didn't work.
-        // scriptContent = `
-        //   Set-Location "${options.CAFfeinatedPath}"
-        //   # Start the external program with arguments and redirect its output to a stream
-        //   $psi = New-Object System.Diagnostics.ProcessStartInfo
-        //   $psi.FileName = "C:\\CAFfeinated\\node_modules\\.bin\\testcafe"
-        //   $psi.Arguments = "-arg1 firefox -arg2 /Documents/dev/vagrant/www/clients/hs/CAFfeinated/TestBureau/SethEden/Tests/Default.test.js -arg3 --reporter -arg4 'html:/Documents/dev/vagrant/www/clients/hs/CAFfeinated/results/SethEden/reports/20240111-102505-114.html' -arg5 testName=Software"  # Add your program arguments here
-        //   $psi.RedirectStandardOutput = $true
-        //   $psi.UseShellExecute = $false
-        //   $psi.CreateNoWindow = $true
-
-        //   $process = New-Object System.Diagnostics.Process
-        //   $process.StartInfo = $psi
-
-        //   # Start the process
-        //   $process.Start() | Out-Null
-
-        //   # Create a StreamReader to continuously read the output stream
-        //   $reader = $process.StandardOutput
-
-        //   # Continuously read and print the output stream
-        //   while (-not $process.HasExited) {
-        //       $outputLine = $reader.ReadLine()
-        //       Write-Output $outputLine
-        //   }
-
-        //   # Close the process
-        //   $process.WaitForExit()
-        //   $process.Close()
-        // `;
-        
-        // Add temp file to options, but add quotes around the script file name and path.
-        // spawnOptions[1].push(`"${shellscript.name}"`);
         break;
 
       case 'cmd': case 'dos':
         spawnOptions = ['cmd', ['/c']];
 
         // Powershell command to execute commands
-        // scriptContent = shellCommandToRun;
-        scriptContent = `start /wait ${shellCommandToRun}`;
-        // scriptContent = `cd ${options.CAFfeinatedPath} && start /wait ${shellCommandToRun}`;
-        // scriptContent = 'start /wait';
+        // scriptContent = `start /wait ${shellCommandToRun}`;
+        scriptContent = `cd ${options.CAFfeinatedPath} && start /wait ${shellCommandToRun}`;
 
         // Script extension
         tempFileOptions.postfix = '.bat';
-        // Add temp file to options, but don't add quotes around the script file name and path.
-        // spawnOptions[1].push(shellscript.name);
         break;
 
       case 'bash':
@@ -253,12 +155,7 @@ export async function shell(shellCommandToRun, options) {
         break;
       default:
       }
-      // Add temp file to options
-      // spawnOptions[1].push(shellscript.name); // DOS
-      // spawnOptions[1].push(`\\" {${shellscript.name}}\\"`); // REALLY CLOSE!!!!
-      // spawnOptions[1].push(`\\" {& '${shellscript.name}'}\\"`); // Mostly working DOS to Powershell
-      // spawnOptions[1].push(`\\"@(${shellscript.name})\\"`); // Possibly fully working DOS to Powershell ! WORKING ALL THE WAY, but without ECHO in child process
-
+      
       // Check and proceed if the temporary
       // file has successfully been written
       if (error) {
@@ -280,10 +177,6 @@ export async function shell(shellCommandToRun, options) {
           let spawnOptionsString = spawnOptions[0] + ' ' + [...spawnOptions.slice(1)].join(' ');
           process.stdout.write(`\r\nspawn command is: ${spawnOptionsString}`);
           child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1));
-          // const spawnOptionsLen = spawnOptions.length;
-          // let spawnOptionsString2 = [...spawnOptions.slice(1, spawnOptionsLen), `"${spawnOptions[-1]}"`].join(' ');
-          // process.stdout.write(`\r\nspawn command is: ${spawnOptions[0]} ${spawnOptionsString2}`);
-          // child = childProcess.spawn(spawnOptions[0], ...[spawnOptions.slice(1, spawnOptionsLen), `"${spawnOptions[-1]}"`]);
 
           // Handles actions taken when
           // errors occurs on child process
