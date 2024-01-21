@@ -55,5 +55,5 @@ export const applicationSystemConstantsValidation = [
   {Name: 'ctestName', Actual: app_sys.ctestName, Expected: 'testName'},
 
   // Command Types
-  {Name: 'cvalidCommandTypes', Actual: app_sys.cvalidCommandTypes, Expected: 'cmd,bash,powershell'}
+  {Name: 'cvalidCommandTypes', Actual: app_sys.cvalidCommandTypes, Expected: 'dos,cmd,bash,powershell'}
 ];

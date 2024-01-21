@@ -111,7 +111,9 @@ export async function shell(shellCommandToRun, options) {
         spawnOptions = ['cmd', ['/c']];
 
         // Powershell command to execute commands
-        // scriptContent = `start /wait ${shellCommandToRun}`;
+        // Need to cd into the CAFfeinated folder first,
+        // because for some reason testcafe needs to be running from the local instance of testcafe, not the global instance of testcafe.
+        // Without this, the test will start, run for a few seconds and then FAIL!
         scriptContent = `cd ${options.CAFfeinatedPath} && start /wait ${shellCommandToRun}`;
 
         // Script extension
@@ -201,7 +203,7 @@ export async function shell(shellCommandToRun, options) {
             // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
             // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
             if (process['send']) process.send('\r\nExiting child process');
-            // shellscript.removeCallback();
+            shellscript.removeCallback();
             // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
           });
         }
