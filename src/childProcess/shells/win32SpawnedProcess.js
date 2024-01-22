@@ -121,16 +121,14 @@ export async function shell(shellCommandToRun, options) {
         break;
 
       case 'bash':
-        spawnOptions = ['start', ['bash', '/c']];
+        spawnOptions = ['start', ['"C:/Program Files/Git/git-bash.exe"']];
 
         // Bash command to execute commands
         scriptContent = `
-          #!/usr/bin/env bash
-          "clear -x; ${shellCommandToRun}"
+          cd ${options.CAFfeinatedPath}
+          ${shellCommandToRun}
+          $SHELL
         `.trim();
-
-        // Add temp file to options, but add quotes around the script file name and path.
-        // spawnOptions[1].push(`"${shellscript.name}"`);
         break;
 
       default:
@@ -154,6 +152,7 @@ export async function shell(shellCommandToRun, options) {
         spawnOptions[1].push(shellscript.name); // DOS
         break;
       case 'bash':
+        spawnOptions[1].push(shellscript.name); // BASH
         break;
       default:
       }
@@ -176,35 +175,44 @@ export async function shell(shellCommandToRun, options) {
         } else {
           // Opening [bash|powershell and etc]
           process.stdout.write(`\r\nOpening ${options.shell}`);
+          process.stdout.write(`\r\nspawn command RAW is: ${spawnOptions.join(' ')}`);
           let spawnOptionsString = spawnOptions[0] + ' ' + [...spawnOptions.slice(1)].join(' ');
           process.stdout.write(`\r\nspawn command is: ${spawnOptionsString}`);
-          child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1));
+          child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1), {shell: true});
 
-          // Handles actions taken when
-          // errors occurs on child process
-          child.on('error', (error) => {
-          // let eventName = bas.cDot + wrd.cerror;
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error );
+          // Hard coded experimentation for BASH
+          // child = childProcess.spawn('start', ['git-bash', '\\"tmp-1064-mykwBQQ79Ih3-.sh\\"'], {windowsVerbatimArguments: false});
+
+          // Handles actions taken when errors occurs on child process
+          child.on('error', async (error) => {
+          let eventName = bas.cDot + wrd.cerror;
+          await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
+          await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error );
+          process.stdout.write(`\r\n error is: ${error}`);
           if (process['send']) process.send(`\r\nError from child: ${error}`);
-          // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+          await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+          });
+
+          child.on('spawn', async () => {
+            // let eventName = bas.cDot + wrd.cspawn;
+            process.stdout.write(`\r\nProcess was spawned!!`);
           });
 
           child.on('disconnect', async () => {
             let eventName = bas.cDot + wrd.cdisconnect;
-            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
+            await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
             if (process['send']) process.send('\r\nChild disconnected');
-            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+            await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
           });
 
           child.on('exit', async (code, signal) => {
             let eventName = bas.cDot + wrd.cexit;
-            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
-            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
+            await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
+            await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
+            await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
             if (process['send']) process.send('\r\nExiting child process');
-            shellscript.removeCallback();
-            // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+            shellscript.removeCallback(); // Comment out to prevent the file from being deleted for debugging.
+            await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
           });
         }
       }
