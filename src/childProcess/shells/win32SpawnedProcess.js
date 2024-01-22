@@ -211,7 +211,7 @@ export async function shell(shellCommandToRun, options) {
             await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
             await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
             if (process['send']) process.send('\r\nExiting child process');
-            shellscript.removeCallback(); // Comment out to prevent the file from being deleted for debugging.
+            // shellscript.removeCallback(); // Comment out to prevent the file from being deleted for debugging.
             await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
           });
         }
@@ -219,6 +219,8 @@ export async function shell(shellCommandToRun, options) {
     })
   } catch (error) {
     process.stdout.write(`\r\nError on shell: ${error.message}`)
+  } finally {
+    shellscript.removeCallback(); // Comment out to prevent the file from being deleted for debugging.
   }
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function); 
 }
