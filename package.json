@@ -48,6 +48,7 @@
     "@haystacks/async": ">=0.2.11",
     "child_process": "^1.0.2",
     "dotenv": "^16.0.3",
+    "lts": "^1.2.0",
     "tmp": "^0.2.1"
   },
   "devDependencies": {
