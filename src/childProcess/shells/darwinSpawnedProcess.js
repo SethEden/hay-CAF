@@ -90,20 +90,24 @@ export async function shell(shellCommandToRun, options) {
       case 'powershell':
         spawnOptions = ['sh', []]     
 
+        // Ensure powershell prompt appears
+        // before proceeding
+        shellCommandToRun =`Start-Sleep -Seconds 3
+          Clear-Host
+          ${shellCommandToRun}
+        `;
+
         // Powershell command to execute commands
         scriptContent = `
           #!/usr/bin/env bash
           osascript -e 'tell application "Terminal"
               if not (exists window 1) then reopen
               activate
-              do script "pwsh /c ${shellCommandToRun}" in window 1
-           end tell'
+              do script "clear -x; pwsh -NoExit -Command ${shellCommandToRun}" in window 1
+           end tell' 
         `.trim();
         break;
 
-      case 'cmd':
-        spawnOptions = []     
-        break;
       case 'bash':
         spawnOptions = ['sh', []]     
         scriptContent = `
@@ -115,6 +119,7 @@ export async function shell(shellCommandToRun, options) {
            end tell'
         `.trim();
         break;
+
       default:
         console.log('Selected shell not found.')
     }
@@ -123,11 +128,12 @@ export async function shell(shellCommandToRun, options) {
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     fs.writeSync(shellscript.fd, scriptContent);
-    console.log(`Script content is: ${scriptContent}`)
+
+    // Close temp file handle
+    fs.close(shellscript.fd)
 
     // Add temporary file to options
     spawnOptions[1].push(shellscript.name);
-    console.log(shellscript.name)
 
     // Check and proceed if the temporary
     // file has successfuly been written
@@ -148,24 +154,18 @@ export async function shell(shellCommandToRun, options) {
       });
 
       child.on('disconnect', async () => {
-        let eventName = bas.cDot + wrd.cdisconnect;
+        // let eventName = bas.cDot + wrd.cdisconnect;
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
         if (process['send']) process.send('\r\nChild disconnected');
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
       });
 
       child.on('exit', async (code, signal) => {
-        let eventName = bas.cDot + wrd.cexit;
+        // let eventName = bas.cDot + wrd.cexit;
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
         if (process['send']) process.send('\r\nExiting child process');
-        if (options.debug.keepTmpFile){
-          console.log(`Dry deleting tmp file, ${shellscript.name}`)
-        } else {
-          console.log(`Deleting tmp file, ${shellscript.name}`)
-          shellscript.removeCallback();
-        }
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
       });
     } else {
