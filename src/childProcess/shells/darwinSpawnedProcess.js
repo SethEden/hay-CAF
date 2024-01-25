@@ -134,6 +134,7 @@ export async function shell(shellCommandToRun, options) {
     if (fs.existsSync(shellscript.name)) {
       const child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1), {
         stdio: 'pipe',
+        cwd: options.CAFfeinatePath
       });
 
       // Handles actions taken when
