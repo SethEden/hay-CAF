@@ -131,8 +131,8 @@ export default function socketsServer() {
                 // if "end" message is received
                 const str = message.split(' ')[0].toLowerCase();
                 if (str === 'end') {
-                  console.log('Sending termination cmd to clients...')
-                  client.write('should be closing now....')
+                  // console.log('Sending termination cmd to clients...')
+                  // client.write('should be closing now....')
                 }
             }
           }
