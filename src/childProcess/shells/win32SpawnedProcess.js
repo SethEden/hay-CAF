@@ -59,11 +59,12 @@ function isExecutableExists(pathToShellExecutable) {
  * @param {string} shellCommandToRun The command to be executed.
  * @param {Object} options Options to change behavior how shell is executed.
  * @param {string} [options.shell = "powershell|cmd|bash"] Optional. Options to change behavior how shell is executed 
+ * @param {function(arg1)=} callback Optional callback to send data back to spawnedProcess 
  * @return {void}
  * @author Karl-Edward FP Jean-Mehu
  * @date 2023/01/02
  */
-export async function shell(shellCommandToRun, options) {
+export async function shell(shellCommandToRun, options, callback) {
   let functionName = shell.name;
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   // await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cshellCommandToRunIs + shellCommandToRun);
@@ -161,6 +162,7 @@ export async function shell(shellCommandToRun, options) {
         process.stdout.write(`\r\nError creating temp file: ${error}`);
       } else {
         process.stdout.write(`\r\nTmp file successfully written: ${shellscript.name}`);
+        await callback(shellscript.name);
         await haystacks.setConfigurationSetting(wrd.csystem, 'testScriptFileName', shellscript.name);
 
         let tempTestScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, 'testScriptFileName');

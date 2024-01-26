@@ -7,7 +7,7 @@
  */
 import process from 'process';
 const DEV_MODE = process.env.NODE_ENV?.toLowerCase() === 'development';
-const platformFunctionName = `${process.platform}SpawnedProcess`;
+const platformFunctionName = `${'win32'}SpawnedProcess`;
 const shellScript = await (async () => {
   const mod = `./shells/${platformFunctionName}.js`;
   return import(mod);
@@ -25,8 +25,14 @@ const shellOptions = JSON.parse(temp[1]);
 // creates and returns the command to be spawned in child
 if (typeof shellScript['shell'] !== 'function') {
   console.log(`type : ${shellScript['shell']}`);
-  throw new Error(`Function ${platformFunctionName} is absent`);
+  throw new Error(`Function )${platformFunctionName} is absent`);
 }
 
 if (DEV_MODE) console.log(`Spawning ${process.platform} process...`);
-(async () => { await shellScript['shell'](commandToRun, shellOptions); } )()
+(async () => { 
+  shellScript['shell'](commandToRun, shellOptions, async (shellScriptName) => {
+    // Do something magical! :)
+    console.log(`\r\nWe're doing it here....`)
+    console.log({shellScriptName})
+  }); 
+} )()

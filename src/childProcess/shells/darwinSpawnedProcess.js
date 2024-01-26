@@ -56,11 +56,13 @@ function isExecutableExists(pathToShellExecutable) {
  * @function shell
  * @description Creates temporary shell and executes given command.
  * @param {string} shellCommandToRun The command to be executed.
+ * @param {string} [options.shell = "powershell|cmd|bash"] Optional. Options to change behavior how shell is executed 
+ * @param {function(arg1)=} callback Optional callback to send data back to spawnedProcess 
  * @return {void}
  * @author Karl-Edward FP Jean-Mehu
  * @date 2023/01/02
  */
-export async function shell(shellCommandToRun, options) {
+export async function shell(shellCommandToRun, options, callback) {
   let functionName = shell.name;
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   // await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cshellCommandToRunIs + shellCommandToRun);
