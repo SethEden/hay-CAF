@@ -95,7 +95,11 @@ export default function socketsServer() {
       client.on('error', ({message}) => {
         // console.log('BEGIN childProcess.shells.socketsServer.connection.error event');
         // console.log(`message is: ${message}`);
-        console.log(`\r\n>Error on socket server: ${message}`);
+        if (message !== 'read ECONNRESET') {
+          console.log(`\r\n>Error on socket server: ${message}`);
+        }
+        process.stdout.write('>');
+        return testResult;
         // console.log('END childProcess.shells.socketsServer.connection.error event'); 
       });
 
