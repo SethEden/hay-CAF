@@ -135,8 +135,7 @@ export async function shell(shellCommandToRun, options) {
         throw new Error('Selected shell not found.')
     }
 
-    // Write shell script to
-    // temporary shell file
+    // Write shell script to temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     console.log(`\r\nconsoleLog: shellScript file name is: ${shellscript.name}`);
     process.stdout.write(`\r\nprocess.stdout.write: shellScript file name is: ${shellscript.name}`);
@@ -157,12 +156,15 @@ export async function shell(shellCommandToRun, options) {
       default:
       }
       
-      // Check and proceed if the temporary
-      // file has successfully been written
+      // Check and proceed if the temporary file has successfully been written
       if (error) {
         process.stdout.write(`\r\nError creating temp file: ${error}`);
       } else {
         process.stdout.write(`\r\nTmp file successfully written: ${shellscript.name}`);
+        await haystacks.setConfigurationSetting(wrd.csystem, 'testScriptFileName', shellscript.name);
+
+        let tempTestScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, 'testScriptFileName');
+        process.stdout.write(`\r\ntempTestScriptFileName is: ${tempTestScriptFileName}`);
 
         // Ensure the use of a single shell instance 
         let child;
@@ -211,7 +213,6 @@ export async function shell(shellCommandToRun, options) {
             await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
             await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
             if (process['send']) process.send('\r\nExiting child process');
-            // shellscript.removeCallback(); // Comment out to prevent the file from being deleted for debugging.
             await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
           });
         }
@@ -219,8 +220,6 @@ export async function shell(shellCommandToRun, options) {
     })
   } catch (error) {
     process.stdout.write(`\r\nError on shell: ${error.message}`)
-  } finally {
-    shellscript.removeCallback(); // Comment out to prevent the file from being deleted for debugging.
   }
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function); 
 }

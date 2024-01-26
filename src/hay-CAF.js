@@ -34,7 +34,7 @@ import url from 'url';
 import dotenv from 'dotenv';
 import path from 'path';
 
-const {bas, cmd, msg, sys, wrd, biz} = hayConst;
+const {bas, cmd, cfg, msg, sys, wrd, biz} = hayConst;
 let rootPath = '';
 let baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 // application.hay-CAF
@@ -144,6 +144,9 @@ async function application() {
   if (argumentDrivenInterface === undefined) {
     argumentDrivenInterface = false;
   }
+  // Set this to an empty string at first.
+  console.log('setting the configuration setting: system.testScriptFileName to an empty string.');
+  await haystacks.setConfigurationSetting(wrd.csystem, 'testScriptFileName', '');
   // argumentDrivenInterface is:
   // await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cargumentDrivenInterfaceIs + argumentDrivenInterface);
   await haystacks.enqueueCommand(app_cmd.cApplicationStartupWorkflow);
@@ -190,6 +193,16 @@ async function application() {
     await haystacks.consoleLog(namespacePrefix, functionName, app_msg.capplicationMessage02);
     while(programRunning === true) {
       if (await haystacks.isCommandQueueEmpty() === true) {
+        // Cleanup any script files from the last command run.
+        let testScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, 'testScriptFileName');
+        // testScriptFileName is:
+          console.log('testScriptfileName is: ' + testScriptFileName);
+        if (!testScriptFileName === '') {
+          let applicationRootPath = await haystacks.getConfigurationSetting(wrd.csystem, cfg.cclientRootPath);
+          // applicationRootPath is:
+          console.log('applicationRootPath is: ' + applicationRootPath);
+        }
+
         // biz.cprompt is some how undefined here, although other biz.c<something-else> do still work.
         // We will use wrd.cprompt here because it is working. No idea what the issue is with biz.prompt.
         commandInput = await haystacks.executeBusinessRules([bas.cGreaterThan, ''], [wrd.cprompt]);
