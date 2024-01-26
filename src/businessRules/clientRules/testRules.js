@@ -40,19 +40,7 @@ const __dirname = dirname(__filename);
 const spawnProcess = `${__dirname}/../../childProcess/spawnProcess.js`;
 
 // application.hay-CAF.businessRules.clientRules.testRules.
-const namespacePrefix =
-  wrd.capplication +
-  bas.cDot +
-  apc.cApplicationName +
-  bas.cDot +
-  wrd.cbusiness +
-  wrd.cRules +
-  bas.cDot +
-  wrd.cclient +
-  wrd.cRules +
-  bas.cDot +
-  baseFileName +
-  bas.cDot;
+const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas.cDot + wrd.cbusiness + wrd.cRules + bas.cDot + wrd.cclient + wrd.cRules + bas.cDot + baseFileName + bas.cDot;
 
 /**
  * @function buildArrayOfTestNames
@@ -194,7 +182,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     ]);
 
     // Handler for incoming data from child process
-    childProcess.on('data', (chunk) => {
+    childProcess.on('data', async (chunk) => {
       // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
       // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cdataIs + chunk.toString() );
       const message = chunk.toString();
@@ -202,8 +190,19 @@ async function spawnCmdProcess(inputData, inputMetaData) {
       // haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${message}`);
     });
 
+    // Handler for incoming messages from child process
+    childProcess.on('message', async (messageData) => {
+      if (messageData[wrd.cName]) {
+        console.log('testRules.globalTestScriptFileName is: ' + messageData[wrd.cName]);
+        await haystacks.setConfigurationSetting(wrd.csystem, 'testScriptFileName', messageData[wrd.cName]);
+
+        let tempTestScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, 'testScriptFileName');
+        console.log(`testRules.tempTestScriptFileName is: ${tempTestScriptFileName}`);
+      }
+    });
+
     // Error handler on child process
-    childProcess.on('error', (error) => {
+    childProcess.on('error', async (error) => {
       // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
       // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + JSON.stringify(error) );
       console.log(`Error: ${error}`);
@@ -213,7 +212,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     });
 
     // Child process exited
-    childProcess.on('exit', (code, signal) => {
+    childProcess.on('exit', async (code, signal) => {
       // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
       // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cexitIs + JSON.stringify(error) );
       // Display only unsuccessful exit codes

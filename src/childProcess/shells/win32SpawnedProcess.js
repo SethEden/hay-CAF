@@ -162,11 +162,10 @@ export async function shell(shellCommandToRun, options, callback) {
         process.stdout.write(`\r\nError creating temp file: ${error}`);
       } else {
         process.stdout.write(`\r\nTmp file successfully written: ${shellscript.name}`);
-        await callback(shellscript.name);
-        await haystacks.setConfigurationSetting(wrd.csystem, 'testScriptFileName', shellscript.name);
-
-        let tempTestScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, 'testScriptFileName');
-        process.stdout.write(`\r\ntempTestScriptFileName is: ${tempTestScriptFileName}`);
+        // await callback(shellscript.name); // Call the callback function to pass back the name of the script file.
+        if (process['send']) {
+          process.send({[wrd.cName]: shellscript.name});
+        }
 
         // Ensure the use of a single shell instance 
         let child;

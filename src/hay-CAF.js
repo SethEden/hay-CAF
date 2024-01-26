@@ -192,23 +192,31 @@ async function application() {
     // BEGIN command parser
     await haystacks.consoleLog(namespacePrefix, functionName, app_msg.capplicationMessage02);
     while(programRunning === true) {
+      let testScriptFileName = '';
+      let fileDeleted = false;
       if (await haystacks.isCommandQueueEmpty() === true) {
-        // Cleanup any script files from the last command run.
-        let testScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, 'testScriptFileName');
-        // testScriptFileName is:
-          console.log('testScriptfileName is: ' + testScriptFileName);
-        if (!testScriptFileName === '') {
-          let applicationRootPath = await haystacks.getConfigurationSetting(wrd.csystem, cfg.cclientRootPath);
-          // applicationRootPath is:
-          console.log('applicationRootPath is: ' + applicationRootPath);
-        }
-
         // biz.cprompt is some how undefined here, although other biz.c<something-else> do still work.
         // We will use wrd.cprompt here because it is working. No idea what the issue is with biz.prompt.
         commandInput = await haystacks.executeBusinessRules([bas.cGreaterThan, ''], [wrd.cprompt]);
         await haystacks.enqueueCommand(commandInput);
       } // End-if (haystacks.isCommandQueueEmpty() === true)
       commandResult = await haystacks.processCommandQueue();
+
+      // Cleanup any script files from the last command run.
+      testScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, 'testScriptFileName');
+      // testScriptFileName is:
+      console.log('main.testScriptfileName 2 is: ' + testScriptFileName);
+      if (testScriptFileName !== '') {
+        let applicationRootPath = await haystacks.getConfigurationSetting(wrd.csystem, cfg.cclientRootPath);
+        // applicationRootPath is:
+        console.log('main.applicationRootPath 2 is: ' + applicationRootPath);
+        // TODO Make sure to apply additional logic for file name and path to make sure it's fully qualifed
+        fileDeleted = await haystacks.executeBusinessRules([testScriptFileName, ''], [biz.cdeleteFile]);
+        if (fileDeleted === true) {
+          await haystacks.setConfigurationSetting(wrd.csystem, 'testScriptFileName', '');
+        }
+      }
+
       if (commandResult[exitConditionArrayIndex] === false) {
         // END command parser
         await haystacks.consoleLog(namespacePrefix, functionName, app_msg.capplicationMessage03);

@@ -6,6 +6,10 @@
  * @copyright Copyright © 2023-… by Karl-Edward F.P. Jean-Mehu. All rights reserved.
  */
 import process from 'process';
+import haystacks from '@haystacks/async'
+import hayConst from '@haystacks/constants';
+
+const { wrd } = hayConst;
 const DEV_MODE = process.env.NODE_ENV?.toLowerCase() === 'development';
 const platformFunctionName = `${'win32'}SpawnedProcess`;
 const shellScript = await (async () => {
@@ -30,9 +34,5 @@ if (typeof shellScript['shell'] !== 'function') {
 
 if (DEV_MODE) console.log(`Spawning ${process.platform} process...`);
 (async () => { 
-  shellScript['shell'](commandToRun, shellOptions, async (shellScriptName) => {
-    // Do something magical! :)
-    console.log(`\r\nWe're doing it here....`)
-    console.log({shellScriptName})
-  }); 
-} )()
+  shellScript['shell'](commandToRun, shellOptions, async () => {});
+})();
