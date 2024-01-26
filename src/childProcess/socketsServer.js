@@ -61,6 +61,9 @@ export default function socketsServer() {
     // an active connection
     let isConnected = false;
 
+    // Test result from client
+    let testResult = false;
+
     // Handles actions taken when an
     // error occurs on the server.
     server.on('error', (error) => {
@@ -112,10 +115,26 @@ export default function socketsServer() {
           const json = safeJsonParse(chunk);
 
           // Ensure the message property exists
-          if (!json['data'] && json['message']) {
-            const { message, timestamp } = json;
+          if (!json['data']) {
 
-            console.log(`${timestamp}: ${message}`);
+            // Internal commands
+            if (json['testResult']) {
+              testResult = json['testResult'];
+            }
+
+            if (json['message']){
+                const { message, timestamp } = json;
+
+                console.log(`${timestamp}: ${message}`);
+
+                // Terminates child processes 
+                // if "end" message is received
+                const str = message.split(' ')[0].toLowerCase();
+                if (str === 'end') {
+                  console.log('Sending termination cmd to clients...')
+                  client.write('should be closing now....')
+                }
+            }
           }
         } catch ({ message }) {
           console.log(`\r\nFailed retrieving data from client: ${message}`);
@@ -130,7 +149,7 @@ export default function socketsServer() {
         isConnected = false;
         console.log('\r\nServer connection has ended!');
         process.stdout.write('>');
-        return true;
+        return testResult;
       });
       // console.log('END childProcess.shells.socketsServer.connection.end event');
     });
