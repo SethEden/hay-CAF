@@ -11,7 +11,7 @@ import hayConst from '@haystacks/constants';
 
 const { wrd } = hayConst;
 const DEV_MODE = process.env.NODE_ENV?.toLowerCase() === 'development';
-const platformFunctionName = `${'win32'}SpawnedProcess`;
+const platformFunctionName = `${'process.platform'}SpawnedProcess`;
 const shellScript = await (async () => {
   const mod = `./shells/${platformFunctionName}.js`;
   return import(mod);
