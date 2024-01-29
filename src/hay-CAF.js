@@ -18,7 +18,6 @@
  */
 
 // Internal imports
-import testBroker from './brokers/testBroker.js';
 import testRules from './businessRules/clientRulesLibrary.js';
 import testCommands from './commands/clientCommandsLibrary.js';
 import * as app_cmd from './constants/application.command.constants.js';
@@ -26,7 +25,7 @@ import * as app_cfg from './constants/application.configuration.constants.js';
 import * as apc from './constants/application.constants.js';
 import * as app_msg from './constants/application.message.constants.js';
 import * as app_sys from './constants/application.system.constants.js';
-import allAppCV from './resources/constantsValidation/allApplicationConstantsValidationmetadata.js';
+import allAppCV from './resources/constantsValidation/allApplicationConstantsValidationMetadata.js';
 // External imports
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
