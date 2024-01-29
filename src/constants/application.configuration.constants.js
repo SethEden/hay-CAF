@@ -23,3 +23,4 @@ export const cenableReporter = wrd.cenable + wrd.cReporter; // enableReporter
 export const creportPath = wrd.creport + wrd.cPath; // reportPath
 export const cchildProcessLimitTime = wrd.cchild + wrd.cProcess + wrd.cLimit + wrd.cTime; // childProcessLimitTime
 export const ccmdType = sys.ccmd + wrd.cType; // cmdType
+export const ctestScriptFileName = wrd.ctest + wrd.cScript + wrd.cFileName; // testScriptFileName

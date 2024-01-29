@@ -81,6 +81,14 @@ export const applicationMessageConstantsValidation = [
   {Name: 'ctestCommandStringIs', Actual: app_msg.ctestCommandStringIs, Expected: 'testCommandString is: '},
   {Name: 'ctestNameKeyIs', Actual: app_msg.ctestNameKeyIs, Expected: 'testNameKey is: '},
   {Name: 'ctestNameIs', Actual: app_msg.ctestNameIs, Expected: 'testName is: '},
+  {Name: 'ctestFileNameArrayIs', Actual: app_msg.ctestFileNameArrayIs, Expected: 'testFileNameArray is: '},
+  {Name: 'cvalidCommandTypesAre', Actual: app_msg.cvalidCommandTypesAre, Expected: 'Valid command types are: '},
+  {Name: 'cErrorYourSystemColon', Actual: app_msg.cErrorYourSystemColon, Expected: 'ERROR: Your system, '},
+  {Name: 'cErrorIsNotYetSupported', Actual: app_msg.cErrorIsNotYetSupported, Expected: 'is not yet supported!'},
+  {Name: 'cCAFfeinatedPathIs', Actual: app_msg.cCAFfeinatedPathIs, Expected: 'CAFfeinatedPath is: '},
+  {Name: 'cmessageDataIs', Actual: app_msg.cmessageDataIs, Expected: 'messageData is: '},
+  {Name: 'ctestScriptFileNameIs', Actual: app_msg.ctestScriptFileNameIs, Expected: 'testScriptFileName is: '},
+  {Name: 'cconfigurationTestScriptFileNameIs', Actual: app_msg.cconfigurationTestScriptFileNameIs, Expected: 'configuration testScriptFileName is: '},
 
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
   {Name: 'cErrorSetRootTestFolderPathMessage', Actual: app_msg.cErrorSetRootTestFolderPathMessage, Expected: 'ERROR: Please enter a valid path as input.'},
@@ -98,4 +106,5 @@ export const applicationMessageConstantsValidation = [
   {Name: 'ctestMessage03', Actual: app_msg.ctestMessage03, Expected: 'ERROR: No boiler plate test path and file name were specified. Please set the boiler plate test path and file name in the configuration setting: '},
   {Name: 'ctestMessage04', Actual: app_msg.ctestMessage04, Expected: 'ERROR: No report path specified. Please set the report path in the configuration setting: '},
   {Name: 'ctestMessage05', Actual: app_msg.ctestMessage05, Expected: 'ERROR: No test root path specified. Please set the path in the configuration setting: '},
+  {Name: 'cchildProcessCommandStringNotDefined', Actual: app_msg.cchildProcessCommandStringNotDefined, Expected: 'Child process command string not defined.'}
 ];

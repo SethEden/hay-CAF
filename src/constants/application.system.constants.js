@@ -32,6 +32,9 @@ export const capplication_constants_js = wrd.capplication + bas.cDot + wrd.ccons
 export const capplication_message_constants_js = wrd.capplication + bas.cDot + wrd.cmessage + bas.cDot + wrd.cconstants + gen.cDotjs; // application.message.constants.js
 export const capplication_system_constants_js = wrd.capplication + bas.cDot + wrd.csystem + bas.cDot + wrd.cconstants + gen.cDotjs; // application.system.constants.js
 
+// Framework
+export const cCAFfeinated = bas.cCA + bas.cFf + bas.cei + bas.cna + phn.cted; // CAFfeinated
+
 // Test Drivers
 // NOTE: At some point in the future hay-CAF will transition to using hayD-CAF rather than our current system.
 // Then we can call test scripts using Playwright, Cypress, NightwatchJS, WebDriverIO, Appium and TestCafe.
@@ -49,3 +52,6 @@ export const ctestName = wrd.ctest + wrd.cName; // testName
 
 // Command Types
 export const cvalidCommandTypes = sys.cdos + bas.cComa + sys.ccmd + bas.cComa + sys.cbash + bas.cComa + sys.cpowershell; // dos,cmd,bash,powershell
+
+// Miscellaneous
+export const cSpawnedProcess = wrd.cSpawned + wrd.cProcess; // SpawnedProcess

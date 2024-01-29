@@ -29,7 +29,7 @@ import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
 import path from 'path';
 
-const {bas, biz, gen, msg, wrd} = hayConst;
+const {bas, biz, gen, msg, num, wrd} = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 // application.hay-CAF.commands.clientCommands.testCommands.
 const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas.cDot + wrd.ccommands + bas.cDot + wrd.cclient + wrd.cCommands + bas.cDot + baseFileName + bas.cDot;
@@ -431,11 +431,11 @@ async function setCmdType(inputData, inputMetaData) {
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ccmdType, inputData[1].toLowerCase());
     } else {
       // ERROR: Please enter a valid command type. Valid types are:
-      console.log(app_msg.csetCommandTypeMessage01 + app_sys.cvalidCommandTypes);
+      console.log(app_msg.csetCommandTypeMessage01 + app_sys.cvalidCommandTypes + bas.cSpace + num.c1);
     }
   } else {
     // ERROR: Please enter a valid command type. Valid types are:
-    console.log(app_msg.csetCommandTypeMessage01 + app_sys.cvalidCommandTypes);
+    console.log(app_msg.csetCommandTypeMessage01 + app_sys.cvalidCommandTypes + bas.cSpace + num.c2);
   }
   await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);

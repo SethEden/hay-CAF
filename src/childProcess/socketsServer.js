@@ -14,8 +14,7 @@
 import process from 'process';
 import { Server } from 'net';
 
-// Host and port to which the socket
-// connection will be listening to
+// Host and port to which the socket connection will be listening to.
 const SOCKET = {
   host: '127.0.0.1',
   port: 3000,
@@ -57,15 +56,13 @@ export default function socketsServer() {
     // Creates server instance
     const server = Server({});
 
-    // Flag to check if there is 
-    // an active connection
+    // Flag to check if there is an active connection
     let isConnected = false;
 
     // Test result from client
     let testResult = false;
 
-    // Handles actions taken when an
-    // error occurs on the server.
+    // Handles actions taken when an error occurs on the server.
     server.on('error', (error) => {
       // console.log('BEGIN childProcess.shells.socketsServer.error event');
       // console.log(`message is: ${message}`);
@@ -77,8 +74,7 @@ export default function socketsServer() {
       }
     });
 
-    // Handles actions to take when server
-    // begins to listen for connections from clients.
+    // Handles actions to take when server begins to listen for connections from clients.
     server.on('listening', () => {
       // console.log('BEGIN childProcess.shells.socketsServer.listening event');
       // console.log(`message is: ${message}`);
@@ -86,15 +82,13 @@ export default function socketsServer() {
       // console.log('END childProcess.shells.socketsServer.listening event');
     });
 
-    // Handles actions to take
-    // when a client is connected.
+    // Handles actions to take when a client is connected.
     server.on('connection', (client) => {
       // console.log('BEGIN childProcess.shells.socketsServer.connection event');
       isConnected = true;
       console.log('\r\nServer connected!');
 
-      // Handles action to take
-      // when an error occurs during socker connection.
+      // Handles action to take when an error occurs during socket connection.
       client.on('error', ({message}) => {
         // console.log('BEGIN childProcess.shells.socketsServer.connection.error event');
         // console.log(`message is: ${message}`);
@@ -106,8 +100,7 @@ export default function socketsServer() {
         // console.log('END childProcess.shells.socketsServer.connection.error event'); 
       });
 
-      // Handles incomming messages as they
-      // come in from a socket client.
+      // Handles incoming messages as they come in from a socket client.
       client.on('data', (chunk) => {
         // console.log('BEGIN childProcess.shells.socketsServer.connection.data event');
         // console.log(`chunk is: ${safeJsonParse( chunk )}`);
@@ -142,8 +135,7 @@ export default function socketsServer() {
         // console.log('END childProcess.shells.socketsServer.connection.data event');
       });
 
-      // Handles actions to take at the end
-      // of the socket connection.
+      // Handles actions to take at the end of the socket connection.
       client.on('end', () => {
         // console.log('BEGIN childProcess.shells.socketsServer.connection.end event');
         isConnected = false;
@@ -154,8 +146,7 @@ export default function socketsServer() {
       // console.log('END childProcess.shells.socketsServer.connection.end event');
     });
 
-    // Handles actions to when
-    // the connection closes.
+    // Handles actions to take when the connection closes.
     server.on('close', (code, signal) => {
       // console.log('BEGIN childProcess.shells.socketsServer.close event');
       // console.log(`code is: ${code}`);
@@ -175,8 +166,7 @@ export default function socketsServer() {
       }
     });
 
-    // Gracefully exits process
-    // when user attemps a "q" (quit) / ctrl-c.
+    // Gracefully exits process, when user attempts a "q" (quit) / ctrl-c.
     process.on('SIGINT', () => {
       isConnected = false;
       // console.log('BEGIN childProcess.shells.socketsServer.sigint event');

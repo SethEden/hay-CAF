@@ -39,6 +39,9 @@ export const applicationSystemConstantsValidation = [
   {Name: 'capplication_message_constants_js', Actual: app_sys.capplication_message_constants_js, Expected: 'application.message.constants.js'},
   {Name: 'capplication_system_constants_js', Actual: app_sys.capplication_system_constants_js, Expected: 'application.system.constants.js'},
 
+  // Framework
+  {Name: 'cCAFfeinated', Actual: app_sys.cCAFfeinated, Expected: 'CAFfeinated'},
+
   // Test Drivers
   // NOTE: At some point in the future hay-CAF will transition to using hayD-CAF rather than our current system.
   // Then we can call test scripts using Playwright, Cypress, NightwatchJS, WebDriverIO, Appium and TestCafe.
@@ -55,5 +58,8 @@ export const applicationSystemConstantsValidation = [
   {Name: 'ctestName', Actual: app_sys.ctestName, Expected: 'testName'},
 
   // Command Types
-  {Name: 'cvalidCommandTypes', Actual: app_sys.cvalidCommandTypes, Expected: 'dos,cmd,bash,powershell'}
+  {Name: 'cvalidCommandTypes', Actual: app_sys.cvalidCommandTypes, Expected: 'dos,cmd,bash,powershell'},
+
+  // Miscellaneous
+  {Name: 'cSpawnedProcess', Actual: app_sys.cSpawnedProcess, Expected: 'SpawnedProcess'}
 ];
