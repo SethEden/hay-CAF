@@ -89,6 +89,7 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cmessageDataIs', Actual: app_msg.cmessageDataIs, Expected: 'messageData is: '},
   {Name: 'ctestScriptFileNameIs', Actual: app_msg.ctestScriptFileNameIs, Expected: 'testScriptFileName is: '},
   {Name: 'cconfigurationTestScriptFileNameIs', Actual: app_msg.cconfigurationTestScriptFileNameIs, Expected: 'configuration testScriptFileName is: '},
+  {Name: 'cServerConnected', Actual: app_msg.cServerConnected, Expected: 'Server Connected'},
 
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
   {Name: 'cErrorSetRootTestFolderPathMessage', Actual: app_msg.cErrorSetRootTestFolderPathMessage, Expected: 'ERROR: Please enter a valid path as input.'},

@@ -1,6 +1,9 @@
 /**
  * @file spawnProcess.js
  * @description Creates a socket server through which clients will communicate.
+ * @requires module:application.message.constants
+ * @requires module:application.system.constants
+ * @requires {@link https://www.npmjs.com/package/@haystacks/constants|@haystacks/constants}
  * @author Karl-Edward F.P. Jean-Mehu
  * @date 2023/12/29
  * @copyright Copyright © 2023-… by Karl-Edward F.P. Jean-Mehu. All rights reserved.
@@ -10,9 +13,9 @@
 import * as app_msg from '../constants/application.message.constants.js';
 import * as app_sys from '../constants/application.system.constants.js';
 // External Imports
-import process from 'process';
 import haystacks from '@haystacks/async'
 import hayConst from '@haystacks/constants';
+import process from 'process';
 
 const { bas, gen, msg, wrd } = hayConst;
 const DEV_MODE = process.env.NODE_ENV?.toLowerCase() === wrd.cdevelopment;

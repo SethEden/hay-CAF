@@ -93,6 +93,7 @@ export const cCAFfeinatedPathIs = app_sys.cCAFfeinated + wrd.cPath + sys.cSpaceI
 export const cmessageDataIs = wrd.cmessage + wrd.cData + sys.cSpaceIsColonSpace; // messageData is:
 export const ctestScriptFileNameIs = wrd.ctest + wrd.cScript + wrd.cFileName + sys.cSpaceIsColonSpace; // testScriptFileName is:
 export const cconfigurationTestScriptFileNameIs = wrd.cconfiguration + bas.cSpace + ctestScriptFileNameIs; // configuration testScriptFileName is:
+export const cServerConnected = wrd.cServer + bas.cSpace + wrd.cConnected; // Server Connected
 
 export const cErrorSetBoilerPlateTestPathAndFileNameMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cand + bas.cSpace + wrd.cfilename + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path and filename as input.
 export const cErrorSetRootTestFolderPathMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path as input.

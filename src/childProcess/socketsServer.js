@@ -2,6 +2,7 @@
  * @file socketsServer.js
  * @module socketsServer
  * @description Creates a socket server through which clients will communicate.
+ * @requires module:application.message.constants
  * @requires {@link https://nodejs.dev/learn/the-nodejs-process-module|process}
  * @requires {@link https://nodejs.org/api/net|net}
  * @author Karl-Edward F.P. Jean-Mehu
@@ -10,13 +11,17 @@
  */
 
 // Internal imports
+import * as app_msg from '../constants/application.message.constants.js';
 // External imports
+import hayConst from '@haystacks/constants';
 import process from 'process';
 import { Server } from 'net';
 
+const { bas, biz, gen, msg, num, sys, wrd } = hayConst;
+
 // Host and port to which the socket connection will be listening to.
 const SOCKET = {
-  host: '127.0.0.1',
+  host: num.c127 + bas.cDot + num.c0 + bas.cDot + num.c0 + bas.cDot + num.c1, // '127.0.0.1',
   port: 3000,
 };
 
@@ -24,6 +29,7 @@ const SOCKET = {
  * @function safeJsonParse
  * @description Safely parses socket chunks into javascript objects.
  * @param {buffer} buffer - The buffer value to be converted.
+ * @return {object} A JSON object that is safely parsed from the input JSON string.
  * @author Karl-Edward FP Jean-Mehu
  * @date 2023/12/29
  */
@@ -63,7 +69,7 @@ export default function socketsServer() {
     let testResult = false;
 
     // Handles actions taken when an error occurs on the server.
-    server.on('error', (error) => {
+    server.on(wrd.cerror, (error) => {
       // console.log('BEGIN childProcess.shells.socketsServer.error event');
       // console.log(`message is: ${message}`);
       if (error.code === 'EADDRINUSE' && !isConnected){
@@ -75,55 +81,55 @@ export default function socketsServer() {
     });
 
     // Handles actions to take when server begins to listen for connections from clients.
-    server.on('listening', () => {
+    server.on(wrd.clistening, () => {
       // console.log('BEGIN childProcess.shells.socketsServer.listening event');
       // console.log(`message is: ${message}`);
-      console.log('\r\nListening...');
+      console.log(bas.cCarRetNewLin + wrd.cListening + bas.cDot.repeat(3));
       // console.log('END childProcess.shells.socketsServer.listening event');
     });
 
     // Handles actions to take when a client is connected.
-    server.on('connection', (client) => {
+    server.on(wrd.cconnection, (client) => {
       // console.log('BEGIN childProcess.shells.socketsServer.connection event');
       isConnected = true;
-      console.log('\r\nServer connected!');
+      console.log(bas.cCarRetNewLin + app_msg.cServerConnected);
 
       // Handles action to take when an error occurs during socket connection.
-      client.on('error', ({message}) => {
+      client.on(wrd.cerror, ({message}) => {
         // console.log('BEGIN childProcess.shells.socketsServer.connection.error event');
         // console.log(`message is: ${message}`);
         if (message !== 'read ECONNRESET') {
           console.log(`\r\n>Error on socket server: ${message}`);
         }
-        process.stdout.write('>');
+        process.stdout.write(bas.cGreaterThan);
         return testResult;
         // console.log('END childProcess.shells.socketsServer.connection.error event'); 
       });
 
       // Handles incoming messages as they come in from a socket client.
-      client.on('data', (chunk) => {
+      client.on(wrd.cdata, (chunk) => {
         // console.log('BEGIN childProcess.shells.socketsServer.connection.data event');
         // console.log(`chunk is: ${safeJsonParse( chunk )}`);
         try {
           const json = safeJsonParse(chunk);
 
           // Ensure the message property exists
-          if (!json['data']) {
+          if (!json[wrd.cdata]) {
 
             // Internal commands
             if (json['testResult']) {
               testResult = json['testResult'];
             }
 
-            if (json['message']){
+            if (json[wrd.cmessage]){
                 const { message, timestamp } = json;
 
                 console.log(`${timestamp}: ${message}`);
 
                 // Terminates child processes 
                 // if "end" message is received
-                const str = message.split(' ')[0].toLowerCase();
-                if (str === 'end') {
+                const str = message.split(bas.cSpace)[0].toLowerCase();
+                if (str === wrd.cend) {
                   // console.log('Sending termination cmd to clients...')
                   // client.write('should be closing now....')
                 }
@@ -136,7 +142,7 @@ export default function socketsServer() {
       });
 
       // Handles actions to take at the end of the socket connection.
-      client.on('end', () => {
+      client.on(wrd.cend, () => {
         // console.log('BEGIN childProcess.shells.socketsServer.connection.end event');
         isConnected = false;
         console.log('\r\nServer connection has ended!');
@@ -147,15 +153,14 @@ export default function socketsServer() {
     });
 
     // Handles actions to take when the connection closes.
-    server.on('close', (code, signal) => {
+    server.on(wrd.cclose, (code, signal) => {
       // console.log('BEGIN childProcess.shells.socketsServer.close event');
       // console.log(`code is: ${code}`);
       // console.log(`signal is: ${signal}`);
 
       isConnected = false;
 
-      // Show error only if connection
-      // did not close successfully
+      // Show error only if connection did not close successfully
       if (code !== 0) {
         console.log(
           `\r\nSocket server exited with code, ${code}, and signal, ${signal}`,
