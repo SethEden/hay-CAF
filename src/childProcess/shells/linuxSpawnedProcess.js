@@ -105,7 +105,7 @@ export async function shell(shellCommandToRun, options, callback) {
           xdotool search --onlyvisible --class "your_terminal_emulator_class" 
           key --clearmodifiers ctrl+shift+t type "pwsh -Command ./${shellCommandToRun}"
         else
-          your_terminal_emulator_command -- pwsh -Command "./${shellCommandToRun}"
+          "gnome-terminal" -- pwsh -Command "./${shellCommandToRun}"
         fi`.trim();
         break;
 
@@ -127,7 +127,17 @@ export async function shell(shellCommandToRun, options, callback) {
     // Write shell script to
     // temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
-    fs.writeSync(shellscript.fd, scriptContent);
+    fs.writeSync(shellscript.fd, scriptContent, 'utf8', async (error) => {
+
+      if (error) {
+        process.stdout.write(`\r\nError creating temp file: ${error}`);
+      } else {
+        process.stdout.write(`\r\nTmp file successfully written: ${shellscript.name}`);
+
+        if (process['send']) {
+          process.send({[wrd.cName]: shellscript.name});
+          console.log({[wrd.cName]: shellscript.name});
+        }
 
     // Close temp file handle
     fs.close(shellscript.fd)
@@ -167,12 +177,12 @@ export async function shell(shellCommandToRun, options, callback) {
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
         if (process['send']) process.send('\r\nExiting child process');
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
-      });
-    } else {
-      console.log(`Failed executing ${shellscript.name}`);
-    }
+        });
+      }    
+      }
+    })
   } catch (error) {
-    console.log(`Error on shell: ${error.message}`);
+    process.stdout.write(`\r\nError on shell: ${error.message}`);
   }
   // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function); 
 }
