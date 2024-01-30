@@ -57,8 +57,15 @@ export const applicationSystemConstantsValidation = [
   {Name: 'cslowExe', Actual: app_sys.cslowExe, Expected: 'slowExe'},
   {Name: 'ctestName', Actual: app_sys.ctestName, Expected: 'testName'},
 
-  // Command Types
+  // Commands & Command Types
   {Name: 'cvalidCommandTypes', Actual: app_sys.cvalidCommandTypes, Expected: 'dos,cmd,bash,powershell'},
+  {Name: 'cdashNoExit', Actual: app_sys.cdashNoExit, Expected: '-NoExit'},
+  {Name: 'cdashNoProfile', Actual: app_sys.cdashNoProfile, Expected: '-NoProfile'},
+  {Name: 'cdashNoExecutionPolicy', Actual: app_sys.cdashNoExecutionPolicy, Expected: '-NoExecutionPolicy'},
+  {Name: 'cInvokeDashExpression', Actual: app_sys.cInvokeDashExpression, Expected: 'Invoke-Expression'},
+  {Name: 'cdashCommand', Actual: app_sys.cdashCommand, Expected: '-Command'},
+  {Name: 'cSetDashLocation', Actual: app_sys.cSetDashLocation, Expected: 'Set-Location'},
+  {Name: 'cDosBatAndStartWait', Actual: app_sys.cDosBatAndStartWait, Expected: ' && start /wait '},
 
   // Miscellaneous
   {Name: 'cSpawnedProcess', Actual: app_sys.cSpawnedProcess, Expected: 'SpawnedProcess'},

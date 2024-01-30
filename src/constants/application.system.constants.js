@@ -50,8 +50,15 @@ export const cvalidExecutionEngines = ctestcafe + bas.cComa + cplaywright + bas.
 export const cslowExe = wrd.cslow + gen.cExe; // slowExe
 export const ctestName = wrd.ctest + wrd.cName; // testName
 
-// Command Types
+// Commands & Command Types
 export const cvalidCommandTypes = sys.cdos + bas.cComa + sys.ccmd + bas.cComa + sys.cbash + bas.cComa + sys.cpowershell; // dos,cmd,bash,powershell
+export const cdashNoExit = bas.cDash + wrd.cNo + wrd.cExit; // -NoExit
+export const cdashNoProfile = bas.cDash + wrd.cNo + wrd.cProfile; // -NoProfile
+export const cdashExecutionPolicy = bas.cDash + wrd.cExecution + wrd.cPolicy; // -ExecutionPolicy
+export const cInvokeDashExpression = wrd.cInvoke + bas.cDash + wrd.cExpression; // Invoke-Expression
+export const cdashCommand = bas.cDash + wrd.cCommand; // -Command
+export const cSetDashLocation = wrd.cSet + bas.cDash + wrd.cLocation; // Set-Location
+export const cDosBatAndStartWait = bas.cSpace + bas.cAndPersand.repeat(2) + bas.cSpace + wrd.cstart + bas.cSpace + bas.cForwardSlash + wrd.cwait + bas.cSpace; // && start /wait 
 
 // Miscellaneous
 export const cSpawnedProcess = wrd.cSpawned + wrd.cProcess; // SpawnedProcess

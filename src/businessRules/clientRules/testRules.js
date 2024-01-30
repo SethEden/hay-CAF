@@ -189,7 +189,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
       const eventName = bas.cDot + wrd.cmessage;
       await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
       // messageData is:
-      await haystacks.consoleLog(namespacePrefix, functionName + eventName, app_msg.cmessageDataIs + messageData.toString());
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, app_msg.cmessageDataIs + JSON.stringify(messageData));
       if (messageData[wrd.cName]) {
         // testScriptFileName is:
         await haystacks.consoleLog(namespacePrefix, functionName + eventName, app_msg.ctestScriptFileNameIs + messageData[wrd.cName]);

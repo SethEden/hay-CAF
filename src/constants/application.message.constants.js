@@ -102,6 +102,15 @@ export const cchunkIs = wrd.cchunk + sys.cSpaceIsColonSpace; // chunk is:
 export const csendingTerminationCmdToClients = wrd.cSending + bas.cSpace + wrd.ctermination + bas.cSpace + gen.ccmd + bas.cSpace + wrd.cto + bas.cSpace + wrd.cclients + bas.cDot.repeat(3); // Sending termination cmd to clients...
 export const cmainTestScriptFileNameIs = wrd.cmain + bas.cDot + app_cfg.ctestScriptFileName + sys.cSpaceIsColonSpace; // main.testScriptFileName is:
 export const cmainApplicationRootPathIs = wrd.cmain + bas.cDot + msg.capplicationRootPathIs; // main.applicationRootPath is:
+export const cshellCommandNotDefined = wrd.cShell + bas.cSpace + wrd.ccommand + bas.cSpace + wrd.cnot + bas.cSpace + wrd.cdefined; // Shell command not defined
+export const cselectedShellNotFound = wrd.cSelected + bas.cSpace + wrd.cshell + bas.cSpace + wrd.cnot + bas.cSpace + wrd.cfound + bas.cDot; // Selected shell not found.
+export const cProcessWasSpawned = wrd.cProcess + bas.cSpace + wrd.cwas + bas.cSpace + wrd.cspawned + bas.cExclamation; // Process was spawned!
+export const cPathToShellExecutableIs = wrd.cpath + wrd.cTo + wrd.cShell + wrd.cExecutable + sys.cSpaceIsColonSpace; // pathToShellExecutable is:
+export const cshellScriptFileNameIs = wrd.cshell + wrd.cScript + bas.cSpace + wrd.cfile + bas.cSpace + wrd.cname + sys.cSpaceIsColonSpace; // shellScript file name is:
+export const cerrorCreatingTheTmpFile = wrd.cError + bas.cSpace + wrd.ccreating + bas.cSpace + wrd.cthe + gen.ctmp + bas.cSpace + wrd.cfile + bas.cColon + bas.cSpace; // Error creating the tmp file:
+export const cTmpFileSuccessfullyWritten = gen.cTmp + bas.cSpace + wrd.cfile + bas.cSpace + wrd.csuccessfully + bas.cSpace + wrd.cwritten + bas.cColon + bas.cSpace; // Tmp file successfully written:
+export const cspawnCommandRawIs = wrd.cspawn + bas.cSpace + wrd.ccommand + bas.cSpace + wrd.cRAW + sys.cSpaceIsColonSpace; // spawn command RAW is:
+export const cspawnCommandIs = wrd.cspawn + bas.cSpace + wrd.ccommand + sys.cSpaceIsColonSpace; // spawn command is:
 
 export const cErrorSetBoilerPlateTestPathAndFileNameMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cand + bas.cSpace + wrd.cfilename + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path and filename as input.
 export const cErrorSetRootTestFolderPathMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path as input.

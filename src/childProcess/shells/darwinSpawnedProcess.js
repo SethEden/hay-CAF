@@ -126,8 +126,7 @@ export async function shell(shellCommandToRun, options, callback) {
         console.log('Selected shell not found.')
     }
 
-    // Write shell script to
-    // temporary shell file
+    // Write shell script to temporary shell file
     shellscript = tmp.fileSync(tempFileOptions);
     fs.writeSync(shellscript.fd, scriptContent);
 
@@ -137,16 +136,14 @@ export async function shell(shellCommandToRun, options, callback) {
     // Add temporary file to options
     spawnOptions[1].push(shellscript.name);
 
-    // Check and proceed if the temporary
-    // file has successfuly been written
+    // Check and proceed if the temporary file has successfully been written
     if (fs.existsSync(shellscript.name)) {
       const child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1), {
         stdio: 'pipe',
         cwd: options.CAFfeinatePath
       });
 
-      // Handles actions taken when
-      // errors occurs on child process
+      // Handles actions taken when errors occurs on child process
       child.on('error', async (error) => {
         // let eventName = bas.cDot + wrd.cerror;
         // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
