@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommandWorkflows>
+  <debug>
+    <commands>
+      <clientCommands>
+          <Workflow Name="applicationSystemEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem true"/>
+          <Workflow Name="applicationSystemDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem false"/>
+          <Workflow Name="instructionsEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.instructions true"/>
+          <Workflow Name="instructionsDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.instructions false"/>
+          <Workflow Name="applicationHelpEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.applicationHelp true"/>
+          <Workflow Name="applicationHelpDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.applicationHelp false"/>
+          <Workflow Name="applicationWorkflowHelpEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.applicationWorkflowHelp true"/>
+          <Workflow Name="applicationWorkflowHelpDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.applicationWorkflowHelp false"/>
+      </clientCommands>
+    </commands>
+  </debug>
+</CommandWorkflows>

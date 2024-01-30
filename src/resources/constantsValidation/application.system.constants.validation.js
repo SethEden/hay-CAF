@@ -61,5 +61,7 @@ export const applicationSystemConstantsValidation = [
   {Name: 'cvalidCommandTypes', Actual: app_sys.cvalidCommandTypes, Expected: 'dos,cmd,bash,powershell'},
 
   // Miscellaneous
-  {Name: 'cSpawnedProcess', Actual: app_sys.cSpawnedProcess, Expected: 'SpawnedProcess'}
+  {Name: 'cSpawnedProcess', Actual: app_sys.cSpawnedProcess, Expected: 'SpawnedProcess'},
+  {Name: 'csocketsServer', Actual: app_sys.csocketsServer, Expected: 'socketsServer'},
+  {Name: 'cchildProcess', Actual: app_sys.cchildProcess, Expected: 'childProcess'}
 ];

@@ -144,8 +144,7 @@ async function application() {
     argumentDrivenInterface = false;
   }
   // Set this to an empty string at first.
-  console.log('setting the configuration setting: system.testScriptFileName to an empty string.');
-  await haystacks.setConfigurationSetting(wrd.csystem, 'testScriptFileName', '');
+  await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName, '');
   // argumentDrivenInterface is:
   // await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cargumentDrivenInterfaceIs + argumentDrivenInterface);
   await haystacks.enqueueCommand(app_cmd.cApplicationStartupWorkflow);
@@ -202,17 +201,17 @@ async function application() {
       commandResult = await haystacks.processCommandQueue();
 
       // Cleanup any script files from the last command run.
-      testScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, 'testScriptFileName');
-      // testScriptFileName is:
-      console.log('main.testScriptfileName 2 is: ' + testScriptFileName);
+      testScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName);
+      // main.testScriptFileName is:
+      console.log(app_msg.cmainTestScriptFileNameIs + testScriptFileName);
       if (testScriptFileName !== '') {
         let applicationRootPath = await haystacks.getConfigurationSetting(wrd.csystem, cfg.cclientRootPath);
-        // applicationRootPath is:
-        console.log('main.applicationRootPath 2 is: ' + applicationRootPath);
+        // main.applicationRootPath is:
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cmainApplicationRootPathIs + applicationRootPath);
         // TODO Make sure to apply additional logic for file name and path to make sure it's fully qualifed
         fileDeleted = await haystacks.executeBusinessRules([testScriptFileName, ''], [biz.cdeleteFile]);
         if (fileDeleted === true) {
-          await haystacks.setConfigurationSetting(wrd.csystem, 'testScriptFileName', '');
+          await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName, '');
         }
       }
 

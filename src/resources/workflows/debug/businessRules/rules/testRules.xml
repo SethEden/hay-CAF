@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?><CommandWorkflows>
+  <debug>
+    <businessRules>
+      <clientRules>
+        <testRules>
+          <Workflow Name="testRulesEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules true"/>
+          <Workflow Name="testRulesDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules false"/>
+          <Workflow Name="buildArrayOfTestNamesEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.buildArrayOfTestNames true"/>
+          <Workflow Name="buildArrayOfTestNamesDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.buildArrayOfTestNames false"/>
+          <Workflow Name="executeTestCommandEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand true"/>
+          <Workflow Name="executeTestCommandDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.executeTestCommand false"/>
+          <Workflow Name="spawnCmdProcessEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess true"/>
+          <Workflow Name="spawnCmdProcessDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess false"/>
+          <Workflow Name="spawnCmdProcessDataEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.data true"/>
+          <Workflow Name="spawnCmdProcessDataEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.data false"/>
+          <Workflow Name="spawnCmdProcessMessageEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.message true"/>
+          <Workflow Name="spawnCmdProcessMessageEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.message false"/>
+          <Workflow Name="spawnCmdProcessErrorEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.error true"/>
+          <Workflow Name="spawnCmdProcessErrorEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.error false"/>
+          <Workflow Name="spawnCmdProcessExitEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.exit true"/>
+          <Workflow Name="spawnCmdProcessExitEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.exit false"/>
+        </testRules>
+      </clientRules>
+    </businessRules>
+  </debug>
+</CommandWorkflows>

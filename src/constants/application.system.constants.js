@@ -55,3 +55,5 @@ export const cvalidCommandTypes = sys.cdos + bas.cComa + sys.ccmd + bas.cComa + 
 
 // Miscellaneous
 export const cSpawnedProcess = wrd.cSpawned + wrd.cProcess; // SpawnedProcess
+export const csocketsServer = wrd.csockets + wrd.cServer; // socketsServer
+export const cchildProcess = wrd.cchild + wrd.cProcess; // childProcess

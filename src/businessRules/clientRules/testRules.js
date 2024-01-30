@@ -27,10 +27,7 @@ import { fork } from 'child_process';
 import socketsServer from '../../childProcess/socketsServer.js';
 
 const { bas, biz, gen, msg, num, sys, wrd } = hayConst;
-const baseFileName = path.basename(
-  import.meta.url,
-  path.extname(import.meta.url),
-);
+const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -54,13 +51,13 @@ const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas
 async function buildArrayOfTestNames(inputData, inputMetaData) {
   let functionName = buildArrayOfTestNames.name;
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
-  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData),);
-  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData,);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = inputMetaData;
   let testFileName = await haystacks.executeBusinessRules([inputData, ''], [biz.cgetFileNameFromPath, biz.cremoveFileExtensionFromFileName],);
 
   // testFileName is:
-  // await haystacks.consoleLog(namespacePrefix,functionName,'testFileName is: ' + testFileName);
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestFileNameIs + testFileName);
   // Now the test file name should have a prefix "Test_", lets make sure we only parse files with this prefix, otherwise they are not properly formatted tests,
   // and the testing framework would have trouble executing them anyway!
   if (testFileName.includes(wrd.cTest + bas.cUnderscore) === true) {
@@ -106,7 +103,7 @@ async function executeTestCommand(inputData, inputMetaData) {
         // ERROR: You must specify a test type to execute. Command type is:
         console.log(app_msg.cErrorExecuteTestCommandMessage01 + inputMetaData);
         // Valid command types are:
-        console.log(app_msg.cvalidCommandTypesAre + app_sys.cvalidCommandTypes.split(',').join(', '));
+        console.log(app_msg.cvalidCommandTypesAre + app_sys.cvalidCommandTypes.split(bas.cComa).join(bas.cComa + bas.cSpace));
       } else {
         // Spawns child process using appropriate shell and executes input command
         // TODO: Return true or false based on the test passing or failing.
@@ -138,8 +135,8 @@ async function executeTestCommand(inputData, inputMetaData) {
 async function spawnCmdProcess(inputData, inputMetaData) {
   const functionName = spawnCmdProcess.name;
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
-  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + inputData );
-  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData );
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + inputData);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   try {
 
     // Start communication protocol Server
@@ -153,7 +150,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     const normalizedPath = path.normalize(_rootPath);
     const directories = normalizedPath.split(path.sep);
     const targetIndex = directories.indexOf(app_sys.cCAFfeinated) + 1;
-    const CAFfeinatedPath = directories.slice(0, targetIndex).join('/');
+    const CAFfeinatedPath = directories.slice(0, targetIndex).join(bas.cForwardSlash);
     // CAFfeinatedPath is:
     await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cCAFfeinatedPathIs + CAFfeinatedPath);
 
@@ -208,25 +205,30 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     // Error handler on child process
     childProcess.on(wrd.cerror, async (error) => {
       const eventName = bas.cDot + wrd.cerror;
-      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + JSON.stringify(error) );
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+      // error is:
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + JSON.stringify(error));
       console.log(msg.cERROR_Colon + error);
       process.stdout.write(bas.cGreaterThan);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function + bas.cSpace + num.c1);
       return false;
-      // haystacks.consoleLog(namespacePrefix, functionName, `msg is: ${message}`);
     });
 
     // Child process exited
     childProcess.on(wrd.cexit, async (code, signal) => {
       const eventName = bas.cDot + wrd.cexit;
-      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-      // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cexitIs + JSON.stringify(error) );
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+      // exited with code:
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cexitedWithCode + JSON.stringify(code));
+      // signal is:
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + JSON.stringify(signal));
       // Display only unsuccessful exit codes
       if (code !== 0) {
         // Exited with code:
         // , and signal:
         console.log(msg.cexitedWithCode + code + msg.candSignal + signal);
-        await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function + bas.cSpace + num.c1);
+        await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function + bas.cSpace + num.c2);
         process.stdout.write(bas.cGreaterThan);
         return false;
       }
@@ -234,7 +236,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
   } catch (e) {
     console.log(e);
   }
-  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function + bas.cSpace + num.c2);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function + bas.cSpace + num.c3);
 }
 
 export { executeTestCommand, buildArrayOfTestNames, spawnCmdProcess };

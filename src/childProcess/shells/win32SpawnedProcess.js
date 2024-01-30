@@ -28,16 +28,12 @@ import path from 'path';
 
 const { bas, msg, wrd } = hayConst;
 
-const baseFileName = path.basename(
-  import.meta.url,
-  path.extname(import.meta.url),
-);
+const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 // framework.childProcess.shells.
 const namespacePrefix = wrd.cframework + bas.cDot + wrd.cchild + wrd.cProcess + bas.cDot + wrd.cshells + bas.cDot + baseFileName + bas.cDot;
 
-// Checks whether the provided Shell
-// executable exists and is executable
+// Checks whether the provided Shell executable exists and is executable
 // TODO: check each executable before running commands
 function isExecutableExists(pathToShellExecutable) {
   try {
@@ -91,7 +87,7 @@ export async function shell(shellCommandToRun, options, callback) {
     let spawnOptions;
     let scriptContent = shellCommandToRun;
 
-    // TODO: Add auto matic retry if 
+    // TODO: Add automatic retry if 
     // desired shell don't work.
     switch(options.shell) {
       case 'powershell':

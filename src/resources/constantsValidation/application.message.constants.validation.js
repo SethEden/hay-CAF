@@ -90,6 +90,14 @@ export const applicationMessageConstantsValidation = [
   {Name: 'ctestScriptFileNameIs', Actual: app_msg.ctestScriptFileNameIs, Expected: 'testScriptFileName is: '},
   {Name: 'cconfigurationTestScriptFileNameIs', Actual: app_msg.cconfigurationTestScriptFileNameIs, Expected: 'configuration testScriptFileName is: '},
   {Name: 'cServerConnected', Actual: app_msg.cServerConnected, Expected: 'Server Connected'},
+  {Name: 'ctestResult', Actual: app_msg.ctestResult, Expected: 'testResult'},
+  {Name: 'cSocketServer', Actual: app_msg.cSocketServer, Expected: 'Socket server '},
+  {Name: 'cDisconnectingGracefully', Actual: app_msg.cDisconnectingGracefully, Expected: 'Disconnecting gracefully'},
+  {Name: 'cSocketServerFailed', Actual: app_msg.cSocketServerFailed, Expected: 'Socket server failed: '},
+  {Name: 'cchunkIs', Actual: app_msg.cchunkIs, Expected: 'chunk is: '},
+  {Name: 'csendingTerminationCmdToClients', Actual: app_msg.csendingTerminationCmdToClients, Expected: 'Sending termination cmd to clients...'},
+  {Name: 'cmainTestScriptFileNameIs', Actual: app_msg.cmainTestScriptFileNameIs, Expected: 'main.testScriptFileName is: '},
+  {Name: 'cmainApplicationRootPathIs', Actual: app_msg.cmainApplicationRootPathIs, Expected: 'main.applicationRootPath is: '},
 
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
   {Name: 'cErrorSetRootTestFolderPathMessage', Actual: app_msg.cErrorSetRootTestFolderPathMessage, Expected: 'ERROR: Please enter a valid path as input.'},
@@ -107,5 +115,8 @@ export const applicationMessageConstantsValidation = [
   {Name: 'ctestMessage03', Actual: app_msg.ctestMessage03, Expected: 'ERROR: No boiler plate test path and file name were specified. Please set the boiler plate test path and file name in the configuration setting: '},
   {Name: 'ctestMessage04', Actual: app_msg.ctestMessage04, Expected: 'ERROR: No report path specified. Please set the report path in the configuration setting: '},
   {Name: 'ctestMessage05', Actual: app_msg.ctestMessage05, Expected: 'ERROR: No test root path specified. Please set the path in the configuration setting: '},
-  {Name: 'cchildProcessCommandStringNotDefined', Actual: app_msg.cchildProcessCommandStringNotDefined, Expected: 'Child process command string not defined.'}
+  {Name: 'cchildProcessCommandStringNotDefined', Actual: app_msg.cchildProcessCommandStringNotDefined, Expected: 'Child process command string not defined.'},
+  {Name: 'cErrorSocketServerMessage01', Actual: app_msg.cErrorSocketServerMessage01, Expected: 'Error on socket server: '},
+  {Name: 'cErrorSocketServerMessage02', Actual: app_msg.cErrorSocketServerMessage02, Expected: 'Failed retrieving data from client: '},
+  {Name: 'cErrorSocketServerMessage03', Actual: app_msg.cErrorSocketServerMessage03, Expected: 'Server connection has ended!'}
 ];
