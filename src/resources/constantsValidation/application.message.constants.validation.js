@@ -107,6 +107,7 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cTmpFileSuccessfullyWritten', Actual: app_msg.cTmpFileSuccessfullyWritten, Expected: 'Tmp file successfully written: '},
   {Name: 'cspawnCommandRawIs', Actual: app_msg.cspawnCommandRawIs, Expected: 'spawn command RAW is: '},
   {Name: 'cspawnCommandIs', Actual: app_msg.cspawnCommandIs, Expected: 'spawn command is: '},
+  {Name: 'cFailedExecutingColon', Actual: app_msg.cFailedExecutingColon, Expected: 'Failed executing: '},
 
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
   {Name: 'cErrorSetRootTestFolderPathMessage', Actual: app_msg.cErrorSetRootTestFolderPathMessage, Expected: 'ERROR: Please enter a valid path as input.'},

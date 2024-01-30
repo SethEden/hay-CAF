@@ -78,8 +78,7 @@ export async function shell(shellCommandToRun, options, callback) {
   // Shell object
   let shellScript = null;
 
-  // File options for 
-  // temporary shell script.
+  // File options for temporary shell script.
   const tempFileOptions = {
     mode: 0o755,
     postfix: gen.cDotsh,
@@ -237,7 +236,7 @@ export async function shell(shellCommandToRun, options, callback) {
     })
   } catch (error) {
     // Error on shell:
-    process.stdout.write(bas.cCarRetNewLin + msg.cErrorOnShell + error.message)
+    console.log(msg.cErrorOnShell + error.message)
   } 
   // console.log(msg.cEND_Space + namespacePrefix + functionName + msg.cSpaceFunction);
 }
