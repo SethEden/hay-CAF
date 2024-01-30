@@ -111,6 +111,7 @@ export const cerrorCreatingTheTmpFile = wrd.cError + bas.cSpace + wrd.ccreating 
 export const cTmpFileSuccessfullyWritten = gen.cTmp + bas.cSpace + wrd.cfile + bas.cSpace + wrd.csuccessfully + bas.cSpace + wrd.cwritten + bas.cColon + bas.cSpace; // Tmp file successfully written:
 export const cspawnCommandRawIs = wrd.cspawn + bas.cSpace + wrd.ccommand + bas.cSpace + wrd.cRAW + sys.cSpaceIsColonSpace; // spawn command RAW is:
 export const cspawnCommandIs = wrd.cspawn + bas.cSpace + wrd.ccommand + sys.cSpaceIsColonSpace; // spawn command is:
+export const cFailedExecutingColon = wrd.cFailed + bas.cSpace + wrd.cexecuting + bas.cColon + bas.cSpace; // Failed executing:
 
 export const cErrorSetBoilerPlateTestPathAndFileNameMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cand + bas.cSpace + wrd.cfilename + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path and filename as input.
 export const cErrorSetRootTestFolderPathMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path as input.

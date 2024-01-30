@@ -3,7 +3,7 @@
  * @module darwinSpawnedProcess 
  * @description Creates the shell to execute the given command on MacOs and Linux.
  * @requires module:application.message.constants
- * @requires {@link https://www.npmjs.com/package/@haystacks/async|@haystacks/async}
+ * @requires module:application.system.constants
  * @requires {@link https://www.npmjs.com/package/@haystacks/constants|@haystacks/constants}
  * @requires {@link https://nodejs.dev/learn/the-nodejs-fs-module|fs}
  * @requires {@link https://www.npmjs.com/package/tmp|tmp}
@@ -17,8 +17,8 @@
 
 // Internal imports
 import * as app_msg from '../../constants/application.message.constants.js';
+import * as app_sys from '../../constants/application.system.constants.js';
 // External imports
-import haystacks from '@haystacks/async'
 import hayConst from '@haystacks/constants';
 import fs from 'fs';
 import tmp from 'tmp';
@@ -26,30 +26,33 @@ import process from 'process';
 import childProcess from 'child_process';
 import path from 'path';
 
-const { bas, msg, wrd } = hayConst;
-
-const baseFileName = path.basename(
-  import.meta.url,
-  path.extname(import.meta.url),
-);
+const { bas, biz, gen, msg, num, sys, wrd } = hayConst;
+const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 // framework.childProcess.shells.
 const namespacePrefix = wrd.cframework + bas.cDot + wrd.cchild + wrd.cProcess + bas.cDot + wrd.cshells + bas.cDot + baseFileName + bas.cDot;
 
-// Checks whether the provided Shell
-// executable exists and is executable
+// Checks whether the provided Shell executable exists and is executable
 function isExecutableExists(pathToShellExecutable) {
+  // let functionName = isExecutableExists.name;
+  // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + msg.cSpaceFunction);
+  // pathToShellExecutable is:
+  // console.log(app_msg.cPathToShellExecutableIs + pathToShellExecutable);
+  let returnData = false;
   try {
     // Check if the file exists
     fs.accessSync(pathToShellExecutable, fs.constants.X_OK);
-    return true; // File exists and is executable
+    returnData = true; // File exists and is executable
   } catch (err) {
-    if (err.code === 'ENOENT' || err.code === 'EACCES') {
-        return false; // File does not exist or is not executable
+    if (err.code === gen.cENOENT || err.code === gen.cEACCES) {
+        returnData = false; // File does not exist or is not executable
     } else {
         throw err; // Other error, rethrow it
     }
   }
+  // console.log(msg.creturnDataIs + returnData);
+  // console.log(msg.cEND_Space + namespacePrefix + functionName + msg.cSpaceFunction);
+  return returnData;
 }
 
 /**
@@ -63,41 +66,44 @@ function isExecutableExists(pathToShellExecutable) {
  * @date 2023/01/02
  */
 export async function shell(shellCommandToRun, options, callback) {
-  let functionName = shell.name;
-  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
-  // await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cshellCommandToRunIs + shellCommandToRun);
+  // let functionName = shell.name;
+  // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + msg.cSpaceFunction);
+  // shellCommandToRun is:
+  // console.log(app_msg.cshellCommandToRunIs + shellCommandToRun);
+  // options are:
+  // console.log(msg.coptionsAre + options);
   
   // Shell object
   let shellscript = null;
 
-  // File options for 
-  // temporary shell script.
+  // File options for temporary shell script.
   const tempFileOptions = {
     mode: 0o755,
-    postfix: '.sh',
-    tmpdir: './',
+    postfix: gen.cDotsh,
+    tmpdir: bas.cDot + bas.cForwardSlash,
     keep: true,
   };
 
   try {
     if (typeof shellCommandToRun == 'undefined') {
-      throw new Error('Shell command not defined');
+      // Shell command not defined
+      throw new Error(app_msg.cshellCommandNotDefined);
     }
 
-    // Sets the shell used to invoke the desired command
-    // based on the user selected shell.
+    // Sets the shell used to invoke the desired command based on the user selected shell.
     let spawnOptions;
     let scriptContent = shellCommandToRun;
     switch(options.shell){
-      case 'powershell':
-        spawnOptions = ['sh', []]     
+      case sys.cpowershell:
+        spawnOptions = [gen.csh, []]     
 
-        // Ensure powershell prompt appears
-        // before proceeding
-        shellCommandToRun =`Start-Sleep -Seconds 3
-          Clear-Host
-          ${shellCommandToRun}
-        `;
+        // Ensure powershell prompt appears before proceeding
+        // shellCommandToRun =`Start-Sleep -Seconds 3
+        //   Clear-Host
+        //   ${shellCommandToRun}
+        // `;
+        shellCommandToRun = app_sys.cStartDashSleep + bas.cSpace + app_sys.cDashSeconds + bas.cSpace + num.c3 + bas.cCarRetNewLin +
+          app_sys.cClearDashHost + bas.cCarRetNewLin + shellCommandToRun;
 
         // Powershell command to execute commands
         scriptContent = `
@@ -110,8 +116,8 @@ export async function shell(shellCommandToRun, options, callback) {
         `.trim();
         break;
 
-      case 'bash':
-        spawnOptions = ['sh', []]     
+      case sys.cbash:
+        spawnOptions = [gen.csh, []]     
         scriptContent = `
           #!/usr/bin/env bash
           osascript -e 'tell application "Terminal"
@@ -123,7 +129,8 @@ export async function shell(shellCommandToRun, options, callback) {
         break;
 
       default:
-        console.log('Selected shell not found.')
+        // Selected shell not found.
+        throw new Error(app_msg.cselectedShellNotFound);
     }
 
     // Write shell script to temporary shell file
@@ -139,39 +146,43 @@ export async function shell(shellCommandToRun, options, callback) {
     // Check and proceed if the temporary file has successfully been written
     if (fs.existsSync(shellscript.name)) {
       const child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1), {
-        stdio: 'pipe',
+        stdio: wrd.cpipe,
         cwd: options.CAFfeinatedPath
       });
 
       // Handles actions taken when errors occurs on child process
-      child.on('error', async (error) => {
+      child.on(wrd.cerror, async (error) => {
         // let eventName = bas.cDot + wrd.cerror;
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error );
-        if (process['send']) process.send(`\r\nError from child: ${error}`);
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+        // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
+        console.log(msg.cerrorIs + error);
+        // Error from child:
+        if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cErrorFromChildColon + error);
+        // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
       });
 
-      child.on('disconnect', async () => {
+      child.on(wrd.cdisconnect, async () => {
         // let eventName = bas.cDot + wrd.cdisconnect;
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-        if (process['send']) process.send('\r\nChild disconnected');
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+        // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
+        if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cChildDisconnected);
+        // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
       });
 
-      child.on('exit', async (code, signal) => {
+      child.on(wrd.cexit, async (code, signal) => {
         // let eventName = bas.cDot + wrd.cexit;
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event );
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code );
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal );
-        if (process['send']) process.send('\r\nExiting child process');
-        // await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event ); 
+        // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
+        // console.log(msg.ccodeIs + code);
+        // console.log(msg.csignalIs + signal);
+        // Exiting child process
+        if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cExitingChildProcess);
+        // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
       });
     } else {
-      console.log(`Failed executing ${shellscript.name}`);
+      // Failed executing:
+      console.log(app_msg.cFailedExecutingColon + shellscript.name);
     }
   } catch (error) {
-    console.log(`Error on shell: ${error.message}`);
+    // Error on shell:
+    console.log(msg.cErrorOnShell + error.message)
   }
-  // await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function); 
+  // console.log(msg.cEND_Space + namespacePrefix + functionName + msg.cSpaceFunction);
 }

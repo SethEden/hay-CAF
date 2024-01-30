@@ -66,6 +66,20 @@ export const applicationSystemConstantsValidation = [
   {Name: 'cdashCommand', Actual: app_sys.cdashCommand, Expected: '-Command'},
   {Name: 'cSetDashLocation', Actual: app_sys.cSetDashLocation, Expected: 'Set-Location'},
   {Name: 'cDosBatAndStartWait', Actual: app_sys.cDosBatAndStartWait, Expected: ' && start /wait '},
+  {Name: 'cStartDashSleep', Actual: app_sys.cStartDashSleep, Expected: 'Start-Sleep'},
+  {Name: 'cDashSeconds', Actual: app_sys.cDashSeconds, Expected: '-Seconds'},
+  {Name: 'cClearDashHost', Actual: app_sys.cClearDashHost, Expected: 'Clear-Host'},
+  {Name: 'cosascript', Actual: app_sys.cosascript, Expected: 'osascript'},
+
+  // Darwin Script Contents lines
+  {Name: 'cDarwinScriptContentLine1', Actual: app_sys.cDarwinScriptContentLine1, Expected: '#!/usr/bin/env bash'},
+  {Name: 'cDarwinScriptContentLine2', Actual: app_sys.cDarwinScriptContentLine2, Expected: 'osascript -e \'tell application "Terminal"'},
+  {Name: 'cDarwinScriptContentLine3', Actual: app_sys.cDarwinScriptContentLine3, Expected: 'if not (exists window 1) then reopen'},
+  {Name: 'cDarwinScriptContentLine4', Actual: app_sys.cDarwinScriptContentLine4, Expected: 'activate'},
+  {Name: 'cDarwinScriptContentPowershellLineA', Actual: app_sys.cDarwinScriptContentPowershellLineA, Expected: 'do script "clear -x; pwsh -NoExit -Command'},
+  {Name: 'cDarwinScriptContentBashLineA', Actual: app_sys.cDarwinScriptContentBashLineA, Expected: 'do script "clear -x;'},
+  {Name: 'cDarwinScriptContentLine5B', Actual: app_sys.cDarwinScriptContentLine5B, Expected: '" in window 1'},
+  {Name: 'cDarwinScriptContentLine6', Actual: app_sys.cDarwinScriptContentLine6, Expected: 'end tell\''},
 
   // Miscellaneous
   {Name: 'cSpawnedProcess', Actual: app_sys.cSpawnedProcess, Expected: 'SpawnedProcess'},

@@ -11,7 +11,7 @@
 
 // External imports
 import hayConst from '@haystacks/constants';
-const {bas, gen, phn, sys, wrd} = hayConst;
+const {bas, gen, phn, num, sys, unt, wrd} = hayConst;
 
 // hay-CAF system constants
 
@@ -59,6 +59,20 @@ export const cInvokeDashExpression = wrd.cInvoke + bas.cDash + wrd.cExpression; 
 export const cdashCommand = bas.cDash + wrd.cCommand; // -Command
 export const cSetDashLocation = wrd.cSet + bas.cDash + wrd.cLocation; // Set-Location
 export const cDosBatAndStartWait = bas.cSpace + bas.cAndPersand.repeat(2) + bas.cSpace + wrd.cstart + bas.cSpace + bas.cForwardSlash + wrd.cwait + bas.cSpace; // && start /wait 
+export const cStartDashSleep = wrd.cStart + bas.cDash + wrd.cSleep; // Start-Sleep
+export const cDashSeconds = bas.cDash + unt.cSeconds; // -Seconds
+export const cClearDashHost = wrd.cClear + bas.cDash + wrd.cHost; // Clear-Host
+export const cosascript = bas.cos + bas.ca + wrd.cscript; // osascript
+
+// Darwin Script Contents lines
+export const cDarwinScriptContentLine1 = bas.cHash + bas.cExclamation + bas.cForwardSlash + gen.cusr + bas.cForwardSlash + gen.cbin + bas.cForwardSlash + gen.cenv + bas.cSpace + sys.cbash + bas.cCarRetNewLin; // #!/usr/bin/env bash
+export const cDarwinScriptContentLine2 = cosascript + bas.cSpace + bas.cDash + bas.ce + bas.cSpace + bas.cSingleQuote + wrd.ctell + bas.cSpace + wrd.capplication + bas.cSpace + bas.cDoubleQuote + wrd.cTerminal + bas.cDoubleQuote + bas.cCarRetNewLin; // osascript -e 'tell application "Terminal"
+export const cDarwinScriptContentLine3 = wrd.cif + bas.cSpace + wrd.cnot + bas.cSpace + bas.cOpenParenthesis + wrd.cexists + bas.cSpace + wrd.cwindow + bas.cSpace + num.c1 + bas.cCloseParenthesis + bas.cSpace + wrd.cthen + bas.cSpace + wrd.creopen + bas.cCarRetNewLin; // if not (exists window 1) then reopen
+export const cDarwinScriptContentLine4 = wrd.cactivate + bas.cCarRetNewLin; // activate
+export const cDarwinScriptContentPowershellLineA = wrd.cdo + bas.cSpace + wrd.cscript + bas.cSpace + bas.cDoubleQuote + wrd.cclear + bas.cSpace + bas.cDash + bas.cx + bas.cSemiColon + bas.cSpace + sys.cpwsh + bas.cSpace + cdashNoExit + bas.cSpace + cdashCommand + bas.cCarRetNewLin; // do script "clear -x; pwsh -NoExit -Command
+export const cDarwinScriptContentBashLineA = wrd.cdo + bas.cSpace + wrd.cscript + bas.cSpace + bas.cDoubleQuote + wrd.cclear + bas.cSpace + bas.cDash + bas.cx + bas.cSemiColon + bas.cCarRetNewLin; // do script "clear -x;
+export const cDarwinScriptContentLine5B = bas.cDoubleQuote + bas.cSpace + wrd.cin + bas.cSpace + wrd.cwindow + bas.cSpace + num.c1 + bas.cCarRetNewLin; // " in window 1
+export const cDarwinScriptContentLine6 = wrd.cend + bas.cSpace + wrd.ctell + bas.cSingleQuote; // end tell'
 
 // Miscellaneous
 export const cSpawnedProcess = wrd.cSpawned + wrd.cProcess; // SpawnedProcess
