@@ -69,8 +69,8 @@ export const cDarwinScriptContentLine1 = bas.cHash + bas.cExclamation + bas.cFor
 export const cDarwinScriptContentLine2 = cosascript + bas.cSpace + bas.cDash + bas.ce + bas.cSpace + bas.cSingleQuote + wrd.ctell + bas.cSpace + wrd.capplication + bas.cSpace + bas.cDoubleQuote + wrd.cTerminal + bas.cDoubleQuote + bas.cCarRetNewLin; // osascript -e 'tell application "Terminal"
 export const cDarwinScriptContentLine3 = wrd.cif + bas.cSpace + wrd.cnot + bas.cSpace + bas.cOpenParenthesis + wrd.cexists + bas.cSpace + wrd.cwindow + bas.cSpace + num.c1 + bas.cCloseParenthesis + bas.cSpace + wrd.cthen + bas.cSpace + wrd.creopen + bas.cCarRetNewLin; // if not (exists window 1) then reopen
 export const cDarwinScriptContentLine4 = wrd.cactivate + bas.cCarRetNewLin; // activate
-export const cDarwinScriptContentPowershellLineA = wrd.cdo + bas.cSpace + wrd.cscript + bas.cSpace + bas.cDoubleQuote + wrd.cclear + bas.cSpace + bas.cDash + bas.cx + bas.cSemiColon + bas.cSpace + sys.cpwsh + bas.cSpace + cdashNoExit + bas.cSpace + cdashCommand + bas.cCarRetNewLin; // do script "clear -x; pwsh -NoExit -Command
-export const cDarwinScriptContentBashLineA = wrd.cdo + bas.cSpace + wrd.cscript + bas.cSpace + bas.cDoubleQuote + wrd.cclear + bas.cSpace + bas.cDash + bas.cx + bas.cSemiColon + bas.cCarRetNewLin; // do script "clear -x;
+export const cDarwinScriptContentPowershellLineA = wrd.cdo + bas.cSpace + wrd.cscript + bas.cSpace + bas.cDoubleQuote + wrd.cclear + bas.cSpace + bas.cDash + bas.cx + bas.cSemiColon + bas.cSpace + sys.cpwsh + bas.cSpace + cdashNoExit + bas.cSpace + cdashCommand + bas.cSpace; // do script "clear -x; pwsh -NoExit -Command
+export const cDarwinScriptContentBashLineA = wrd.cdo + bas.cSpace + wrd.cscript + bas.cSpace + bas.cDoubleQuote + wrd.cclear + bas.cSpace + bas.cDash + bas.cx + bas.cSemiColon + bas.cSpace; // do script "clear -x;
 export const cDarwinScriptContentLine5B = bas.cDoubleQuote + bas.cSpace + wrd.cin + bas.cSpace + wrd.cwindow + bas.cSpace + num.c1 + bas.cCarRetNewLin; // " in window 1
 export const cDarwinScriptContentLine6 = wrd.cend + bas.cSpace + wrd.ctell + bas.cSingleQuote; // end tell'
 

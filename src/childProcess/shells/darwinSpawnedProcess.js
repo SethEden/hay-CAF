@@ -106,26 +106,38 @@ export async function shell(shellCommandToRun, options, callback) {
           app_sys.cClearDashHost + bas.cCarRetNewLin + shellCommandToRun;
 
         // Powershell command to execute commands
-        scriptContent = `
-          #!/usr/bin/env bash
-          osascript -e 'tell application "Terminal"
-              if not (exists window 1) then reopen
-              activate
-              do script "clear -x; pwsh -NoExit -Command ${shellCommandToRun}" in window 1
-           end tell' 
-        `.trim();
+        // scriptContent = `
+        //   #!/usr/bin/env bash
+        //   osascript -e 'tell application "Terminal"
+        //       if not (exists window 1) then reopen
+        //       activate
+        //       do script "clear -x; pwsh -NoExit -Command ${shellCommandToRun}" in window 1
+        //    end tell' 
+        // `.trim();
+        scriptContent = app_sys.cDarwinScriptContentLine1 +
+          app_sys.cDarwinScriptContentLine2 +
+          app_sys.cDarwinScriptContentLine3 +
+          app_sys.cDarwinScriptContentLine4 + 
+          app_sys.cDarwinScriptContentPowershellLineA + shellCommandToRun + app_sys.cDarwinScriptContentLine5B +
+          app_sys.cDarwinScriptContentLine6;
         break;
 
       case sys.cbash:
         spawnOptions = [gen.csh, []]     
-        scriptContent = `
-          #!/usr/bin/env bash
-          osascript -e 'tell application "Terminal"
-              if not (exists window 1) then reopen
-              activate
-              do script "clear -x; ${shellCommandToRun}" in window 1
-           end tell'
-        `.trim();
+        // scriptContent = `
+        //   #!/usr/bin/env bash
+        //   osascript -e 'tell application "Terminal"
+        //       if not (exists window 1) then reopen
+        //       activate
+        //       do script "clear -x; ${shellCommandToRun}" in window 1
+        //    end tell'
+        // `.trim();
+        scriptContent = app_sys.cDarwinScriptContentLine1 +
+          app_sys.cDarwinScriptContentLine2 +
+          app_sys.cDarwinScriptContentLine3 +
+          app_sys.cDarwinScriptContentLine4 + 
+          app_sys.cDarwinScriptContentBashLineA + shellCommandToRun + app_sys.cDarwinScriptContentLine5B +
+          app_sys.cDarwinScriptContentLine6;
         break;
 
       default:

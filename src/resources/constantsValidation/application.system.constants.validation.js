@@ -61,7 +61,7 @@ export const applicationSystemConstantsValidation = [
   {Name: 'cvalidCommandTypes', Actual: app_sys.cvalidCommandTypes, Expected: 'dos,cmd,bash,powershell'},
   {Name: 'cdashNoExit', Actual: app_sys.cdashNoExit, Expected: '-NoExit'},
   {Name: 'cdashNoProfile', Actual: app_sys.cdashNoProfile, Expected: '-NoProfile'},
-  {Name: 'cdashNoExecutionPolicy', Actual: app_sys.cdashNoExecutionPolicy, Expected: '-NoExecutionPolicy'},
+  {Name: 'cdashExecutionPolicy', Actual: app_sys.cdashExecutionPolicy, Expected: '-ExecutionPolicy'},
   {Name: 'cInvokeDashExpression', Actual: app_sys.cInvokeDashExpression, Expected: 'Invoke-Expression'},
   {Name: 'cdashCommand', Actual: app_sys.cdashCommand, Expected: '-Command'},
   {Name: 'cSetDashLocation', Actual: app_sys.cSetDashLocation, Expected: 'Set-Location'},
@@ -72,13 +72,13 @@ export const applicationSystemConstantsValidation = [
   {Name: 'cosascript', Actual: app_sys.cosascript, Expected: 'osascript'},
 
   // Darwin Script Contents lines
-  {Name: 'cDarwinScriptContentLine1', Actual: app_sys.cDarwinScriptContentLine1, Expected: '#!/usr/bin/env bash'},
-  {Name: 'cDarwinScriptContentLine2', Actual: app_sys.cDarwinScriptContentLine2, Expected: 'osascript -e \'tell application "Terminal"'},
-  {Name: 'cDarwinScriptContentLine3', Actual: app_sys.cDarwinScriptContentLine3, Expected: 'if not (exists window 1) then reopen'},
-  {Name: 'cDarwinScriptContentLine4', Actual: app_sys.cDarwinScriptContentLine4, Expected: 'activate'},
-  {Name: 'cDarwinScriptContentPowershellLineA', Actual: app_sys.cDarwinScriptContentPowershellLineA, Expected: 'do script "clear -x; pwsh -NoExit -Command'},
-  {Name: 'cDarwinScriptContentBashLineA', Actual: app_sys.cDarwinScriptContentBashLineA, Expected: 'do script "clear -x;'},
-  {Name: 'cDarwinScriptContentLine5B', Actual: app_sys.cDarwinScriptContentLine5B, Expected: '" in window 1'},
+  {Name: 'cDarwinScriptContentLine1', Actual: app_sys.cDarwinScriptContentLine1, Expected: '#!/usr/bin/env bash\r\n'},
+  {Name: 'cDarwinScriptContentLine2', Actual: app_sys.cDarwinScriptContentLine2, Expected: 'osascript -e \'tell application "Terminal"\r\n'},
+  {Name: 'cDarwinScriptContentLine3', Actual: app_sys.cDarwinScriptContentLine3, Expected: 'if not (exists window 1) then reopen\r\n'},
+  {Name: 'cDarwinScriptContentLine4', Actual: app_sys.cDarwinScriptContentLine4, Expected: 'activate\r\n'},
+  {Name: 'cDarwinScriptContentPowershellLineA', Actual: app_sys.cDarwinScriptContentPowershellLineA, Expected: 'do script "clear -x; pwsh -NoExit -Command '},
+  {Name: 'cDarwinScriptContentBashLineA', Actual: app_sys.cDarwinScriptContentBashLineA, Expected: 'do script "clear -x; '},
+  {Name: 'cDarwinScriptContentLine5B', Actual: app_sys.cDarwinScriptContentLine5B, Expected: '" in window 1\r\n'},
   {Name: 'cDarwinScriptContentLine6', Actual: app_sys.cDarwinScriptContentLine6, Expected: 'end tell\''},
 
   // Miscellaneous
