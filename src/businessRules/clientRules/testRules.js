@@ -241,9 +241,13 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     return new Promise((resolve, reject) => {
       // Obtain results from test
       socketServer.getTestResult(childProcessLimitTime).then(testResult => {
+        // Kill the child process.
+        childProcess.kill();
         resolve(testResult);
       })
       .catch(error => {
+        // Kill the child process.
+        childProcess.kill();
         reject(error);
       });
 

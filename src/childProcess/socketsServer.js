@@ -24,7 +24,7 @@ import hayConst from '@haystacks/constants';
 import path from 'path';
 import process from 'process';
 import { Server } from 'net';
-import {promisify} from 'util';
+import { promisify } from 'util';
 
 const { bas, gen, msg, num, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
@@ -234,34 +234,33 @@ export default function socketsServer() {
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
   }
 
-  // During an allotted time keep checking for 
-  // the test result else send an error if no
-  // value is provided or time has passed.
+  // Keep checking during the given allotted time for the test result. 
+  // If no value is provided or time has passed send error.
   server.getTestResult = async (allottedTimeInSeconds) => {
-    console.log('GetTestResults beginning...');
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
-        reject(`Error: The alotted time to retrieve the test result has passed. Try again later.`);
+        reject('Error: The alotted time to retrieve the test result has passed. Try again later.');
       }, allottedTimeInSeconds * 1000);
 
       const checkResult = () => {
-        console.log(`testResult: ${testResult}`);
-        console.log({allottedTimeInSeconds})
-        console.log({testResult})
-        if (testResult !== null){
-          console.log('Resolving check results');
+        // console.log({allottedTimeInSeconds})
+        
+        if (typeof testResult === 'string' && testResult.length){
           clearTimeout(timeoutId);
           resolve(testResult);
         } else {
           setTimeout(checkResult, 100);
         }
       }
-
+    
+      // Restart test.
       checkResult();
     });
   }
 
-  return server;
+    // Return server instance
+    return server;
+
   } catch ({ message }) {
     // Socket server failed:
     console.log(bas.cCarRetNewLin + app_msg.cSocketServerFailed + message);
