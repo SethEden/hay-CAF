@@ -67,9 +67,9 @@ function safeJsonParse(buffer) {
  * @author Karl-Edward FP Jean-Mehu
  * @date 2023/12/29
  */
-export default async function socketsServer() {
+export default function socketsServer() {
   const functionName = socketsServer.name;
-  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
 
   try {
   // Creates server instance
@@ -82,7 +82,7 @@ export default async function socketsServer() {
   let testResult = false;
 
   // Handles actions taken when an error occurs on the server.
-  server.on(wrd.cerror, async (error) => {
+  server.on(wrd.cerror, (error) => {
     const eventName = bas.cDot + wrd.cerror;
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error);
@@ -97,7 +97,7 @@ export default async function socketsServer() {
   });
 
   // Handles actions to take when server begins to listen for connections from clients.
-  server.on(wrd.clistening, async () => {
+  server.on(wrd.clistening, () => {
     const eventName = bas.cDot + wrd.clistening;
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
     console.log(bas.cCarRetNewLin + wrd.cListening + bas.cDot.repeat(3));
@@ -105,32 +105,32 @@ export default async function socketsServer() {
   });
 
   // Handles actions to take when a client is connected.
-  server.on(wrd.cconnection, async (client) => {
+  server.on(wrd.cconnection, (client) => {
     const eventName = bas.cDot + wrd.cconnection;
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
     isConnected = true;
     console.log(bas.cCarRetNewLin + app_msg.cServerConnected);
 
     // Handles action to take when an error occurs during socket connection.
-    client.on(wrd.cerror, async ({message}) => {
+    client.on(wrd.cerror, ({message}) => {
       const childEventName = eventName + bas.cDot + wrd.cerror;
-      await haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cBEGIN_Event);
-      await haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cmessageIs + message);
+      haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cBEGIN_Event);
+      haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cmessageIs + message);
       // read ECONNRESET
       if (message !== msg.creadECONNRESET) {
         // Error on socket server:
         console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage01 + message);
       }
       process.stdout.write(bas.cGreaterThan);
-      await haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cEND_Event);
+      haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cEND_Event);
       return testResult;
     });
 
     // Handles incoming messages as they come in from a socket client.
-    client.on(wrd.cdata, async (chunk) => {
+    client.on(wrd.cdata, (chunk) => {
       const childEventName = eventName + bas.cDot + wrd.cdata;
-      await haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cBEGIN_Event);
-      await haystacks.consoleLog(namespacePrefix, functionName + childEventName, app_msg.cchunkIs + JSON.stringify(chunk));
+      haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cBEGIN_Event);
+      haystacks.consoleLog(namespacePrefix, functionName + childEventName, app_msg.cchunkIs + JSON.stringify(chunk));
       try {
         const json = safeJsonParse(chunk);
 
@@ -148,13 +148,13 @@ export default async function socketsServer() {
             let logMessage = timestamp + bas.cColon + bas.cSpace + message;
             console.log(logMessage);
             // Again echo this to the haystacks.consoleLog, because it can be logged to the log file from there.
-            await haystacks.consoleLog(namespacePrefix, functionName + childEventName, logMessage);
+            haystacks.consoleLog(namespacePrefix, functionName + childEventName, logMessage);
 
             // Terminates child processes if the "end" message is received
             const str = message.split(bas.cSpace)[0].toLowerCase();
             if (str === wrd.cend) {
               // Sending termination cmd to clients...
-              await haystacks.consoleLog(namespacePrefix, functionName + childEventName, app_msg.csendingTerminationCmdToClients);
+              haystacks.consoleLog(namespacePrefix, functionName + childEventName, app_msg.csendingTerminationCmdToClients);
               // client.write('should be closing now....')
             }
           }
@@ -163,29 +163,29 @@ export default async function socketsServer() {
         // Failed retrieving data from client:
         console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage02 + message);
       }
-      await haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cEND_Event);
+      haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cEND_Event);
     });
 
     // Handles actions to take at the end of the socket connection.
-    client.on(wrd.cend, async () => {
+    client.on(wrd.cend, () => {
       const childEventName = eventName + bas.cDot + wrd.cend;
-      await haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cBEGIN_Event);
+      haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cBEGIN_Event);
       isConnected = false;
       // Server connection has ended!
       console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage03);
+      haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cEND_Event);
       process.stdout.write(bas.cGreaterThan);
-      await haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cEND_Event);
       return testResult;
     });
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
   });
 
   // Handles actions to take when the connection closes.
-  server.on(wrd.cclose, async (code, signal) => {
+  server.on(wrd.cclose, (code, signal) => {
     const eventName = bas.cDot + wrd.cclose;
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code);
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal);
 
     isConnected = false;
 
@@ -195,45 +195,43 @@ export default async function socketsServer() {
       // , and signal:
       console.log(bas.cCarRetNewLin + app_msg.cSocketServer + msg.cexitedWithCode + code + msg.candSignal + signal);
     } else {
-      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
       process.exit();
     }
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
   });
 
   // Gracefully exits process, when user attempts a "q" (quit) / ctrl-c.
-  process.on(gen.cSIGINT, async () => {
+  process.on(gen.cSIGINT, () => {
     const eventName = bas.cDot + gen.csigint;
     isConnected = false;
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
     // Disconnecting gracefully
     console.log(bas.cCarRetNewLin + app_msg.cDisconnectingGracefully);
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
     process.exit();
   });
 
   // Start listening for connections
-  server.connect = async () => {
+  server.connect = () => {
     const eventName = bas.cDot + wrd.cconnect;
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
     if (!isConnected) { 
-      const listenAsync = promisify(server.listen.bind(server));
-      await listenAsync(SOCKET.port, SOCKET.host)
+      server.listen(SOCKET.port, SOCKET.host)
     }
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
   }
 
   // Stop listening and close connection
-  server.disconnect = async () => {
+  server.disconnect = () => {
     const eventName = bas.cDot + wrd.cdisconnect;
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
     if (isConnected){
       isConnected = false;
-      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
-      const disconnectAsync = promisify(server.disconnect.bind(server));
-      await disconnectAsync();
+      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      server.disconnect();
     }
-    await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+    haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
   }
 
   return server;

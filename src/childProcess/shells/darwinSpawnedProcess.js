@@ -74,7 +74,7 @@ export async function shell(shellCommandToRun, options, callback) {
   // console.log(msg.coptionsAre + options);
   
   // Shell object
-  let shellscript = null;
+  let shellScript = null;
 
   // File options for temporary shell script.
   const tempFileOptions = {
@@ -146,52 +146,70 @@ export async function shell(shellCommandToRun, options, callback) {
     }
 
     // Write shell script to temporary shell file
-    shellscript = tmp.fileSync(tempFileOptions);
-    fs.writeSync(shellscript.fd, scriptContent);
+    shellScript = tmp.fileSync(tempFileOptions);
+    fs.writeFile(shellScript.fd, scriptContent, gen.cUTF8, async (error) => {
 
     // Close temp file handle
-    fs.close(shellscript.fd)
+    await fs.close(shellScript.fd);
 
-    // Add temporary file to options
-    spawnOptions[1].push(shellscript.name);
+      if (error) {
+        // Error creating the tmp file
+        // console.log(app_msg.cerrorCreatingTheTmpFile + error);
+      } else {
+        // Tmp file successfully written:
+        // console.log(app_msg.cTmpFileSuccessfullyWritten + shellScript.name);
+        // await callback(shellScript.name); // Call the callback function to pass back the name of the script file.
+        if (process[wrd.csend]) {
+          process.send({[wrd.cName]: shellScript.name});
+        }
 
-    // Check and proceed if the temporary file has successfully been written
-    if (fs.existsSync(shellscript.name)) {
-      const child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1), {
-        stdio: wrd.cpipe,
-        cwd: options.CAFfeinatedPath
-      });
+        // Ensure the use of a single shell instance 
+        let child;
+        if (child && !child.killed) {
+          child.stdin.write(scriptContent + bas.cBackSlash + bas.cn, gen.cUTF8, (err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
+        } else {
+          // Add temporary file to options
+          spawnOptions[1].push(shellScript.name);
 
-      // Handles actions taken when errors occurs on child process
-      child.on(wrd.cerror, async (error) => {
-        // let eventName = bas.cDot + wrd.cerror;
-        // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
-        console.log(msg.cerrorIs + error);
-        // Error from child:
-        if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cErrorFromChildColon + error);
-        // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
-      });
+          // Check and proceed if the temporary file has successfully been written
+          child = childProcess.spawn(spawnOptions[0], ...spawnOptions.slice(1), {
+            stdio: wrd.cpipe,
+            cwd: options.CAFfeinatedPath
+          });
 
-      child.on(wrd.cdisconnect, async () => {
-        // let eventName = bas.cDot + wrd.cdisconnect;
-        // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
-        if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cChildDisconnected);
-        // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
-      });
+          // Handles actions taken when errors occurs on child process
+          child.on(wrd.cerror, async (error) => {
+            // let eventName = bas.cDot + wrd.cerror;
+            // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
+            console.log(msg.cerrorIs + error);
+            // Error from child:
+            if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cErrorFromChildColon + error);
+            // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
+          });
 
-      child.on(wrd.cexit, async (code, signal) => {
-        // let eventName = bas.cDot + wrd.cexit;
-        // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
-        // console.log(msg.ccodeIs + code);
-        // console.log(msg.csignalIs + signal);
-        // Exiting child process
-        if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cExitingChildProcess);
-        // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
-      });
-    } else {
-      // Failed executing:
-      console.log(app_msg.cFailedExecutingColon + shellscript.name);
-    }
+          child.on(wrd.cdisconnect, async () => {
+            // let eventName = bas.cDot + wrd.cdisconnect;
+            // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
+            if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cChildDisconnected);
+            // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
+          });
+
+          child.on(wrd.cexit, async (code, signal) => {
+            // let eventName = bas.cDot + wrd.cexit;
+            // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + eventName + msg.cSpaceEvent);
+            // console.log(msg.ccodeIs + code);
+            // console.log(msg.csignalIs + signal);
+            // Exiting child process
+            if (process[wrd.csend]) process.send(bas.cCarRetNewLin + msg.cExitingChildProcess);
+            // console.log(msg.cEND_Space + namespacePrefix + functionName + eventName +msg.cSpaceEvent);
+          });
+        }
+      }
+    });
   } catch (error) {
     // Error on shell:
     console.log(msg.cErrorOnShell + error.message)

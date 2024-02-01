@@ -701,7 +701,11 @@ async function test(inputData, inputMetaData) {
         testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + listOfTestNamesToExecute;
         // testCommandString is:
         await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestCommandStringIs + testCommandString);
-        testPassed = await haystacks.executeBusinessRules([testCommandString, commandType], [app_biz.cexecuteTestCommand]);
+        haystacks.executeBusinessRules([testCommandString, commandType], [app_biz.cexecuteTestCommand]).then(r => {
+          testPassed = r;
+        }).catch(e => {
+          console.log(`Error test function ${e}`);
+        });
         // TODO: Handle any test re-run logic here.
       } else {
         // We are going to execute each test individually in a loop.
