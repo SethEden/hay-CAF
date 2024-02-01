@@ -79,7 +79,7 @@ export default function socketsServer() {
   let isConnected = false;
 
   // Test result from client
-  let testResult = false;
+  let testResult = null;
 
   // Handles actions taken when an error occurs on the server.
   server.on(wrd.cerror, (error) => {
@@ -123,7 +123,7 @@ export default function socketsServer() {
       }
       process.stdout.write(bas.cGreaterThan);
       haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cEND_Event);
-      return testResult;
+      return;
     });
 
     // Handles incoming messages as they come in from a socket client.
@@ -175,14 +175,14 @@ export default function socketsServer() {
       console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage03);
       haystacks.consoleLog(namespacePrefix, functionName + childEventName, msg.cEND_Event);
       process.stdout.write(bas.cGreaterThan);
-      return testResult;
+      return;
     });
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
   });
 
   // Handles actions to take when the connection closes.
   server.on(wrd.cclose, (code, signal) => {
-    const eventName = bas.cDot + wrd.cclose;
+    const eventName = bas.cDot + wrd.cclose;  
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + code);
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.csignalIs + signal);
@@ -232,6 +232,33 @@ export default function socketsServer() {
       server.disconnect();
     }
     haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+  }
+
+  // During an allotted time keep checking for 
+  // the test result else send an error if no
+  // value is provided or time has passed.
+  server.getTestResult = async (allottedTimeInSeconds) => {
+    console.log('GetTestResults beginning...');
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        reject(`Error: The alotted time to retrieve the test result has passed. Try again later.`);
+      }, allottedTimeInSeconds * 1000);
+
+      const checkResult = () => {
+        console.log(`testResult: ${testResult}`);
+        console.log({allottedTimeInSeconds})
+        console.log({testResult})
+        if (testResult !== null){
+          console.log('Resolving check results');
+          clearTimeout(timeoutId);
+          resolve(testResult);
+        } else {
+          setTimeout(checkResult, 100);
+        }
+      }
+
+      checkResult();
+    });
   }
 
   return server;

@@ -233,6 +233,21 @@ async function spawnCmdProcess(inputData, inputMetaData) {
         return false;
       }
     });
+
+    // Obtain the child process time (allotted) limit
+    const childProcessLimitTime = Number(await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime));
+
+    // Return the test result
+    return new Promise((resolve, reject) => {
+      // Obtain results from test
+      socketServer.getTestResult(childProcessLimitTime).then(testResult => {
+        resolve(testResult);
+      })
+      .catch(error => {
+        reject(error);
+      });
+
+    })
   } catch (e) {
     console.log(e);
   }
