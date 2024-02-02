@@ -109,6 +109,7 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cspawnCommandIs', Actual: app_msg.cspawnCommandIs, Expected: 'spawn command is: '},
   {Name: 'cFailedExecutingColon', Actual: app_msg.cFailedExecutingColon, Expected: 'Failed executing: '},
 
+  // ERROR Messages
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
   {Name: 'cErrorSetRootTestFolderPathMessage', Actual: app_msg.cErrorSetRootTestFolderPathMessage, Expected: 'ERROR: Please enter a valid path as input.'},
   {Name: 'cErrorSetDefaultTestBehaviorMessage', Actual: app_msg.cErrorSetDefaultTestBehaviorMessage, Expected: 'ERROR: Please enter a valid input, true or false.'},
@@ -129,5 +130,19 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cchildProcessCommandStringNotDefined', Actual: app_msg.cchildProcessCommandStringNotDefined, Expected: 'Child process command string not defined.'},
   {Name: 'cErrorSocketServerMessage01', Actual: app_msg.cErrorSocketServerMessage01, Expected: 'Error on socket server: '},
   {Name: 'cErrorSocketServerMessage02', Actual: app_msg.cErrorSocketServerMessage02, Expected: 'Failed retrieving data from client: '},
-  {Name: 'cErrorSocketServerMessage03', Actual: app_msg.cErrorSocketServerMessage03, Expected: 'Server connection has ended!'}
+  {Name: 'cErrorSocketServerMessage03', Actual: app_msg.cErrorSocketServerMessage03, Expected: 'Server connection has ended!'},
+
+  // SUCCESS Messages
+  {Name: 'cconfigurationSettingSuccessfullyChanged', Actual: app_msg.cconfigurationSettingSuccessfullyChanged, Expected: ' configuration setting successfully changed.'},
+  {Name: 'cSuccessSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cSuccessSetBoilerPlateTestPathAndFileNameMessage, Expected: 'SUCCESS: boilerPlateTestPathAndFileName configuration setting successfully changed.'},
+  {Name: 'cSuccessSetRootTestFolderPathMessage', Actual: app_msg.cSuccessSetRootTestFolderPathMessage, Expected: 'SUCCESS: rootTestFolderPath configuration setting successfully changed.'},
+  {Name: 'cSuccessSetDefaultTestBehaviorMessage', Actual: app_msg.cSuccessSetDefaultTestBehaviorMessage, Expected: 'SUCCESS: defaultRunAllTests configuration setting successfully changed.'},
+  {Name: 'cSuccessSetSlowExecutionMessage', Actual: app_msg.cSuccessSetSlowExecutionMessage, Expected: 'SUCCESS: slowExecution configuration setting successfully changed.'},
+  {Name: 'cSuccessSetMultiTestExecutionMessage', Actual: app_msg.cSuccessSetMultiTestExecutionMessage, Expected: 'SUCCESS: multiTestExecution configuration setting successfully changed.'},
+  {Name: 'cSuccessSetBrowsersListMessage', Actual: app_msg.cSuccessSetBrowsersListMessage, Expected: 'SUCCESS: listOfBrowsers configuration setting successfully changed.'},
+  {Name: 'cSuccessSetExecutionEngineMessage', Actual: app_msg.cSuccessSetExecutionEngineMessage, Expected: 'SUCCESS: executionDriverEngine configuration setting successfully changed.'},
+  {Name: 'cSuccessSetEnableReporterConfigurationMessage', Actual: app_msg.cSuccessSetEnableReporterConfigurationMessage, Expected: 'SUCCESS: enableReporter configuration setting successfully changed.'},
+  {Name: 'cSuccessSetReportPathConfigurationMessage', Actual: app_msg.cSuccessSetReportPathConfigurationMessage, Expected: 'SUCCESS: reportPath configuration setting successfully changed.'},
+  {Name: 'cSuccessSetChildProcessLimitTimeMessage', Actual: app_msg.cSuccessSetChildProcessLimitTimeMessage, Expected: 'SUCCESS: childProcessLimitTime configuration setting successfully changed.'},
+  {Name: 'cSuccessSetCmdTypeMessage', Actual: app_msg.cSuccessSetCmdTypeMessage, Expected: 'SUCCESS: cmdType configuration setting successfully changed.'}
 ];

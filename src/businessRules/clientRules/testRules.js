@@ -233,6 +233,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
 
     // Cleanup / delete tmp script file
     const Cleanup = async () => {
+      await haystacks.consoleLog(namespacePrefix, functionName, 'BEGIN testRules.spawnCmdProcess.Cleanup function');
       let testScriptFileName = '';
       let fileDeleted = false;
 
@@ -250,15 +251,19 @@ async function spawnCmdProcess(inputData, inputMetaData) {
           await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName, '');
         }
       }
+      await haystacks.consoleLog(namespacePrefix, functionName, 'END testRules.spawnCmdProcess.Cleanup function');
     }
 
     // Obtain the child process time (allotted) limit
     const childProcessLimitTime = Number(await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime));
 
+    await haystacks.consoleLog(namespacePrefix, functionName, 'ABOUT TO BEGIN testRules.spawnCmdProcess.Promise function');
     // Return the test result
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
+      haystacks.consoleLog(namespacePrefix, functionName, 'BEGIN testRules.spawnCmdProcess.Promise function');
       // Obtain results from test
       socketServer.getTestResult(childProcessLimitTime).then(testResult => {
+        haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.testResult is: ' + testResult);
         Cleanup();
 
         // Kill the child process.
@@ -266,13 +271,14 @@ async function spawnCmdProcess(inputData, inputMetaData) {
         resolve(testResult);
       })
       .catch(error => {
+        haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.error is: ' + error);
         Cleanup();
 
         // Kill the child process.
         childProcess.kill();
         reject(error);
       });
-
+      haystacks.consoleLog(namespacePrefix, functionName, 'END testRules.spawnCmdProcess.Promise function');
     })
   } catch (e) {
     console.log(e);

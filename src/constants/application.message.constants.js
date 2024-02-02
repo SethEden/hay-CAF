@@ -113,6 +113,7 @@ export const cspawnCommandRawIs = wrd.cspawn + bas.cSpace + wrd.ccommand + bas.c
 export const cspawnCommandIs = wrd.cspawn + bas.cSpace + wrd.ccommand + sys.cSpaceIsColonSpace; // spawn command is:
 export const cFailedExecutingColon = wrd.cFailed + bas.cSpace + wrd.cexecuting + bas.cColon + bas.cSpace; // Failed executing:
 
+// ERROR Messages
 export const cErrorSetBoilerPlateTestPathAndFileNameMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cand + bas.cSpace + wrd.cfilename + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path and filename as input.
 export const cErrorSetRootTestFolderPathMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path as input.
 export const cErrorSetDefaultTestBehaviorMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cinput + bas.cComa + bas.cSpace + gen.ctrue + bas.cSpace + wrd.cor + bas.cSpace + gen.cfalse + bas.cDot; // ERROR: Please enter a valid input, true or false.
@@ -134,3 +135,17 @@ export const cchildProcessCommandStringNotDefined = wrd.cChild + bas.cSpace + wr
 export const cErrorSocketServerMessage01 = wrd.cError + bas.cSpace + gen.con + bas.cSpace + wrd.csocket + bas.cSpace + wrd.cserver + bas.cColon + bas.cSpace; // Error on socket server:
 export const cErrorSocketServerMessage02 = wrd.cFailed + bas.cSpace + wrd.cretrieving + bas.cSpace + wrd.cdata + bas.cSpace + wrd.cfrom + bas.cSpace + wrd.cclient + bas.cColon + bas.cSpace; // Failed retrieving data from client:
 export const cErrorSocketServerMessage03 = wrd.cServer + bas.cSpace + wrd.cconnection + bas.cSpace + wrd.chas + bas.cSpace + wrd.cended + bas.cExclamation; // Server connection has ended!
+
+// SUCCESS Messages
+export const cconfigurationSettingSuccessfullyChanged = bas.cSpace + wrd.cconfiguration + bas.cSpace + wrd.csetting + bas.cSpace + wrd.csuccessfully + bas.cSpace + wrd.cchanged + bas.cDot; // configuration setting successfully changed.
+export const cSuccessSetBoilerPlateTestPathAndFileNameMessage = msg.cSUCCESS_Colon + app_cfg.cboilerPlateTestPathAndFileName + cconfigurationSettingSuccessfullyChanged; // SUCCESS: boilerPlateTestPathAndFileName configuration setting successfully changed.
+export const cSuccessSetRootTestFolderPathMessage = msg.cSUCCESS_Colon + app_cfg.crootTestFolderPath + cconfigurationSettingSuccessfullyChanged; // SUCCESS: rootTestFolderPath configuration setting successfully changed.
+export const cSuccessSetDefaultTestBehaviorMessage = msg.cSUCCESS_Colon + app_cfg.cdefaultRunAllTests + cconfigurationSettingSuccessfullyChanged; // SUCCESS: defaultRunAllTests configuration setting successfully changed.
+export const cSuccessSetSlowExecutionMessage = msg.cSUCCESS_Colon + app_cfg.cslowExecution + cconfigurationSettingSuccessfullyChanged; // SUCCESS: slowExecution configuration setting successfully changed.
+export const cSuccessSetMultiTestExecutionMessage = msg.cSUCCESS_Colon + app_cfg.cmultiTestExecution + cconfigurationSettingSuccessfullyChanged; // SUCCESS: multiTestExecution configuration setting successfully changed.
+export const cSuccessSetBrowsersListMessage = msg.cSUCCESS_Colon + app_cfg.clistOfBrowsers + cconfigurationSettingSuccessfullyChanged; // SUCCESS: listOfBrowsers configuration setting successfully changed.
+export const cSuccessSetExecutionEngineMessage = msg.cSUCCESS_Colon + app_cfg.cexecutionDriverEngine + cconfigurationSettingSuccessfullyChanged; // SUCCESS: executionDriverEngine configuration setting successfully changed.
+export const cSuccessSetEnableReporterConfigurationMessage = msg.cSUCCESS_Colon + app_cfg.cenableReporter + cconfigurationSettingSuccessfullyChanged; // SUCCESS: enableReporter configuration setting successfully changed.
+export const cSuccessSetReportPathConfigurationMessage = msg.cSUCCESS_Colon + app_cfg.creportPath + cconfigurationSettingSuccessfullyChanged; // SUCCESS: reportPath configuration setting successfully changed.
+export const cSuccessSetChildProcessLimitTimeMessage = msg.cSUCCESS_Colon + app_cfg.cchildProcessLimitTime + cconfigurationSettingSuccessfullyChanged; // SUCCESS: childProcessLimitTime configuration setting successfully changed.
+export const cSuccessSetCmdTypeMessage = msg.cSUCCESS_Colon + app_cfg.ccmdType + cconfigurationSettingSuccessfullyChanged; // SUCCESS: cmdType configuration setting successfully changed.

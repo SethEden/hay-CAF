@@ -18,7 +18,6 @@
  */
 
 // Internal imports
-import testBroker from '../../brokers/testBroker.js';
 import * as app_biz from '../../constants/application.business.constants.js';
 import * as app_cfg from '../../constants/application.configuration.constants.js';
 import * as apc from '../../constants/application.constants.js';
@@ -61,6 +60,8 @@ async function setBoilerPlateTestPathAndFileName(inputData, inputMetaData) {
   let returnData = [true, ];
   if (Array.isArray(inputData) && inputData.length >= 2) {
     await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cboilerPlateTestPathAndFileName, inputData[1]);
+    // SUCCESS: boilerPlateTestPathAndFileName configuration setting successfully changed.
+    console.log(app_msg.cSuccessSetBoilerPlateTestPathAndFileNameMessage);
   } else {
     // ERROR: Please enter a valid path and filename as input.
     console.log(app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage);
@@ -93,13 +94,15 @@ async function setBoilerPlateTestPathAndFileName(inputData, inputMetaData) {
  * @date 2023/011/01
  */
 async function setRootTestFolderPath(inputData, inputMetaData) {
-  let functionName = setBoilerPlateTestPathAndFileName.name;
+  let functionName = setRootTestFolderPath.name;
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = [true, ];
   if (Array.isArray(inputData) && inputData.length >= 2) {
     await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath, inputData[1]);
+    // SUCCESS: rootTestFolderPath configuration setting successfully changed.
+    console.log(app_msg.cSuccessSetRootTestFolderPathMessage);
   } else {
     // ERROR: Please enter a valid path as input.
     console.log(app_msg.cErrorSetRootTestFolderPathMessage);
@@ -133,6 +136,8 @@ async function setDefaultTestBehavior(inputData, inputMetaData) {
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cdefaultRunAllTests, inputData[1]);
+      // SUCCESS: defaultRunAllTests configuration setting successfully changed.
+      console.log(app_msg.cSuccessSetDefaultTestBehaviorMessage);
     } else {
       // ERROR: Please enter a valid input, true or false.
       console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
@@ -170,6 +175,8 @@ async function setSlowExecutionConfiguration(inputData, inputMetaData) {
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cslowExecution, inputData[1]);
+      // SUCCESS: slowExecution configuration setting successfully changed.
+      console.log(app_msg.cSuccessSetSlowExecutionMessage);
     } else {
       // ERROR: Please enter a valid input, true or false.
       console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
@@ -209,6 +216,8 @@ async function setMultiTestExecutionConfiguration(inputData, inputMetaData) {
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cmultiTestExecution, inputData[1]);
+      // SUCCESS: multiTestExecution configuration setting successfully changed.
+      console.log(app_msg.cSuccessSetMultiTestExecutionMessage);
     } else {
       // ERROR: Please enter a valid input, true or false.
       console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
@@ -255,6 +264,8 @@ async function setBrowsersList(inputData, inputMetaData) {
       browserList = inputData.join(bas.cComa);
     }
     await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.clistOfBrowsers, browserList);
+    // SUCCESS: listOfBrowsers configuration setting successfully changed.
+    console.log(app_msg.cSuccessSetBrowsersListMessage);
   } else {
     // ERROR: Please enter a valid list of browser names to execute with.
     console.log(app_msg.cErrorSetBrowserListMessage);
@@ -297,6 +308,8 @@ async function setExecutionEngine(inputData, inputMetaData) {
       console.log(app_msg.csetExecutionEngineMessage03);
       // TODO: Change the below app_sys.ctestcafe to be dynamic once the new testing framework is implemented.
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine, app_sys.ctestcafe);
+      // SUCCESS: executionDriverEngine configuration setting successfully changed.
+      console.log(app_msg.cSuccessSetExecutionEngineMessage);
     } else {
       // ERROR: Please enter a valid execution engine such as:
       console.log(app_msg.csetExecutionEngineMessage04 + app_sys.cvalidExecutionEngines);
@@ -331,6 +344,8 @@ async function setEnableReporterConfiguration(inputData, inputMetaData) {
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cenableReporter, inputData[1]);
+      // SUCCESS: enableReporter configuration setting successfully changed.
+      console.log(app_msg.cSuccessSetEnableReporterConfigurationMessage);
     } else {
       // ERROR: Please enter a valid input, true or false.
       console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
@@ -358,13 +373,15 @@ async function setEnableReporterConfiguration(inputData, inputMetaData) {
  * @date 2023/11/13
  */
 async function setReportPathConfiguration(inputData, inputMetaData) {
-  let functionName = setEnableReporterConfiguration.name;
+  let functionName = setReportPathConfiguration.name;
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
   let returnData = [true, ];
   if (Array.isArray(inputData) && inputData.length >= 2) {
     await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.creportPath, inputData[1]);
+    // SUCCESS: reportPath configuration setting successfully changed.
+    console.log(app_msg.cSuccessSetReportPathConfigurationMessage);
   } else {
     // ERROR: Please enter a valid system path.
     console.log(app_msg.csetReportPathConfigurationMessage01);
@@ -396,6 +413,8 @@ async function setChildProcessLimitTime(inputData, inputMetaData) {
   let returnData = true;
   if (Array.isArray(inputData) && inputData.length >= 2) {
     await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime, inputData[1]);
+    // SUCCESS: childProcessLimitTime setting successfully changed.
+    console.log(app_msg.cSuccessSetChildProcessLimitTimeMessage);
   } else {
     // ERROR: Please enter a valid process time.
     console.log(app_msg.csetChildProcessLimitTimeMessage01);
@@ -429,6 +448,8 @@ async function setCmdType(inputData, inputMetaData) {
   if (Array.isArray(inputData) && inputData.length >= 1) {
     if (app_sys.cvalidCommandTypes.includes(inputData[1].toLowerCase()) === true) {
       await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ccmdType, inputData[1].toLowerCase());
+      // SUCCESS: cmdType setting successfully changed.
+      console.log(app_msg.cSuccessSetCmdTypeMessage);
     } else {
       // ERROR: Please enter a valid command type. Valid types are:
       console.log(app_msg.csetCommandTypeMessage01 + app_sys.cvalidCommandTypes + bas.cSpace + num.c1);
@@ -454,7 +475,7 @@ async function setCmdType(inputData, inputMetaData) {
  * @date 2023/11/01
  */
 async function printApplicationConfiguration(inputData, inputMetaData) {
-  let functionName = setBoilerPlateTestPathAndFileName.name;
+  let functionName = printApplicationConfiguration.name;
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
@@ -524,8 +545,9 @@ async function test(inputData, inputMetaData) {
   // selecting an array of tests to execute, or a single test to execute. Whatever list of tests passes the string-filter matching criteria. DONE
   // Build a for-loop that will loop over all the array of tests that need to be executed. DONE
   // for each test in the array of tests, build a CLI command string to execute the test. DONE
-  // Spawn a new CMD or BASH child-process with a promise and send the CLI command string to it to execute the test script/workflow.
-  // Monitor the child process and determine when the test is done, resolve the promise with the pass-fail.
+  // Spawn a new CMD or BASH child-process with a promise and send the CLI command string to it to execute the test script/workflow. DONE
+  // Monitor the child process and determine when the test is done, resolve the promise with the pass-fail. DONE
+  // Delete any temporary files to clean up after the test run.
   // We can set re-run criteria or other rules to determine how to handle the failure.
   // OR move on to the next test.
 
