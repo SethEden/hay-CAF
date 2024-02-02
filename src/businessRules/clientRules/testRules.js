@@ -26,7 +26,7 @@ import process from 'process';
 import { fork } from 'child_process';
 import socketsServer from '../../childProcess/socketsServer.js';
 
-const { bas, biz, gen, msg, num, sys, wrd } = hayConst;
+const { bas, biz, gen, msg, num, sys, wrd, cfg } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 import { fileURLToPath } from 'url';
@@ -231,6 +231,27 @@ async function spawnCmdProcess(inputData, inputMetaData) {
       }
     });
 
+    // Cleanup / delete tmp script file
+    const Cleanup = async () => {
+      let testScriptFileName = '';
+      let fileDeleted = false;
+
+      // Cleanup any script files from the last command run.
+      testScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName);
+      // main.testScriptFileName is:
+      console.log(app_msg.cmainTestScriptFileNameIs + testScriptFileName);
+      if (testScriptFileName !== '') {
+        let applicationRootPath = await haystacks.getConfigurationSetting(wrd.csystem, cfg.cclientRootPath);
+        // main.applicationRootPath is:
+        await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cmainApplicationRootPathIs + applicationRootPath);
+        // TODO Make sure to apply additional logic for file name and path to make sure it's fully qualifed
+        fileDeleted = await haystacks.executeBusinessRules([testScriptFileName, ''], [biz.cdeleteFile]);
+        if (fileDeleted === true) {
+          await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName, '');
+        }
+      }
+    }
+
     // Obtain the child process time (allotted) limit
     const childProcessLimitTime = Number(await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime));
 
@@ -238,11 +259,15 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     return new Promise((resolve, reject) => {
       // Obtain results from test
       socketServer.getTestResult(childProcessLimitTime).then(testResult => {
+        Cleanup();
+
         // Kill the child process.
         childProcess.kill();
         resolve(testResult);
       })
       .catch(error => {
+        Cleanup();
+
         // Kill the child process.
         childProcess.kill();
         reject(error);
