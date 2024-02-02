@@ -227,8 +227,8 @@ async function spawnCmdProcess(inputData, inputMetaData) {
         console.log(msg.cexitedWithCode + code + msg.candSignal + signal);
         await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function + bas.cSpace + num.c2);
         process.stdout.write(bas.cGreaterThan);
-        return false;
       }
+      return; // false;
     });
 
     // Cleanup / delete tmp script file
