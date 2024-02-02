@@ -40,5 +40,6 @@
   "system.enableReporter": true,
   "system.reportPath": "C:/CAFfeinated/results/SethEden/reports/",
   "system.childProcessLimitTime": 240000,
-  "system.cmdType": "Bash"
+  "system.cmdtype": "Bash",
+  "system.silentDeleteFailure": true
 }
