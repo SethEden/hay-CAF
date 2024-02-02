@@ -701,11 +701,7 @@ async function test(inputData, inputMetaData) {
         testCommandString = testCommandString + app_sys.ctestName + bas.cEqual + listOfTestNamesToExecute;
         // testCommandString is:
         await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestCommandStringIs + testCommandString);
-        haystacks.executeBusinessRules([testCommandString, commandType], [app_biz.cexecuteTestCommand]).then(r => {
-          testPassed = r;
-        }).catch(e => {
-          console.log(`Error test function ${e}`);
-        });
+        testPassed = await haystacks.executeBusinessRules([testCommandString, commandType], [app_biz.cexecuteTestCommand]);
         // TODO: Handle any test re-run logic here.
       } else {
         // We are going to execute each test individually in a loop.
@@ -732,6 +728,7 @@ async function test(inputData, inputMetaData) {
           // TODO: Handle any test re-run logic here.
         } // End-for (let testNameKey in arrayOfTestNamesToExecute)
       }
+      returnData[1] = testPassed;
     }
   } else {
     // ERROR: No test root path specified. Please set the path in the configuration setting:

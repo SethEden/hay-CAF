@@ -90,9 +90,6 @@ async function executeTestCommand(inputData, inputMetaData) {
   const platform = process.platform.toLowerCase();
   const supportedPlatforms = [gen.cdarwin, gen.cwin32, gen.clinux];
 
-  // Returned test result from spawnCmdProcess
-  let testResult = false;
-
   // Ensures the user is using a supported platform / OS.
   if (supportedPlatforms.includes(platform)) {
     if (inputData && inputMetaData) {
@@ -107,7 +104,7 @@ async function executeTestCommand(inputData, inputMetaData) {
       } else {
         // Spawns child process using appropriate shell and executes input command
         // TODO: Return true or false based on the test passing or failing.
-        testResult = await spawnCmdProcess(inputData, inputMetaData);
+        returnData = await spawnCmdProcess(inputData, inputMetaData);
       }
     } else {
       // ERROR: You must specify a test command to execute. Command is:
