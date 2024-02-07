@@ -114,6 +114,7 @@ export async function shell(shellCommandToRun, options, callback) {
         //       do script "clear -x; pwsh -NoExit -Command ${shellCommandToRun}" in window 1
         //    end tell' 
         // `.trim();
+        shellCommandToRun = shellCommandToRun + '; Exit'
         scriptContent = app_sys.cDarwinScriptContentLine1 +
           app_sys.cDarwinScriptContentLine2 +
           app_sys.cDarwinScriptContentLine3 +
