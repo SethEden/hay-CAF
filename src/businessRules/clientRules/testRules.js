@@ -134,6 +134,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + inputData);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let result = false;
   try {
 
     // Start communication protocol Server
@@ -258,7 +259,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     await haystacks.consoleLog(namespacePrefix, functionName, 'ABOUT TO BEGIN testRules.spawnCmdProcess.Promise function');
 
     // Return the test result
-    return await new Promise((resolve, reject) => {
+    result = await new Promise((resolve, reject) => {
       haystacks.consoleLog(namespacePrefix, functionName, 'BEGIN testRules.spawnCmdProcess.Promise function');
       // Obtain results from test
       socketServer.getTestResult(childProcessLimitTime).then(testResult => {
@@ -280,10 +281,13 @@ async function spawnCmdProcess(inputData, inputMetaData) {
       });
       haystacks.consoleLog(namespacePrefix, functionName, 'END testRules.spawnCmdProcess.Promise function');
     })
+
+    await socketServer.terminate();
   } catch (e) {
     console.log(e);
   }
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function + bas.cSpace + num.c3);
+  return new Promise(resolve => { resolve(result)});
 }
 
 export { executeTestCommand, buildArrayOfTestNames, spawnCmdProcess };

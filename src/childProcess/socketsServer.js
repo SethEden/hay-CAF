@@ -307,6 +307,10 @@ export default function socketsServer() {
 
     server.getTestResult = getTestResult
     server.connect = handleConnect 
+    server.terminate = async () => { await new Promise(resolve => {
+      server.close();
+      resolve();
+    }) } 
 
     return server;
   } catch ({ code, message }) {
