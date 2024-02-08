@@ -108,6 +108,10 @@ export async function shell(shellCommandToRun, options, callback) {
         // Script extension
         tempFileOptions.postfix = gen.cDotps1;
 
+        // Closes the window 3 seconds
+        // after the command completes
+        shellCommandToRun = shellCommandToRun + `; Start-Sleep -Seconds 3; Exit`;
+
         // Powershell command to execute commands
         scriptContent = app_sys.cSetDashLocation + bas.cSpace + bas.cDoubleQuote + options.CAFfeinatedPath + bas.cDoubleQuote + bas.cCarRetNewLin + 
         shellCommandToRun;
@@ -115,6 +119,10 @@ export async function shell(shellCommandToRun, options, callback) {
 
       case gen.ccmd: case sys.cdos:
         spawnOptions = [gen.ccmd, [bas.cForwardSlash + bas.cc]];
+
+        // Closes the window 3 seconds
+        // after the command completes
+        shellCommandToRun = shellCommandToRun + ` & timeout /t 3 nobreak & exit`;
 
         // Powershell command to execute commands
         // Need to cd into the CAFfeinated folder first,
@@ -131,6 +139,10 @@ export async function shell(shellCommandToRun, options, callback) {
         // spawnOptions = [wrd.cstart, ['"C:/Program Files/Git/git-bash.exe"']]; // WAS WORKING PERFECTLY
         // spawnOptions = [wrd.cstart, ['"git-bash"']]; // ALSO WAS WORKING PERFECTLY
         spawnOptions = [wrd.cstart, [bas.cDoubleQuote + sys.cgitDashBash + bas.cDoubleQuote]];
+
+        // Closes the window 3 seconds
+        // after the command completes
+        shellCommandToRun = shellCommandToRun + `; sleep 3; exit`;
 
         // Bash command to execute commands
         scriptContent = bas.ccd + bas.cSpace + options.CAFfeinatedPath + bas.cCarRetNewLin + shellCommandToRun + bas.cCarRetNewLin + bas.cDollar + wrd.cSHELL;
