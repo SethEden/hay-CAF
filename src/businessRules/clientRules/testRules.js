@@ -139,7 +139,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
 
     // Start communication protocol Server
     const socketServer = socketsServer();
-    socketServer.connect();
+    await socketServer.connect();
 
     // Obtain root path for haystacks
     const _rootPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.crootTestFolderPath);

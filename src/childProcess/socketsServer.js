@@ -24,6 +24,7 @@ import hayConst from '@haystacks/constants';
 import path from 'path';
 import process from 'process';
 import { createServer } from 'net';
+// import { Buffer } from 'buffer';
 
 const { bas, gen, msg, num, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
@@ -45,18 +46,18 @@ const SOCKET = {
  * @author Karl-Edward FP Jean-Mehu
  * @date 2023/12/29
  */
-function safeJsonParse(buffer) {
+async function safeJsonParse(buffer) {
   const functionName = safeJsonParse.name;
-  haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
-  haystacks.consoleLog(namespacePrefix, functionName, msg.cbufferIs + buffer);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cbufferIs + buffer);
   let returnData;
   try {
     returnData = JSON.parse(buffer);
   } catch (e) {
     returnData = JSON.parse(JSON.stringify(buffer));
   }
-  haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + returnData);
-  haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + returnData);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
 }
 
@@ -110,39 +111,56 @@ export default function socketsServer() {
     const processWriteAsync = async (msg) => new Promise(resolve => {
       process.stdout.write(msg);
       resolve();
-    })
-
-    // Handles actions taken when an error occurs on the server.
-    const handleError = ((error) => {
-      const eventName = bas.cDot + wrd.cerror;
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error);
-      if (error['code'] === gen.cEADDRINUSE && !isConnected){
-        haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
-        return;
-      } else {
-        // Error on socket server:
-        console.error(app_msg.cErrorSocketServerMessage01 + error.message);
-      }
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
-      return;
     });
 
+    // const BUFFER_SIZE = 1024 * 1024; // 1MB
+    // const HIGH_WATER_MARK = 50 // 0.8 * BUFFER_SIZE;
+    // const LOW_WATER_MARK = 20 // 0.2 * BUFFER_SIZE;
+
+    // Initial buffer size
+    // let testBuffer = Buffer.alloc(BUFFER_SIZE); // 1 MB
+    // let testBufferUsed = 0;
+
+    // Banner log
+    const bannerLog = async (eventName, cb) => {
+      console.log('\r\n');
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+      await cb();
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      console.log('\r\n');
+    }
+
+    // Handles actions taken when an error occurs on the server.
+    const handleError = async (error) => {
+      const eventName = bas.cDot + wrd.cerror;
+      await bannerLog(eventName, async () => {
+        haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error);
+        if (error['code'] === gen.cEADDRINUSE && !isConnected){
+          haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+          return;
+        } else if (error['code'] !== 'ECONNRESET') {
+          // Error on socket server:
+          console.error(app_msg.cErrorSocketServerMessage01 + error.message);
+        }
+      });
+      return;
+    };
+
     // Handles actions to take when server begins to listen for connections from clients.
-    const handleListening = () => {
+    const handleListening = async () => {
       const eventName = bas.cDot + wrd.clistening;
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
-      console.log(bas.cCarRetNewLin + wrd.cListening + bas.cDot.repeat(3));
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      await bannerLog(eventName, async () => {
+        console.log(bas.cCarRetNewLin + wrd.cListening + bas.cDot.repeat(3) + bas.cCarRetNewLin);
+      });
     };
 
     // Handles actions to take when a client is connected.
-    const handleConnection = () => {
+    const handleConnection = async () => {
       const eventName = bas.cDot + wrd.cconnection;
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
-      isConnected = true;
-      console.log(bas.cCarRetNewLin + app_msg.cServerConnected);
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      await bannerLog(eventName, async () => {
+        isConnected = true;
+        console.log(bas.cCarRetNewLin + app_msg.cServerConnected + bas.cCarRetNewLin );
+      });
     };
 
     const test = async (json, childEventName) => {
@@ -166,16 +184,15 @@ export default function socketsServer() {
     }
 
     // Handles incoming messages as they come in from a socket client.
-    const handleData = async (chunk) => {
+    const handleData = async (chunk, socket = null) => {
       const eventName = bas.cDot + wrd.cdata;
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, app_msg.cchunkIs + JSON.stringify(chunk));
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, app_msg.cchunkIs + JSON.stringify(chunk));
       try {
-        const json = safeJsonParse(chunk);
+        const json = await safeJsonParse(chunk);
 
         // Ensure the message property exists
         if (!json[wrd.cdata]) {
-          
           if (json[app_msg.ctestResult]) {
             testResult = json[app_msg.ctestResult];
           }
@@ -185,61 +202,62 @@ export default function socketsServer() {
             await messageQueue.enqueue(json);
           }
 
+          if (!await messageQueue.isEmpty()) {
+            console.log(await messageQueue.dequeue());
+          }
+
         }
       } catch ({ message }) {
         // Failed retrieving data from client:
         console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage02 + message);
       }
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
     };
 
     // Handle drain
-    const handleDrain = async () => {
-      const eventName = bas.cDot + 'drain';
-      const json = await messageQueue.dequeue();
-      await test(json, eventName);
+    const handleDrain = async (socket) => {
+      if (!messageQueue.isEmpty()) {
+        const eventName = bas.cDot + wrd.cdrain;
+        await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+        const json = await messageQueue.dequeue();
+        await test(json, eventName);
+        await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+        socket.resume();
+      }
     }
 
     // Handles actions to take when the connection closes.
-    const handleClose = (error) => {
+    const handleClose = () => {
       const eventName = bas.cDot + wrd.cclose;
       haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
 
       isConnected = false;
 
       // Show error only if connection did not close successfully
-      if (error) {
-        const {name, message, stack} = error;
-        haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.ccodeIs + name);
-        haystacks.consoleLog(namespacePrefix, functionName + eventName, ' message is '+ message);
-        // Socket server Exited with code:
-        // , and signal:
-        console.log(bas.cCarRetNewLin + app_msg.cSocketServer + ' error type,' + name + ', message, ' + message + ' stack, ' + stack);
-      } else {
-        haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
-      }
       haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
     };
 
     // Gracefully exits process, when user attempts a "q" (quit) / ctrl-c.
-    process.on(gen.cSIGINT, () => {
+    process.on(gen.cSIGINT, async () => {
       const eventName = bas.cDot + gen.csigint;
-      isConnected = false;
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
-      // Disconnecting gracefully
-      console.log(bas.cCarRetNewLin + app_msg.cDisconnectingGracefully);
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+       await bannerLog(eventName, () => {
+        isConnected = false;
+
+        // Disconnecting gracefully
+        console.log(bas.cCarRetNewLin + app_msg.cDisconnectingGracefully + bas.cCarRetNewLin);
+      });
       process.exit();
     });
 
     // Start listening for connections
-    const handleConnect = () => {
+    const handleConnect = async () => {
       const eventName = bas.cDot + wrd.cconnect;
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+
       if (!isConnected) { 
-        server.listen(SOCKET.port, SOCKET.host, handleListening)
+        server.listen(SOCKET.port, SOCKET.host, handleListening);
       }
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
     }
 
     // Stop listening and close connection
@@ -249,19 +267,19 @@ export default function socketsServer() {
       if (isConnected){
         isConnected = false;
         haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
-        server.disconnect();
+        server.destroySoon();
       }
       haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
     }
 
     // Indicates the end of ther server connection and properly closes server to enable smooth re-runs
     const handleEnd = async (serverInstance) => {
-      const eventName = 'end';
-      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
-      isConnected = false;
-      // Server connection has ended!
-      console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage03);
-      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      const eventName = bas.cDot + wrd.cend;
+      await bannerLog(eventName, async () => {
+        isConnected = false;
+        // Server connection has ended!
+        console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage03 + bas.cCarRetNewLin);
+      });
       await processWriteAsync(bas.cGreaterThan);
       // ! IMPORTANT allow re-runs
       serverInstance.close();
@@ -295,22 +313,64 @@ export default function socketsServer() {
     }
 
     // Return server instance
-    const server = createServer(socket => {
-      handleConnection();
-      socket.on(wrd.cdata, handleData);
-      socket.on(wrd.cerror, handleError)
+    const server = createServer(async socket => {
+      handleConnection(); // good
+      socket.on(wrd.cdata, async chunk => { 
+        socket.emit('disconnect');
+
+        // implement buffering
+        // if (testBufferUsed + chunk.length > BUFFER_SIZE) {
+          // console.log('Buffer is full.');
+          // chunk = chunk.slice(testBufferUsed + chunk.length - BUFFER_SIZE)
+        // }
+
+        // append data to buffer
+        // chunk.copy(testBuffer, testBufferUsed);
+        // testBufferUsed += chunk.length;
+
+         // If buffer is full, pause client
+        // if (testBufferUsed >= HIGH_WATER_MARK) {
+          // socket.pause();
+          // console.log('Buffer full, pausing client');
+        // }
+
+        // Process data while possible
+        // while (testBufferUsed > 0 && !socket.isPaused()) {
+          // chunk = testBuffer.slice(0, testBufferUsed);
+          // testBufferUsed = 0; // resets buffer
+
+          await handleData(chunk, socket);
+        // }
+
+        // Resume client if buffer is below low water mark and data remains
+        // if (testBufferUsed < LOW_WATER_MARK && chunk.length > 0) {
+          // socket.resume();
+          // console.log('Buffer drained partially, resuming client');
+        // }
+
+        // if (testBufferUsed === 0 && socket.listeners(wrd.cdrain).length > 0) {
+          // socket.emit(wrd.cdrain);
+        // }
+
+      }); 
+      socket.on(wrd.cerror, handleError); 
       socket.on(wrd.cdisconnect, handleDisconnect);
-      socket.on(wrd.cclose, handleClose);
-      socket.on(wrd.cend, async () => { await handleEnd(server) });
-      socket.on('drain', handleDrain);
+      socket.on(wrd.cclose, handleClose); 
+      socket.on(wrd.cend, async () => { await handleEnd(server) }); 
+      socket.on(wrd.cdrain, async () => { await handleDrain(socket) }); 
+      socket.on('pause', () => {
+        console.log('Client has paused due to backpressure');
+      }); 
     });
 
-    server.getTestResult = getTestResult
-    server.connect = handleConnect 
-    server.terminate = async () => { await new Promise(resolve => {
-      server.close();
-      resolve();
-    }) } 
+    server.getTestResult = getTestResult;
+    server.connect = handleConnect;
+    server.terminate = async () => {
+      await new Promise(resolve => {
+        server.close();
+        resolve();
+      });
+    }; 
 
     return server;
   } catch ({ code, message }) {
