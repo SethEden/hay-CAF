@@ -106,6 +106,9 @@ export default function socketsServer() {
     // Test result from client
     let testResult = null;
 
+    // Check wether result was retrieved
+    let testResultRetrieved = false;
+
     // Message queue
     let messageQueue = createMessageQueue();
 
@@ -185,6 +188,10 @@ export default function socketsServer() {
           // Sending termination cmd to clients...
           haystacks.consoleLog(namespacePrefix, functionName + childEventName, app_msg.csendingTerminationCmdToClients);
           // client.write('should be closing now....')
+          if (!testResultRetrieved) {
+            console.log("\r\nTest failed prematurely!\r\n");
+            server.close();
+          }
         }
       }
     }
@@ -261,6 +268,8 @@ export default function socketsServer() {
       const eventName = bas.cDot + wrd.cconnect;
       await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
 
+      testResultRetrieved = false;
+
       if (!isConnected) { 
         server.listen(SOCKET.port, SOCKET.host, handleListening);
       }
@@ -291,12 +300,26 @@ export default function socketsServer() {
       serverInstance.close();
     }
 
+    // After retrieving testResult
+    // Ends test after a number of seconds if it has not
+    // already ended
+    const beginEndOfScriptCountDown = async (allottedTimeInSeconds = 20) => {
+      if (testResultRetrieved) {
+        await new Promise(resolve => {
+          setTimeout(() => {
+            console.log('Closing...Timeout reached for end of script!');
+            server.close();
+          }, allottedTimeInSeconds * 1000);
+        })
+      }
+    }
+
     // Keep checking during the given allotted time for the test result. 
     // If no value is provided or time has passed send error.
     const getTestResult = async (allottedTimeInSeconds) => {
       // let time = allottedTimeInSeconds;
       // console.log('calling getTestResult');
-      return new Promise((resolve, reject) => {
+      return await new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {
           reject('Error: The alotted time to retrieve the test result has passed. Try again later.');
         }, allottedTimeInSeconds * 1000);
@@ -307,6 +330,8 @@ export default function socketsServer() {
           
           if (typeof testResult === 'string' && testResult.length){
             clearTimeout(timeoutId);
+            testResultRetrieved = true;
+            beginEndOfScriptCountDown();
             resolve(testResult);
           } else {
             setTimeout(checkResult, 100);
