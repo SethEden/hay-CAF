@@ -97,6 +97,8 @@ export default function socketsServer() {
   const functionName = socketsServer.name;
   haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
 
+  let server = null;
+
   try {
     // Flag to check if there is an active connection
     let isConnected = false;
@@ -131,16 +133,20 @@ export default function socketsServer() {
     }
 
     // Handles actions taken when an error occurs on the server.
-    const handleError = async (error) => {
+    const handleError = async (error, socket) => {
       const eventName = bas.cDot + wrd.cerror;
       await bannerLog(eventName, async () => {
-        haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error);
+        await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error);
         if (error['code'] === gen.cEADDRINUSE && !isConnected){
-          haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+          await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
           return;
         } else if (error['code'] !== 'ECONNRESET') {
           // Error on socket server:
           console.error(app_msg.cErrorSocketServerMessage01 + error.message);
+        } else if (error['code'] === 'ECONNRESET') {
+          console.log('ECONNRESET!!!!')
+          socket.end();
+          socket.destroy();
         }
       });
       return;
@@ -227,14 +233,15 @@ export default function socketsServer() {
     }
 
     // Handles actions to take when the connection closes.
-    const handleClose = () => {
+    const handleClose = async () => {
       const eventName = bas.cDot + wrd.cclose;
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
 
       isConnected = false;
 
       // Show error only if connection did not close successfully
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      await processWriteAsync(bas.cGreaterThan);
     };
 
     // Gracefully exits process, when user attempts a "q" (quit) / ctrl-c.
@@ -261,15 +268,14 @@ export default function socketsServer() {
     }
 
     // Stop listening and close connection
-    const handleDisconnect = () => {
+    const handleDisconnect = async () => {
       const eventName = bas.cDot + wrd.cdisconnect;
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
       if (isConnected){
         isConnected = false;
         haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
-        server.destroySoon();
       }
-      haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
+      await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
     }
 
     // Indicates the end of ther server connection and properly closes server to enable smooth re-runs
@@ -280,7 +286,7 @@ export default function socketsServer() {
         // Server connection has ended!
         console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage03 + bas.cCarRetNewLin);
       });
-      await processWriteAsync(bas.cGreaterThan);
+      // await processWriteAsync(bas.cGreaterThan);
       // ! IMPORTANT allow re-runs
       serverInstance.close();
     }
@@ -313,7 +319,7 @@ export default function socketsServer() {
     }
 
     // Return server instance
-    const server = createServer(async socket => {
+    server = createServer(async socket => {
       handleConnection(); // good
       socket.on(wrd.cdata, async chunk => { 
         socket.emit('disconnect');
@@ -355,7 +361,7 @@ export default function socketsServer() {
       }); 
       socket.on(wrd.cerror, handleError); 
       socket.on(wrd.cdisconnect, handleDisconnect);
-      socket.on(wrd.cclose, handleClose); 
+      socket.on(wrd.cclose, async () => { await handleClose(); }); 
       socket.on(wrd.cend, async () => { await handleEnd(server) }); 
       socket.on(wrd.cdrain, async () => { await handleDrain(socket) }); 
       socket.on('pause', () => {
