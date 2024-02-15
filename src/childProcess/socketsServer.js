@@ -112,6 +112,9 @@ export default function socketsServer() {
     // Message queue
     let messageQueue = createMessageQueue();
 
+    // Checks if the server has ended
+    let serverHasEnded = false;
+
     // Async proscess write
     const processWriteAsync = async (msg) => new Promise(resolve => {
       process.stdout.write(msg);
@@ -136,9 +139,10 @@ export default function socketsServer() {
     }
 
     // Handles actions taken when an error occurs on the server.
-    const handleError = async (error, socket) => {
+    const handleError = async (error, socketInstance) => {
       const eventName = bas.cDot + wrd.cerror;
       await bannerLog(eventName, async () => {
+        serverHasEnded = true;
         await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error);
         if (error['code'] === gen.cEADDRINUSE && !isConnected){
           await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
@@ -148,8 +152,7 @@ export default function socketsServer() {
           console.error(app_msg.cErrorSocketServerMessage01 + error.message);
         } else if (error['code'] === 'ECONNRESET') {
           console.log('ECONNRESET!!!!')
-          socket.end();
-          socket.destroy();
+          socketInstance.close();
         }
       });
       return;
@@ -269,6 +272,7 @@ export default function socketsServer() {
       await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
 
       testResultRetrieved = false;
+      serverHasEnded = false;
 
       if (!isConnected) { 
         server.listen(SOCKET.port, SOCKET.host, handleListening);
@@ -297,6 +301,7 @@ export default function socketsServer() {
       });
       // await processWriteAsync(bas.cGreaterThan);
       // ! IMPORTANT allow re-runs
+      serverHasEnded = true;
       serverInstance.close();
     }
 
@@ -328,13 +333,17 @@ export default function socketsServer() {
           // time -= 100;
           // console.log({allottedTimeInSeconds: time})
           
-          if (typeof testResult === 'string' && testResult.length){
-            clearTimeout(timeoutId);
-            testResultRetrieved = true;
-            beginEndOfScriptCountDown();
-            resolve(testResult);
+          if (serverHasEnded) {
+            resolve("fail");
           } else {
-            setTimeout(checkResult, 100);
+            if (typeof testResult === 'string' && testResult.length){
+              clearTimeout(timeoutId);
+              testResultRetrieved = true;
+              beginEndOfScriptCountDown();
+              resolve(testResult);
+            } else {
+              setTimeout(checkResult, 100);
+            }
           }
         }
       
@@ -402,6 +411,34 @@ export default function socketsServer() {
         resolve();
       });
     }; 
+
+    // invoke optional command if 
+    server.serverHasEndedCallback = async (callback, allottedTimeInSeconds = 5) => {
+      await new Promise((resolve) => {
+        console.log('Calling serverHasEndedCallback!!');
+        const timeoutId = setTimeout(() => {
+          console.log('doing bad!!')
+          // Test has failed if nothing happened in the allottedTimeInSeconds!
+          resolve(callback(true));
+        }, allottedTimeInSeconds * 1000);
+
+        // Keep checking if the server has ended
+        // return status whether result was returned via callback
+        const checkStatus = () => {
+          console.log('checking status')
+          if (serverHasEnded && testResultRetrieved){
+            clearTimeout(timeoutId);
+            // test has not (yet) failed
+            resolve(callback(false));
+          } else {
+            setTimeout(checkStatus, 100);
+          }
+        }
+      
+        // Restart check.
+        checkStatus();
+      });
+    }
 
     return server;
   } catch ({ code, message }) {

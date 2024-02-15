@@ -259,28 +259,61 @@ async function spawnCmdProcess(inputData, inputMetaData) {
     await haystacks.consoleLog(namespacePrefix, functionName, 'ABOUT TO BEGIN testRules.spawnCmdProcess.Promise function');
 
     // Return the test result
-    result = await new Promise((resolve, reject) => {
-      haystacks.consoleLog(namespacePrefix, functionName, 'BEGIN testRules.spawnCmdProcess.Promise function');
-      // Obtain results from test
-      socketServer.getTestResult(childProcessLimitTime).then(testResult => {
-        haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.testResult is: ' + testResult);
+    // result = await socketServer.serverHasEndedCallback( async (failed) => {
+      // if (failed) {
+        // Cleanup();
+        // return "fail";
+      // } else {
+        // return await new Promise((resolve, reject) => {
+            // haystacks.consoleLog(namespacePrefix, functionName, 'BEGIN testRules.spawnCmdProcess.Promise function');
+            // // Obtain results from test
+            // socketServer.getTestResult(childProcessLimitTime).then(testResult => {
+              // haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.testResult is: ' + testResult);
 
-        Cleanup();
+              // Cleanup();
 
-        // Kill the child process.
-        childProcess.kill();
-        resolve(testResult);
-      })
-      .catch(error => {
-        haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.error is: ' + error);
-        Cleanup();
+              // // Kill the child process.
+              // childProcess.kill();
+              // resolve(testResult);
+            // })
+            // .catch(error => {
+              // haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.error is: ' + error);
+              // Cleanup();
 
-        // Kill the child process.
-        childProcess.kill();
-        reject(error);
-      });
-      haystacks.consoleLog(namespacePrefix, functionName, 'END testRules.spawnCmdProcess.Promise function');
-    })
+              // // Kill the child process.
+              // childProcess.kill();
+              // console.log(error);
+              // reject(false);
+            // });
+            // haystacks.consoleLog(namespacePrefix, functionName, 'END testRules.spawnCmdProcess.Promise function');
+        // });
+      // }
+    // });
+
+   result = await new Promise((resolve, reject) => {
+            haystacks.consoleLog(namespacePrefix, functionName, 'BEGIN testRules.spawnCmdProcess.Promise function');
+            // Obtain results from test
+            socketServer.getTestResult(childProcessLimitTime).then(testResult => {
+              haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.testResult is: ' + testResult);
+
+              Cleanup();
+
+              // Kill the child process.
+              childProcess.kill();
+              resolve(testResult);
+            })
+            .catch(error => {
+              haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.error is: ' + error);
+              Cleanup();
+
+              // Kill the child process.
+              childProcess.kill();
+              console.log(error);
+              reject(false);
+            });
+            haystacks.consoleLog(namespacePrefix, functionName, 'END testRules.spawnCmdProcess.Promise function');
+        });
+
 
     await socketServer.terminate();
   } catch (e) {
