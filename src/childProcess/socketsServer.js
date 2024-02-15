@@ -384,7 +384,7 @@ export default function socketsServer() {
         // }
 
       }); 
-      socket.on(wrd.cerror, handleError); 
+      socket.on(wrd.cerror, async (error) => { await handleError(error, socket); }); 
       socket.on(wrd.cdisconnect, handleDisconnect);
       socket.on(wrd.cclose, async () => { await handleClose(); }); 
       socket.on(wrd.cend, async () => { await handleEnd(server) }); 
