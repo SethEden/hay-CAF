@@ -139,7 +139,7 @@ export default function socketsServer() {
     }
 
     // Handles actions taken when an error occurs on the server.
-    const handleError = async (error, socketInstance) => {
+    const handleError = async (error, serverInstance) => {
       const eventName = bas.cDot + wrd.cerror;
       await bannerLog(eventName, async () => {
         serverHasEnded = true;
@@ -152,7 +152,7 @@ export default function socketsServer() {
           console.error(app_msg.cErrorSocketServerMessage01 + error.message);
         } else if (error['code'] === 'ECONNRESET') {
           console.log('ECONNRESET!!!!')
-          socketInstance.close();
+          serverInstance.close();
         }
       });
       return;
@@ -393,7 +393,7 @@ export default function socketsServer() {
         // }
 
       }); 
-      socket.on(wrd.cerror, async (error) => { await handleError(error, socket); }); 
+      socket.on(wrd.cerror, async (error) => { await handleError(error, server); }); 
       socket.on(wrd.cdisconnect, handleDisconnect);
       socket.on(wrd.cclose, async () => { await handleClose(); }); 
       socket.on(wrd.cend, async () => { await handleEnd(server) }); 
