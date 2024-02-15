@@ -31,7 +31,13 @@ if (!process.argv || process.argv.length <= 2) {
   throw new Error(app_msg.cchildProcessCommandStringNotDefined);
 }
 const temp = process.argv.slice(2);
-const commandToRun = temp[0];
+
+// Inject testCafe ESM and cache flags into command
+// for all processes
+// Todo: add flags to origin testcafe command if required / works 
+const browserExecutionEngines = 'testcafe';
+const commandToRun = temp[0].substr(0, browserExecutionEngines.length) +' --esm --cache '+ temp[0].substr(browserExecutionEngines.length).trimLeft();
+
 const shellOptions = JSON.parse(temp[1]);
 
 // Throws an error if the function process for the detected OS is missing.
