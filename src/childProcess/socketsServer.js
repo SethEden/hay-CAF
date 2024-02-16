@@ -48,15 +48,23 @@ const SOCKET = {
  */
 async function safeJsonParse(buffer) {
   const functionName = safeJsonParse.name;
+  buffer = buffer.toString('utf8').trim();
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cbufferIs + buffer);
   let returnData;
+  const REGEX = /\}\{/g;
   try {
-    returnData = JSON.parse(buffer);
-  } catch (e) {
-    returnData = JSON.parse(JSON.stringify(buffer));
+    if (buffer) {
+      returnData = JSON.parse(buffer);
+    }
+  } catch(e) {
+    if (!returnData) {
+      buffer = [buffer.replace(REGEX, '},{')];
+      returnData = JSON.parse(JSON.stringify([buffer]));
+      if (!returnData) throw e;
+    }
   }
-  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + returnData);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs +  returnData);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
   return returnData;
 }
@@ -67,10 +75,10 @@ const createMessageQueue = (state = { items: [] }) => ({
 
     async enqueue(item) {
       return new Promise(resolve => {
-        this.items = [...this.items, item];
+        if (!Array.isArray(item)) item = [item];
+        this.items = [...this.items, ...item];
         resolve();
-      })
-    },
+      }) },
 
     async dequeue() {
       const [item, ...rest] = this.items;
@@ -120,14 +128,6 @@ export default function socketsServer() {
       process.stdout.write(msg);
       resolve();
     });
-
-    // const BUFFER_SIZE = 1024 * 1024; // 1MB
-    // const HIGH_WATER_MARK = 50 // 0.8 * BUFFER_SIZE;
-    // const LOW_WATER_MARK = 20 // 0.2 * BUFFER_SIZE;
-
-    // Initial buffer size
-    // let testBuffer = Buffer.alloc(BUFFER_SIZE); // 1 MB
-    // let testBufferUsed = 0;
 
     // Banner log
     const bannerLog = async (eventName, cb) => {
@@ -190,7 +190,6 @@ export default function socketsServer() {
         if (str === wrd.cend) {
           // Sending termination cmd to clients...
           haystacks.consoleLog(namespacePrefix, functionName + childEventName, app_msg.csendingTerminationCmdToClients);
-          // client.write('should be closing now....')
           if (!testResultRetrieved) {
             console.log("\r\nTest failed prematurely!\r\n");
             server.close();
@@ -205,23 +204,37 @@ export default function socketsServer() {
       await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cBEGIN_Event);
       await haystacks.consoleLog(namespacePrefix, functionName + eventName, app_msg.cchunkIs + JSON.stringify(chunk));
       try {
-        const json = await safeJsonParse(chunk);
+        const json = await safeJsonParse(chunk.toString().trim());
 
-        // Ensure the message property exists
-        if (!json[wrd.cdata]) {
-          if (json[app_msg.ctestResult]) {
-            testResult = json[app_msg.ctestResult];
+        if (json) {
+          let hasDataKey = true;
+          let hasTestResult = false;
+          let hasMessage = false;
+
+          if (Array.isArray(json)) {
+            console.log('json is an array...\r\n')
+            hasDataKey = json.some(v => v[wrd.cdata]);
+            console.log('hasDataKey', hasDataKey)
+            hasTestResult = json.find(v => v[app_msg.ctestResult]);
+            console.log('\r\nhasTestResult', hasTestResult)
+            if (!hasDataKey && !!hasTestResult) testResult = hasTestResult[app_msg.ctestResult];
+            hasMessage = json.every(v => v[wrd.cmessage]);
+            console.log('\r\nhasMessage', hasMessage)
+          } else {
+            hasDataKey = !!json[wrd.cdata];
+            hasTestResult = !!json[app_msg.ctestResult];
+            if (!hasDataKey && hasTestResult) testResult = json[app_msg.ctestResult];
+            hasMessage = json[wrd.cmessage];
           }
 
-          if (json[wrd.cmessage]){
-            // Enqueue messages
+          if (hasMessage) {
             await messageQueue.enqueue(json);
+            // console.log('Message Queue size: ', await messageQueue.size());
           }
 
-          if (!await messageQueue.isEmpty()) {
+          while(!await messageQueue.isEmpty()){
             console.log(await messageQueue.dequeue());
           }
-
         }
       } catch ({ message }) {
         // Failed retrieving data from client:
@@ -297,6 +310,7 @@ export default function socketsServer() {
       await bannerLog(eventName, async () => {
         isConnected = false;
         // Server connection has ended!
+        // console.log('Message Queue: ', await messageQueue.size())
         console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage03 + bas.cCarRetNewLin);
       });
       // await processWriteAsync(bas.cGreaterThan);
@@ -354,44 +368,10 @@ export default function socketsServer() {
 
     // Return server instance
     server = createServer(async socket => {
-      handleConnection(); // good
+      handleConnection();
       socket.on(wrd.cdata, async chunk => { 
         socket.emit('disconnect');
-
-        // implement buffering
-        // if (testBufferUsed + chunk.length > BUFFER_SIZE) {
-          // console.log('Buffer is full.');
-          // chunk = chunk.slice(testBufferUsed + chunk.length - BUFFER_SIZE)
-        // }
-
-        // append data to buffer
-        // chunk.copy(testBuffer, testBufferUsed);
-        // testBufferUsed += chunk.length;
-
-         // If buffer is full, pause client
-        // if (testBufferUsed >= HIGH_WATER_MARK) {
-          // socket.pause();
-          // console.log('Buffer full, pausing client');
-        // }
-
-        // Process data while possible
-        // while (testBufferUsed > 0 && !socket.isPaused()) {
-          // chunk = testBuffer.slice(0, testBufferUsed);
-          // testBufferUsed = 0; // resets buffer
-
           await handleData(chunk, socket);
-        // }
-
-        // Resume client if buffer is below low water mark and data remains
-        // if (testBufferUsed < LOW_WATER_MARK && chunk.length > 0) {
-          // socket.resume();
-          // console.log('Buffer drained partially, resuming client');
-        // }
-
-        // if (testBufferUsed === 0 && socket.listeners(wrd.cdrain).length > 0) {
-          // socket.emit(wrd.cdrain);
-        // }
-
       }); 
       socket.on(wrd.cerror, async (error) => { await handleError(error, server); }); 
       socket.on(wrd.cdisconnect, handleDisconnect);
@@ -425,7 +405,6 @@ export default function socketsServer() {
         // Keep checking if the server has ended
         // return status whether result was returned via callback
         const checkStatus = () => {
-          console.log('checking status')
           if (serverHasEnded && testResultRetrieved){
             clearTimeout(timeoutId);
             // test has not (yet) failed
