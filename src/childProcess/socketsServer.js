@@ -233,7 +233,8 @@ export default function socketsServer() {
           }
 
           while(!await messageQueue.isEmpty()){
-            console.log(await messageQueue.dequeue());
+            const {message} = await messageQueue.dequeue();
+            console.log(message);
           }
         }
       } catch ({ message }) {
