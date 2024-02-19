@@ -52,16 +52,19 @@ async function safeJsonParse(buffer) {
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cbufferIs + buffer);
   let returnData;
-  const REGEX = /\}\{/g;
+  const REGEX = /\{([^{}]*)\}/g;
   try {
     if (buffer) {
       returnData = JSON.parse(buffer);
     }
   } catch(e) {
     if (!returnData) {
-      buffer = [buffer.replace(REGEX, '},{')];
-      buffer = Array.isArray(buffer) ? buffer : [buffer]
-      returnData = JSON.parse(JSON.stringify(buffer))[0];
+      returnData = [];
+      const temp = buffer.matchAll(REGEX);
+      for (const i of temp) {
+        returnData.push(JSON.parse(i[0]));
+      }
+
       if (!returnData) throw e;
     }
   }
