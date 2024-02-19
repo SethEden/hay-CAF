@@ -60,7 +60,8 @@ async function safeJsonParse(buffer) {
   } catch(e) {
     if (!returnData) {
       buffer = [buffer.replace(REGEX, '},{')];
-      returnData = JSON.parse(JSON.stringify([buffer]));
+      buffer = Array.isArray(buffer) ? buffer : [buffer]
+      returnData = JSON.parse(JSON.stringify(buffer))[0];
       if (!returnData) throw e;
     }
   }
@@ -212,14 +213,12 @@ export default function socketsServer() {
           let hasMessage = false;
 
           if (Array.isArray(json)) {
-            console.log('json is an array...\r\n')
+            // console.log('\r\njson is an array...\r\n')
             hasDataKey = json.some(v => v[wrd.cdata]);
-            console.log('hasDataKey', hasDataKey)
-            hasTestResult = json.find(v => v[app_msg.ctestResult]);
-            console.log('\r\nhasTestResult', hasTestResult)
-            if (!hasDataKey && !!hasTestResult) testResult = hasTestResult[app_msg.ctestResult];
+            hasTestResult = json.find(v => Object.hasOwn(v, app_msg.ctestResult));
+            if (!!hasDataKey && !!hasTestResult) testResult = hasTestResult[app_msg.ctestResult];
             hasMessage = json.every(v => v[wrd.cmessage]);
-            console.log('\r\nhasMessage', hasMessage)
+
           } else {
             hasDataKey = !!json[wrd.cdata];
             hasTestResult = !!json[app_msg.ctestResult];
