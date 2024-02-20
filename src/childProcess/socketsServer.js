@@ -351,7 +351,7 @@ export default function socketsServer() {
           // console.log({allottedTimeInSeconds: time})
           
           if (serverHasEnded) {
-            resolve("fail");
+            resolve(testResult || 'fail');
           } else {
             if (typeof testResult === 'string' && testResult.length){
               clearTimeout(timeoutId);

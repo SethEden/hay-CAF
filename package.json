@@ -6,7 +6,6 @@
   "bin": "./bin/hay-CAF.js",
   "type": "module",
   "scripts": {
-    "preinstall": "./preinstall.sh",
     "start": "node ./src/hay-CAF.js",
     "release": "node ./build/buildRelease/src/buildRelease.js",
     "vers": "standard-version -m \"chore(release) version %s \"",
