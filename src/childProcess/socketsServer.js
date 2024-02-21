@@ -398,6 +398,8 @@ export default function socketsServer() {
       // await processWriteAsync(bas.cGreaterThan);
       // ! IMPORTANT allow re-runs
       serverHasEnded = true;
+      testResult = null;
+      testResultRetrieved = false
       serverInstance.close();
     }
 
