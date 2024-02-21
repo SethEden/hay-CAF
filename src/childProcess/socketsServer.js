@@ -73,6 +73,59 @@ async function safeJsonParse(buffer) {
   return returnData;
 }
 
+/**
+ * @function messageContainsTestResult
+ * @description Checks to see if the message contains all of the string requirements
+ * that would indicate the message contains a test result of some kind.
+ * @param {string} message The message that should be evaluated if it contains some kind of a test result.
+ * @returns {boolean} True or False to indicate if the message contains a test result or not.
+ * @author Seth Hollingsead
+ * @date 2024/02/20
+ */
+async function messageContainsTestResult(message) {
+  const functionName = messageContainsTestResult.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cmessageIs + message);
+  let returnData = false;
+  // const validResponses = [wrd.cpass, wrd.cwarning, wrd.cfail];
+  if (message) {
+    if (message.includes(app_msg.cTestResultsLog) && message.includes(wrd.cTest + bas.cUnderscore) && 
+    (message.toLowerCase().includes(wrd.cpass) ||
+    message.toLowerCase().includes(wrd.cwarning) ||
+    message.toLowerCase().includes(wrd.cfail))) {
+      returnData = true;
+    }
+  }
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs +  returnData);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
+ * @function getTestResultFromMessage
+ * @description Parses the input message to determine what the test result value should be.
+ * valid test result values are: pass, warning, fail
+ * @param {string} message The message that should be parsed into a test result.
+ * @returns {string} The test result, pass, warning or fail.
+ * @author Seth Hollingsead
+ * @date 2024/02/20
+ */
+async function getTestResultFromMessage(message) {
+  const functionName = getTestResultFromMessage.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cmessageIs + message);
+  let returnData = wrd.cfail;
+  if (message) {
+    if (message.toLowerCase().includes(wrd.cpass)) { returnData = wrd.cpass; }
+    else if (message.toLowerCase().includes(wrd.cwarning)) { returnData = wrd.cwarning; }
+    else if (message.toLowerCase().includes(wrd.cfail)) { returnData = wrd.cfail; }
+    else { returnData = wrd.cfail; } // For completeness
+  }
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs +  returnData);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
 // Messages queue
 const createMessageQueue = (state = { items: [] }) => ({
     items: state.items || [],
@@ -211,22 +264,48 @@ export default function socketsServer() {
         const json = await safeJsonParse(chunk.toString().trim());
 
         if (json) {
-          let hasDataKey = true;
-          let hasTestResult = false;
+          // let hasDataKey = true;
+          // let hasTestResult = false;
           let hasMessage = false;
 
           if (Array.isArray(json)) {
             // console.log('\r\njson is an array...\r\n')
-            hasDataKey = json.some(v => v[wrd.cdata]);
-            hasTestResult = json.find(v => Object.hasOwn(v, app_msg.ctestResult));
-            if (!!hasDataKey && !!hasTestResult) testResult = hasTestResult[app_msg.ctestResult];
+            // hasDataKey = json.some(v => v[wrd.cdata]);
+            json.find(async obj1 => {
+              // console.log('obj1 is: ', obj1);
+              const objMessage = obj1[wrd.cmessage];
+              // console.log('objMessage is: ' + objMessage);
+              if (objMessage.includes(app_msg.cTestResultsLog) && objMessage.includes(wrd.cTest + bas.cUnderscore) && 
+              (objMessage.toLowerCase().includes(wrd.cpass) ||
+              objMessage.toLowerCase().includes(wrd.cwarning) ||
+              objMessage.toLowerCase().includes(wrd.cfail))) {
+                if (objMessage.toLowerCase().includes(wrd.cpass)) { testResult = wrd.cpass; }
+                else if (objMessage.toLowerCase().includes(wrd.cwarning)) { testResult = wrd.cwarning; }
+                else if (objMessage.toLowerCase().includes(wrd.cfail)) { testResult = wrd.cfail; }
+                return true;
+              }
+              // if (await messageContainsTestResult(objMessage) === true) {
+              //   testResult = await getTestResultFromMessage(objMessage);
+              //   return true;
+              // }
+            });
+
             hasMessage = json.every(v => v[wrd.cmessage]);
 
           } else {
-            hasDataKey = !!json[wrd.cdata];
-            hasTestResult = !!json[app_msg.ctestResult];
-            if (!hasDataKey && hasTestResult) testResult = json[app_msg.ctestResult];
+            // hasDataKey = !!json[wrd.cdata];
             hasMessage = json[wrd.cmessage];
+            if (hasMessage.includes(app_msg.cTestResultsLog) && hasMessage.includes(wrd.cTest + bas.cUnderscore) && 
+            (hasMessage.toLowerCase().includes(wrd.cpass) ||
+              hasMessage.toLowerCase().includes(wrd.cwarning) ||
+              hasMessage.toLowerCase().includes(wrd.cfail))) {
+              if (hasMessage.toLowerCase().includes(wrd.cpass)) { testResult = wrd.cpass; }
+              else if (hasMessage.toLowerCase().includes(wrd.cwarning)) { testResult = wrd.cwarning; }
+              else if (hasMessage.toLowerCase().includes(wrd.cfail)) { testResult = wrd.cfail; }
+            }
+            // if (await messageContainsTestResult(hasMessage) === true) {
+            //   testResult = await getTestResultFromMessage(hasMessage);
+            // }
           }
 
           if (hasMessage) {
