@@ -111,6 +111,7 @@ export const cTestResultsLog = wrd.cTest + wrd.cResults + wrd.cLog; // TestResul
 export const cobj1Is = gen.cobj + num.c1 + sys.cSpaceIsColonSpace; // obj1 is:
 export const cobjMessageIs = gen.cobj + wrd.cMessage + sys.cSpaceIsColonSpace; // objMessage is:
 export const cmessageQueueColon = wrd.cMessage + bas.cSpace + wrd.cQueue + bas.cColon + bas.cSpace; // Message Queue:
+export const cMessageQueueSize = wrd.cMessage + bas.cSpace + wrd.cQueue + bas.cSpace + wrd.csize + bas.cColon + bas.cSpace; // Message Queue size:
 
 // ERROR Messages
 export const cErrorSetBoilerPlateTestPathAndFileNameMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cand + bas.cSpace + wrd.cfilename + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path and filename as input.

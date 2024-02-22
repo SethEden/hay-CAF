@@ -308,7 +308,8 @@ export default function socketsServer() {
 
           if (hasMessage) {
             await messageQueue.enqueue(json);
-            // console.log('Message Queue size: ', await messageQueue.size());
+            // Message Queue size:
+            // console.log(app_msg.cMessageQueueSize, await messageQueue.size());
           }
 
           while(!await messageQueue.isEmpty()){

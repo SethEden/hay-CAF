@@ -112,6 +112,7 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cobj1Is', Actual: app_msg.cobj1Is, Expected: 'obj1 is: '},
   {Name: 'cobjMessageIs', Actual: app_msg.cobjMessageIs, Expected: 'objMessage is: '},
   {Name: 'cmessageQueueColon', Actual: app_msg.cmessageQueueColon, Expected: 'Message Queue: '},
+  {Name: 'cMessageQueueSize', Actual: app_msg.cMessageQueueSize, Expected: 'Message Queue size: '},
 
   // ERROR Messages
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
