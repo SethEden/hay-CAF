@@ -48,7 +48,7 @@ const SOCKET = {
  */
 async function safeJsonParse(buffer) {
   const functionName = safeJsonParse.name;
-  buffer = buffer.toString(gen.cutf8).trim();
+  buffer = buffer.toString(gen.cUTF8).trim();
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cbufferIs + buffer);
   let returnData;
