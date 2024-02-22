@@ -271,10 +271,10 @@ export default function socketsServer() {
           if (Array.isArray(json)) {
             // console.log('\r\njson is an array...\r\n')
             // hasDataKey = json.some(v => v[wrd.cdata]);
-            json.find(async obj1 => {
-              // console.log('obj1 is: ', obj1);
+            json.find(obj1 => {
+              console.log('obj1 is: ', obj1);
               const objMessage = obj1[wrd.cmessage];
-              // console.log('objMessage is: ' + objMessage);
+              console.log('objMessage is: ' + objMessage);
               if (objMessage.includes(app_msg.cTestResultsLog) && objMessage.includes(wrd.cTest + bas.cUnderscore) && 
               (objMessage.toLowerCase().includes(wrd.cpass) ||
               objMessage.toLowerCase().includes(wrd.cwarning) ||
