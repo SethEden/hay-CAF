@@ -104,11 +104,14 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cPathToShellExecutableIs', Actual: app_msg.cPathToShellExecutableIs, Expected: 'pathToShellExecutable is: '},
   {Name: 'cshellScriptFileNameIs', Actual: app_msg.cshellScriptFileNameIs, Expected: 'shellScript file name is: '},
   {Name: 'cerrorCreatingTheTmpFile', Actual: app_msg.cerrorCreatingTheTmpFile, Expected: 'Error creating the tmp file: '},
-  {Name: 'cTmpFileSuccessfullyWritten', Actual: app_msg.cTmpFileSuccessfullyWritten, Expected: 'Tmp file successfully written: '},
+  {Name: 'cTmpFileSuccessfullyWritten', Actual: app_msg.cTmpFileSuccessfullyWritten, Expected: '\r\nTmp file successfully written: '},
   {Name: 'cspawnCommandRawIs', Actual: app_msg.cspawnCommandRawIs, Expected: 'spawn command RAW is: '},
   {Name: 'cspawnCommandIs', Actual: app_msg.cspawnCommandIs, Expected: 'spawn command is: '},
   {Name: 'cFailedExecutingColon', Actual: app_msg.cFailedExecutingColon, Expected: 'Failed executing: '},
   {Name: 'cTestResultsLog', Actual: app_msg.cTestResultsLog, Expected: 'TestResultsLog'},
+  {Name: 'cobj1Is', Actual: app_msg.cobj1Is, Expected: 'obj1 is: '},
+  {Name: 'cobjMessageIs', Actual: app_msg.cobjMessageIs, Expected: 'objMessage is: '},
+  {Name: 'cmessageQueueColon', Actual: app_msg.cmessageQueueColon, Expected: 'Message Queue: '},
 
   // ERROR Messages
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},
@@ -132,6 +135,19 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cErrorSocketServerMessage01', Actual: app_msg.cErrorSocketServerMessage01, Expected: 'Error on socket server: '},
   {Name: 'cErrorSocketServerMessage02', Actual: app_msg.cErrorSocketServerMessage02, Expected: 'Failed retrieving data from client: '},
   {Name: 'cErrorSocketServerMessage03', Actual: app_msg.cErrorSocketServerMessage03, Expected: 'Server connection has ended!'},
+  {Name: 'cTestFailedPrematurely', Actual: app_msg.cTestFailedPrematurely, Expected: 'Test failed prematurely!'},
+  {Name: 'cShellCommandNotDefined', Actual: app_msg.cShellCommandNotDefined, Expected: 'Shell command not defined.'},
+  {Name: 'cSelectedShellNotFound', Actual: app_msg.cSelectedShellNotFound, Expected: 'Selected shell not found.'},
+  {Name: 'cErrorCreatingTempFile', Actual: app_msg.cErrorCreatingTempFile, Expected: '\r\nError creating temp file: '},
+  {Name: 'cErrorFromChild', Actual: app_msg.cErrorFromChild, Expected: '\r\nError from child: '},
+  {Name: 'cChildDisconnected', Actual: app_msg.cChildDisconnected, Expected: '\r\nChild disconnected.'},
+  {Name: 'cErrorOnShell', Actual: app_msg.cErrorOnShell, Expected: '\r\nError on shell: '},
+  {Name: 'cClosingTimeoutEndOfScript', Actual: app_msg.cClosingTimeoutEndOfScript, Expected: 'Closing...Timeout reached for end of script!'},
+  {Name: 'cgetTestResultsError01', Actual: app_msg.cgetTestResultsError01, Expected: 'ERROR: The allotted time to retrieve the test result has passed. Try again later.'},
+  {Name: 'cClientPausedBackpressure', Actual: app_msg.cClientPausedBackpressure, Expected: 'Client has paused due to backpressure.'},
+  {Name: 'cCallingServerHasEndedCallbackMessage01', Actual: app_msg.cCallingServerHasEndedCallbackMessage01, Expected: 'Calling serverHasEndedCallback!!'},
+  {Name: 'cCallingServerHasEndedCallbackMessage02', Actual: app_msg.cCallingServerHasEndedCallbackMessage02, Expected: 'doing bad!!'},
+  {Name: 'calreadyInUse', Actual: app_msg.calreadyInUse, Expected: 'already in use...'},
 
   // SUCCESS Messages
   {Name: 'cconfigurationSettingSuccessfullyChanged', Actual: app_msg.cconfigurationSettingSuccessfullyChanged, Expected: ' configuration setting successfully changed.'},
@@ -145,5 +161,6 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cSuccessSetEnableReporterConfigurationMessage', Actual: app_msg.cSuccessSetEnableReporterConfigurationMessage, Expected: 'SUCCESS: enableReporter configuration setting successfully changed.'},
   {Name: 'cSuccessSetReportPathConfigurationMessage', Actual: app_msg.cSuccessSetReportPathConfigurationMessage, Expected: 'SUCCESS: reportPath configuration setting successfully changed.'},
   {Name: 'cSuccessSetChildProcessLimitTimeMessage', Actual: app_msg.cSuccessSetChildProcessLimitTimeMessage, Expected: 'SUCCESS: childProcessLimitTime configuration setting successfully changed.'},
-  {Name: 'cSuccessSetCmdTypeMessage', Actual: app_msg.cSuccessSetCmdTypeMessage, Expected: 'SUCCESS: cmdType configuration setting successfully changed.'}
+  {Name: 'cSuccessSetCmdTypeMessage', Actual: app_msg.cSuccessSetCmdTypeMessage, Expected: 'SUCCESS: cmdType configuration setting successfully changed.'},
+  {Name: 'cExitingChildProcess', Actual: app_msg.cExitingChildProcess, Expected: '\r\nExiting child process.'}
 ];

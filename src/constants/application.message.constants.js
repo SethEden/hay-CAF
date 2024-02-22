@@ -2,9 +2,7 @@
  * @file application.message.constants.js
  * @module application.message.constants
  * @description Contains many re-usable application message constants.
- * @requires module:application.command.constants
  * @requires module:application.configuration.constants
- * @requires module:application.constants
  * @requires module:application.system.constants
  * @requires {@link https://www.npmjs.com/package/@haystacks/constants|@haystacks/constants}
  * @author Seth Hollingsead
@@ -13,10 +11,7 @@
  */
 
 // Internal Imports
-import { basicConstantsValidation } from '@haystacks/constants/src/constantsValidation/basic.constants.validation.js';
-import * as app_cmd from './application.command.constants.js';
 import * as app_cfg from './application.configuration.constants.js';
-import * as apc from './application.constants.js';
 import * as app_sys from './application.system.constants.js';
 
 // External imports
@@ -113,6 +108,9 @@ export const cspawnCommandRawIs = wrd.cspawn + bas.cSpace + wrd.ccommand + bas.c
 export const cspawnCommandIs = wrd.cspawn + bas.cSpace + wrd.ccommand + sys.cSpaceIsColonSpace; // spawn command is:
 export const cFailedExecutingColon = wrd.cFailed + bas.cSpace + wrd.cexecuting + bas.cColon + bas.cSpace; // Failed executing:
 export const cTestResultsLog = wrd.cTest + wrd.cResults + wrd.cLog; // TestResultsLog
+export const cobj1Is = gen.cobj + num.c1 + sys.cSpaceIsColonSpace; // obj1 is:
+export const cobjMessageIs = gen.cobj + wrd.cMessage + sys.cSpaceIsColonSpace; // objMessage is:
+export const cmessageQueueColon = wrd.cMessage + bas.cSpace + wrd.cQueue + bas.cColon + bas.cSpace; // Message Queue:
 
 // ERROR Messages
 export const cErrorSetBoilerPlateTestPathAndFileNameMessage = msg.cERROR_Colon + wrd.cPlease + bas.cSpace + wrd.center + bas.cSpace + bas.ca + bas.cSpace + wrd.cvalid + bas.cSpace + wrd.cpath + bas.cSpace + wrd.cand + bas.cSpace + wrd.cfilename + bas.cSpace + wrd.cas + bas.cSpace + wrd.cinput + bas.cDot; // ERROR: Please enter a valid path and filename as input.
@@ -136,6 +134,19 @@ export const cchildProcessCommandStringNotDefined = wrd.cChild + bas.cSpace + wr
 export const cErrorSocketServerMessage01 = wrd.cError + bas.cSpace + gen.con + bas.cSpace + wrd.csocket + bas.cSpace + wrd.cserver + bas.cColon + bas.cSpace; // Error on socket server:
 export const cErrorSocketServerMessage02 = wrd.cFailed + bas.cSpace + wrd.cretrieving + bas.cSpace + wrd.cdata + bas.cSpace + wrd.cfrom + bas.cSpace + wrd.cclient + bas.cColon + bas.cSpace; // Failed retrieving data from client:
 export const cErrorSocketServerMessage03 = wrd.cServer + bas.cSpace + wrd.cconnection + bas.cSpace + wrd.chas + bas.cSpace + wrd.cended + bas.cExclamation; // Server connection has ended!
+export const cTestFailedPrematurely = wrd.cTest + bas.cSpace + wrd.cfailed + bas.cSpace + wrd.cprematurely + bas.cExclamation; // Test failed prematurely!
+export const cShellCommandNotDefined = wrd.cShell + bas.cSpace + wrd.ccommand + bas.cSpace + wrd.cnot + bas.cSpace + wrd.cdefined + bas.cDot; // Shell command not defined.
+export const cSelectedShellNotFound = wrd.cSelected + bas.cSpace + wrd.cshell + bas.cSpace + wrd.cnot + bas.cSpace + wrd.cfound + bas.cDot; // Selected shell not found.
+export const cErrorCreatingTempFile = bas.cCarRetNewLin + wrd.cError + bas.cSpace + wrd.ccreating + bas.cSpace + wrd.ctemp + bas.cSpace + wrd.cfile + bas.cColon + bas.cSpace; // Error creating temp file:
+export const cErrorFromChild = bas.cCarRetNewLin + wrd.cError + bas.cSpace + wrd.cfrom + bas.cSpace + wrd.cchild + bas.cColon + bas.cSpace; // Error from child:
+export const cChildDisconnected = bas.cCarRetNewLin + wrd.cChild + bas.cSpace + wrd.cdisconnected + bas.cDot; // Child disconnected.
+export const cErrorOnShell = bas.cCarRetNewLin + wrd.cError + bas.cSpace + wrd.con + bas.cSpace + wrd.cshell + bas.cColon + bas.cSpace; // Error on shell:
+export const cClosingTimeoutEndOfScript = wrd.cClosing + bas.cDot.repeat(3) + wrd.cTimeout + bas.cSpace + wrd.creached + bas.cSpace + wrd.cfor + bas.cSpace + wrd.cend + bas.cSpace + wrd.cof + bas.cSpace + wrd.cscript + bas.cExclamation; // Closing...Timeout reached for end of script!
+export const cgetTestResultsError01 = msg.cERROR_Colon + wrd.cThe + bas.cSpace + wrd.callotted + bas.cSpace + wrd.ctime + bas.cSpace + wrd.cto + bas.cSpace + wrd.cretrieve + bas.cSpace + wrd.cthe + bas.cSpace + wrd.ctest + bas.cSpace + wrd.cresult + bas.cSpace + wrd.chas + bas.cSpace + wrd.cpassed + bas.cDot + bas.cSpace + wrd.cTry + bas.cSpace + wrd.cagain + bas.cSpace + wrd.clater + bas.cDot; // Error: The allotted time to retrieve the test result has passed. Try again later.
+export const cClientPausedBackpressure = wrd.cClient + bas.cSpace + wrd.chas + bas.cSpace + wrd.cpaused + bas.cSpace + wrd.cdue + bas.cSpace + wrd.cto + bas.cSpace + wrd.cback + wrd.cpressure + bas.cDot; // Client has paused due to backpressure.
+export const cCallingServerHasEndedCallbackMessage01 = wrd.cCalling + bas.cSpace + wrd.cserver + wrd.cHas + wrd.cEnded + wrd.cCall + wrd.cback + bas.cExclamation.repeat(2); // Calling serverHasEndedCallback!!
+export const cCallingServerHasEndedCallbackMessage02 = wrd.cdoing + bas.cSpace + wrd.cbad + bas.cExclamation.repeat(2); // doing bad!!
+export const calreadyInUse = wrd.calready + bas.cSpace + wrd.cin + bas.cSpace + wrd.cuse + bas.cDot.repeat(3); // already in use...
 
 // SUCCESS Messages
 export const cconfigurationSettingSuccessfullyChanged = bas.cSpace + wrd.cconfiguration + bas.cSpace + wrd.csetting + bas.cSpace + wrd.csuccessfully + bas.cSpace + wrd.cchanged + bas.cDot; // configuration setting successfully changed.
@@ -150,10 +161,4 @@ export const cSuccessSetEnableReporterConfigurationMessage = msg.cSUCCESS_Colon 
 export const cSuccessSetReportPathConfigurationMessage = msg.cSUCCESS_Colon + app_cfg.creportPath + cconfigurationSettingSuccessfullyChanged; // SUCCESS: reportPath configuration setting successfully changed.
 export const cSuccessSetChildProcessLimitTimeMessage = msg.cSUCCESS_Colon + app_cfg.cchildProcessLimitTime + cconfigurationSettingSuccessfullyChanged; // SUCCESS: childProcessLimitTime configuration setting successfully changed.
 export const cSuccessSetCmdTypeMessage = msg.cSUCCESS_Colon + app_cfg.ccmdType + cconfigurationSettingSuccessfullyChanged; // SUCCESS: cmdType configuration setting successfully changed.
-export const cShellCommandNotDefined = wrd.cShell + bas.cSpace + wrd.ccommand + bas.cSpace + wrd.cnot + bas.cSpace + wrd.cdefined + bas.cDot; // Shell command not defined.
-export const cSelectedShellNotFound = wrd.cSelected + bas.cSpace + wrd.cshell + bas.cSpace + wrd.cnot + bas.cSpace + wrd.cfound + bas.cDot; // Selected shell not found.
-export const cErrorCreatingTempFile = bas.cCarRetNewLin + wrd.cError + bas.cSpace + wrd.ccreating + bas.cSpace + wrd.ctemp + bas.cSpace + wrd.cfile + bas.cColon + bas.cSpace; // Error creating temp file:
-export const cErrorFromChild = bas.cCarRetNewLin + wrd.cError + bas.cSpace + wrd.cfrom + bas.cSpace + wrd.cchild + bas.cColon + bas.cSpace; // Error from child:
-export const cChildDisconnected = bas.cCarRetNewLin + wrd.cChild + bas.cSpace + wrd.cdisconnected + bas.cDot; // Child disconnected.
 export const cExitingChildProcess = bas.cCarRetNewLin + wrd.cExiting + bas.cSpace + wrd.cchild + bas.cSpace + wrd.cprocess + bas.cDot; // Exiting child process.
-export const cErrorOnShell = bas.cCarRetNewLin + wrd.cError + bas.cSpace + wrd.con + bas.cSpace + wrd.cshell + bas.cColon + bas.cSpace; // Error on shell:

@@ -13,7 +13,6 @@
 import * as app_msg from '../constants/application.message.constants.js';
 import * as app_sys from '../constants/application.system.constants.js';
 // External Imports
-import haystacks from '@haystacks/async'
 import hayConst from '@haystacks/constants';
 import process from 'process';
 

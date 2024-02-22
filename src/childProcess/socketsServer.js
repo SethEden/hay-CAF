@@ -48,7 +48,7 @@ const SOCKET = {
  */
 async function safeJsonParse(buffer) {
   const functionName = safeJsonParse.name;
-  buffer = buffer.toString('utf8').trim();
+  buffer = buffer.toString(gen.cutf8).trim();
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
   await haystacks.consoleLog(namespacePrefix, functionName, msg.cbufferIs + buffer);
   let returnData;
@@ -201,14 +201,14 @@ export default function socketsServer() {
       await bannerLog(eventName, async () => {
         serverHasEnded = true;
         await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cerrorIs + error);
-        if (error['code'] === gen.cEADDRINUSE && !isConnected){
+        if (error[wrd.ccode] === gen.cEADDRINUSE && !isConnected){
           await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
           return;
-        } else if (error['code'] !== 'ECONNRESET') {
+        } else if (error[wrd.ccode] !== gen.cECONNRESET) {
           // Error on socket server:
           console.error(app_msg.cErrorSocketServerMessage01 + error.message);
-        } else if (error['code'] === 'ECONNRESET') {
-          console.log('ECONNRESET!!!!')
+        } else if (error[wrd.ccode] === gen.cECONNRESET) {
+          console.log(gen.cECONNRESET + bas.cExclamation.repeat(4));
           serverInstance.close();
         }
       });
@@ -248,7 +248,8 @@ export default function socketsServer() {
           // Sending termination cmd to clients...
           haystacks.consoleLog(namespacePrefix, functionName + childEventName, app_msg.csendingTerminationCmdToClients);
           if (!testResultRetrieved) {
-            console.log("\r\nTest failed prematurely!\r\n");
+            // Test failed prematurely!
+            console.log(bas.cCarRetNewLin + app_msg.cTestFailedPrematurely + bas.cExclamation + bas.cCarRetNewLin);
             server.close();
           }
         }
@@ -272,9 +273,13 @@ export default function socketsServer() {
             // console.log('\r\njson is an array...\r\n')
             // hasDataKey = json.some(v => v[wrd.cdata]);
             json.find(obj1 => {
-              console.log('obj1 is: ', obj1);
+              // obj1 is:
+              // console.log(app_msg.cobj1Is, obj1);
+              haystacks.consoleLog(namespacePrefix, functionName + eventName, app_msg.cobj1Is + JSON.stringify(obj1));
               const objMessage = obj1[wrd.cmessage];
-              console.log('objMessage is: ' + objMessage);
+              // objMessage is:
+              // console.log(app_msg.cobjMessageIs + objMessage);
+              haystacks.consoleLog(namespacePrefix, functionName + eventName, app_msg.cobjMessageIs + objMessage);
               if (objMessage.includes(app_msg.cTestResultsLog) && objMessage.includes(wrd.cTest + bas.cUnderscore) && 
               (objMessage.toLowerCase().includes(wrd.cpass) ||
               objMessage.toLowerCase().includes(wrd.cwarning) ||
@@ -284,10 +289,6 @@ export default function socketsServer() {
                 else if (objMessage.toLowerCase().includes(wrd.cfail)) { testResult = wrd.cfail; }
                 return true;
               }
-              // if (await messageContainsTestResult(objMessage) === true) {
-              //   testResult = await getTestResultFromMessage(objMessage);
-              //   return true;
-              // }
             });
 
             hasMessage = json.every(v => v[wrd.cmessage]);
@@ -303,9 +304,6 @@ export default function socketsServer() {
               else if (hasMessage.toLowerCase().includes(wrd.cwarning)) { testResult = wrd.cwarning; }
               else if (hasMessage.toLowerCase().includes(wrd.cfail)) { testResult = wrd.cfail; }
             }
-            // if (await messageContainsTestResult(hasMessage) === true) {
-            //   testResult = await getTestResultFromMessage(hasMessage);
-            // }
           }
 
           if (hasMessage) {
@@ -386,13 +384,14 @@ export default function socketsServer() {
       await haystacks.consoleLog(namespacePrefix, functionName + eventName, msg.cEND_Event);
     }
 
-    // Indicates the end of ther server connection and properly closes server to enable smooth re-runs
+    // Indicates the end of the server connection and properly closes server to enable smooth re-runs
     const handleEnd = async (serverInstance) => {
       const eventName = bas.cDot + wrd.cend;
       await bannerLog(eventName, async () => {
         isConnected = false;
         // Server connection has ended!
-        // console.log('Message Queue: ', await messageQueue.size())
+        // Message Queue:
+        // console.log(app_msg.cMessageQueueColon, await messageQueue.size())
         console.log(bas.cCarRetNewLin + app_msg.cErrorSocketServerMessage03 + bas.cCarRetNewLin);
       });
       // await processWriteAsync(bas.cGreaterThan);
@@ -410,7 +409,8 @@ export default function socketsServer() {
       if (testResultRetrieved) {
         await new Promise(resolve => {
           setTimeout(() => {
-            console.log('Closing...Timeout reached for end of script!');
+            // Closing...Timeout reached for end of script!
+            console.log(app_msg.cClosingTimeoutEndOfScript);
             server.close();
           }, allottedTimeInSeconds * 1000);
         })
@@ -424,7 +424,8 @@ export default function socketsServer() {
       // console.log('calling getTestResult');
       return await new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {
-          reject('Error: The alotted time to retrieve the test result has passed. Try again later.');
+          // Error: The allotted time to retrieve the test result has passed. Try again later.
+          reject(app_msg.cgetTestResultsError01);
         }, allottedTimeInSeconds * 1000);
 
         const checkResult = () => {
@@ -432,9 +433,9 @@ export default function socketsServer() {
           // console.log({allottedTimeInSeconds: time})
           
           if (serverHasEnded) {
-            resolve(testResult || 'fail');
+            resolve(testResult || wrd.cfail);
           } else {
-            if (typeof testResult === 'string' && testResult.length){
+            if (typeof testResult === wrd.cstring && testResult.length){
               clearTimeout(timeoutId);
               testResultRetrieved = true;
               beginEndOfScriptCountDown();
@@ -454,7 +455,7 @@ export default function socketsServer() {
     server = createServer(async socket => {
       handleConnection();
       socket.on(wrd.cdata, async chunk => { 
-        socket.emit('disconnect');
+        socket.emit(wrd.cdisconnect);
           await handleData(chunk, socket);
       }); 
       socket.on(wrd.cerror, async (error) => { await handleError(error, server); }); 
@@ -462,8 +463,9 @@ export default function socketsServer() {
       socket.on(wrd.cclose, async () => { await handleClose(); }); 
       socket.on(wrd.cend, async () => { await handleEnd(server) }); 
       socket.on(wrd.cdrain, async () => { await handleDrain(socket) }); 
-      socket.on('pause', () => {
-        console.log('Client has paused due to backpressure');
+      socket.on(wrd.cpause, () => {
+        // Client has paused due to backpressure.
+        console.log(app_msg.cClientPausedBackpressure);
       }); 
     });
 
@@ -479,9 +481,11 @@ export default function socketsServer() {
     // invoke optional command if 
     server.serverHasEndedCallback = async (callback, allottedTimeInSeconds = 5) => {
       await new Promise((resolve) => {
-        console.log('Calling serverHasEndedCallback!!');
+        // Calling serverHasEndedCallback!!
+        console.log(app_msg.cCallingServerHasEndedCallbackMessage01);
         const timeoutId = setTimeout(() => {
-          console.log('doing bad!!')
+          // doing bad!!
+          console.log(app_msg.cCallingServerHasEndedCallbackMessage02)
           // Test has failed if nothing happened in the allottedTimeInSeconds!
           resolve(callback(true));
         }, allottedTimeInSeconds * 1000);
@@ -506,7 +510,8 @@ export default function socketsServer() {
     return server;
   } catch ({ code, message }) {
     if (code == gen.cEADDRINUSE ) {
-      console.log('already in use...');
+      // already in use...
+      console.log(app_msg.calreadyInUse);
     } else {
       // Socket server failed:
       console.log(bas.cCarRetNewLin + app_msg.cSocketServerFailed + message);
