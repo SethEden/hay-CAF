@@ -26,7 +26,7 @@ import process from 'process';
 import childProcess from 'child_process';
 import path from 'path';
 
-const { bas, biz, gen, msg, num, sys, wrd } = hayConst;
+const { bas, gen, msg, num, sys, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 // framework.childProcess.shells.
@@ -117,7 +117,8 @@ export async function shell(shellCommandToRun, options, callback) {
 
         // Closes the window 3 seconds
         // after the command completes
-        shellCommandToRun = shellCommandToRun + `; Start-Sleep -Seconds 3; Exit`;
+        // `; Start-Sleep -Seconds 3; Exit`;
+        shellCommandToRun = shellCommandToRun + bas.cSemiColon + bas.cSpace + app_sys.cStartDashSleep + bas.cSpace + app_sys.cDashSeconds + bas.cSpace + num.c3 + bas.cSemiColon + bas.cSpace + wrd.cExit;
 
         scriptContent = app_sys.cDarwinScriptContentLine1 +
           app_sys.cDarwinScriptContentLine2 +
@@ -130,7 +131,8 @@ export async function shell(shellCommandToRun, options, callback) {
       case sys.cbash:
         // Closes the window 3 seconds
         // after the command completes
-        shellCommandToRun = shellCommandToRun + `; sleep 3; exit`;
+        // `; sleep 3; exit`;
+        shellCommandToRun = shellCommandToRun + bas.cSemiColon + bas.cSpace + wrd.csleep + bas.cSpace + num.c3 + bas.cSemiColon + bas.cSpace + wrd.cexit;
 
         spawnOptions = [gen.csh, []]     
         // scriptContent = `

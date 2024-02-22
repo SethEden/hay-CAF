@@ -39,7 +39,7 @@ const namespacePrefix = wrd.capplication + bas.cDot + apc.cApplicationName + bas
  */
 const initApplicationRulesLibrary = function () {
   // let functionName = initApplicationRulesLibrary.name;
-  // console.log(`BEGIN ${namespacePrefix}${functionName} function`);
+  // console.log(msg.cBEGIN_Space + namespacePrefix + functionName + msg.cSpaceFunction);
   return {
     // Client Business Rules
     // ***********************************************

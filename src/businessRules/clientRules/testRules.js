@@ -26,7 +26,7 @@ import process from 'process';
 import { fork } from 'child_process';
 import socketsServer from '../../childProcess/socketsServer.js';
 
-const { bas, biz, gen, msg, num, wrd, cfg } = hayConst;
+const { bas, biz, cfg, gen, msg, num, sys, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 import { fileURLToPath } from 'url';
@@ -232,7 +232,8 @@ async function spawnCmdProcess(inputData, inputMetaData) {
 
     // Cleanup / delete tmp script file
     const Cleanup = async () => {
-      await haystacks.consoleLog(namespacePrefix, functionName, 'BEGIN testRules.spawnCmdProcess.Cleanup function');
+      const childFunction = bas.cDot + wrd.cClean + wrd.cup;
+      await haystacks.consoleLog(namespacePrefix, functionName + childFunction, msg.cBEGIN_Function);
       let testScriptFileName = '';
       let fileDeleted = false;
 
@@ -250,19 +251,18 @@ async function spawnCmdProcess(inputData, inputMetaData) {
           await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName, '');
         }
       }
-      await haystacks.consoleLog(namespacePrefix, functionName, 'END testRules.spawnCmdProcess.Cleanup function');
+      await haystacks.consoleLog(namespacePrefix, functionName + childFunction, msg.cEND_Function);
     }
 
     // Obtain the child process time (allotted) limit
     const childProcessLimitTime = Number(await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cchildProcessLimitTime));
 
-    await haystacks.consoleLog(namespacePrefix, functionName, 'ABOUT TO BEGIN testRules.spawnCmdProcess.Promise function');
-
-   result = await new Promise((resolve, reject) => {
-      haystacks.consoleLog(namespacePrefix, functionName, 'BEGIN testRules.spawnCmdProcess.Promise function');
+    result = await new Promise((resolve, reject) => {
+      const childFunction = bas.cDot + wrd.cresult;
+      haystacks.consoleLog(namespacePrefix, functionName + childFunction, msg.cBEGIN_Function);
       // Obtain results from test
       socketServer.getTestResult(childProcessLimitTime).then(testResult => {
-        haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.testResult is: ' + testResult);
+        haystacks.consoleLog(namespacePrefix, functionName + childFunction, namespacePrefix + functionName + childFunction + sys.cSpaceIsColonSpace + testResult);
 
         Cleanup();
 
@@ -271,7 +271,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
         resolve(testResult);
       })
       .catch(error => {
-        haystacks.consoleLog(namespacePrefix, functionName, 'testRules.spawnCmdProcess.Promise.error is: ' + error);
+        haystacks.consoleLog(namespacePrefix, functionName + childFunction, namespacePrefix + functionName + childFunction + bas.cDot + wrd.cerror + sys.cSpaceIsColonSpace + error);
         Cleanup();
 
         // Kill the child process.
@@ -279,7 +279,7 @@ async function spawnCmdProcess(inputData, inputMetaData) {
         console.log(error);
         reject(false);
       });
-      haystacks.consoleLog(namespacePrefix, functionName, 'END testRules.spawnCmdProcess.Promise function');
+      haystacks.consoleLog(namespacePrefix, functionName + childFunction, msg.cEND_Function);
     });
 
     await socketServer.terminate();

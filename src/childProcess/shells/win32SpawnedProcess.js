@@ -26,7 +26,7 @@ import process from 'process';
 import childProcess from 'child_process';
 import path from 'path';
 
-const { bas, biz, gen, msg, num, sys, wrd } = hayConst;
+const { bas, gen, msg, num, sys, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 // framework.childProcess.shells.win32SpawnedProcess.
@@ -110,7 +110,9 @@ export async function shell(shellCommandToRun, options, callback) {
 
         // Closes the window 3 seconds
         // after the command completes
-        shellCommandToRun = shellCommandToRun + `; Start-Sleep -Seconds 3; Exit`;
+        // ; Start-Sleep -Seconds 3; Exit
+        shellCommandToRun = shellCommandToRun + bas.cSemiColon + bas.cSpace + app_sys.cStartDashSleep + bas.cSpace +
+        app_sys.cDashSeconds + bas.cSpace + num.c3 + bas.cSemiColon + bas.cSpace + wrd.cExit;
 
         // Powershell command to execute commands
         scriptContent = app_sys.cSetDashLocation + bas.cSpace + bas.cDoubleQuote + options.CAFfeinatedPath + bas.cDoubleQuote + bas.cCarRetNewLin + 
@@ -122,7 +124,9 @@ export async function shell(shellCommandToRun, options, callback) {
 
         // Closes the window 3 seconds
         // after the command completes
-        shellCommandToRun = shellCommandToRun + ` & timeout /t 3 nobreak & exit`;
+        //  & timeout /t 3 nobreak & exit
+        shellCommandToRun = shellCommandToRun + bas.cSpace + bas.cAndPersand + bas.cSpace + wrd.ctime + wrd.cout + bas.cSpace +
+        bas.cForwardSlash + bas.ct + bas.cSpace + num.c3 + bas.cSpace + wrd.cno + wrd.cbreak + bas.cSpace + bas.cAndPersand + bas.cSpace + wrd.cexit;
 
         // Powershell command to execute commands
         // Need to cd into the CAFfeinated folder first,
@@ -142,7 +146,8 @@ export async function shell(shellCommandToRun, options, callback) {
 
         // Closes the window 3 seconds
         // after the command completes
-        shellCommandToRun = shellCommandToRun + `; sleep 3; exit`;
+        // ; sleep 3; exit
+        shellCommandToRun = shellCommandToRun + bas.cSemiColon + bas.cSpace + wrd.csleep + bas.cSpace + num.c3 + bas.cSemiColon + bas.cSpace + wrd.cexit;
 
         // Bash command to execute commands
         scriptContent = bas.ccd + bas.cSpace + options.CAFfeinatedPath + bas.cCarRetNewLin + shellCommandToRun + bas.cCarRetNewLin + bas.cDollar + wrd.cSHELL;
