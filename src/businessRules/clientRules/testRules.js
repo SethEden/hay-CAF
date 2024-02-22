@@ -26,7 +26,7 @@ import process from 'process';
 import { fork } from 'child_process';
 import socketsServer from '../../childProcess/socketsServer.js';
 
-const { bas, biz, gen, msg, num, sys, wrd, cfg } = hayConst;
+const { bas, biz, gen, msg, num, wrd, cfg } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 import { fileURLToPath } from 'url';

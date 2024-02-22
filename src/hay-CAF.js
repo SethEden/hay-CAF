@@ -24,7 +24,6 @@ import * as app_cmd from './constants/application.command.constants.js';
 import * as app_cfg from './constants/application.configuration.constants.js';
 import * as apc from './constants/application.constants.js';
 import * as app_msg from './constants/application.message.constants.js';
-import * as app_sys from './constants/application.system.constants.js';
 import allAppCV from './resources/constantsValidation/allApplicationConstantsValidationMetadata.js';
 // External imports
 import haystacks from '@haystacks/async';
@@ -33,7 +32,7 @@ import url from 'url';
 import dotenv from 'dotenv';
 import path from 'path';
 
-const {bas, cmd, cfg, msg, sys, wrd, biz} = hayConst;
+const {bas, msg, sys, wrd, biz} = hayConst;
 let rootPath = '';
 let baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 // application.hay-CAF
@@ -54,7 +53,7 @@ let exitConditionArrayIndex = 0;
  */
 async function bootStrapApplication() {
   // let functionName = bootStrapApplication.name;
-  // console.log(`BEGIN ${namespacePrefix}${functionName} function`);
+  // console.log(msg.cBEGIN_Function + namespacePrefix + functionName + msg.cSpaceFunction);
   rootPath = url.fileURLToPath(path.dirname(import.meta.url));
   let rootPathArray = [];
   let pathSeparator = '';
@@ -120,9 +119,10 @@ async function bootStrapApplication() {
   }
   appConfig[sys.cclientBusinessRules] = await testRules.initApplicationRulesLibrary();
   appConfig[sys.cclientCommands] = await testCommands.initApplicationCommandsLibrary();
-  // console.log('appConfig is: ', appConfig);
+  // appConfig is:
+  // console.log(app_msg.cappConfigIs, appConfig);
   await haystacks.initFramework(appConfig);
-  // console.log(`END ${namespacePrefix}${functionName} function`);
+  // console.log(msg.cEND_Function + namespacePrefix + functionName + msg.cSpaceFunction);
 }
 
 /**
@@ -199,23 +199,6 @@ async function application() {
         await haystacks.enqueueCommand(commandInput);
       } // End-if (haystacks.isCommandQueueEmpty() === true)
       commandResult = await haystacks.processCommandQueue();
-
-      /**
-        // Cleanup any script files from the last command run.
-        testScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName);
-        // main.testScriptFileName is:
-        console.log(app_msg.cmainTestScriptFileNameIs + testScriptFileName);
-        if (testScriptFileName !== '') {
-          let applicationRootPath = await haystacks.getConfigurationSetting(wrd.csystem, cfg.cclientRootPath);
-          // main.applicationRootPath is:
-          await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cmainApplicationRootPathIs + applicationRootPath);
-          // TODO Make sure to apply additional logic for file name and path to make sure it's fully qualifed
-          fileDeleted = await haystacks.executeBusinessRules([testScriptFileName, ''], [biz.cdeleteFile]);
-          if (fileDeleted === true) {
-            await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName, '');
-          }
-        }
-      **/
 
       if (commandResult[exitConditionArrayIndex] === false) {
         // END command parser
