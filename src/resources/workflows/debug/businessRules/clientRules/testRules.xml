@@ -3,6 +3,8 @@
     <businessRules>
       <clientRules>
         <testRules>
+          <Workflow Name="allTestRulesEnable" Value="cmdSeq wrkflo,testRulesEnable wrkflo,buildArrayOfTestNamesEnable wrkflo,executeTestCommandEnable wrkflo,spawnCmdProcessEnable wrkflo,spawnCmdProcessDataEventEnable wrkflo,spawnCmdProcessMessageEventEnable wrkflo,spawnCmdProcessErrorEventEnable wrkflo,spawnCmdProcessExitEventEnable wrkflo,spawnCmdProcessCleanupEventEnable wrkflo,spawnCmdProcessresultEventEnable"/>
+          <Workflow Name="allTestRulesDisable" Value="cmdSeq wrkflo,testRulesDisable wrkflo,buildArrayOfTestNamesDisable wrkflo,executeTestCommandDisable wrkflo,spawnCmdProcessDisable wrkflo,spawnCmdProcessDataEventDisable wrkflo,spawnCmdProcessMessageEventDisable wrkflo,spawnCmdProcessErrorEventDisable wrkflo,spawnCmdProcessExitEventDisable wrkflo,spawnCmdProcessCleanupEventDisable wrkflo,spawnCmdProcessresultEventDisable"/>
           <Workflow Name="testRulesEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules true"/>
           <Workflow Name="testRulesDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules false"/>
           <Workflow Name="buildArrayOfTestNamesEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.buildArrayOfTestNames true"/>
@@ -19,6 +21,10 @@
           <Workflow Name="spawnCmdProcessErrorEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.error false"/>
           <Workflow Name="spawnCmdProcessExitEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.exit true"/>
           <Workflow Name="spawnCmdProcessExitEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.exit false"/>
+          <Workflow Name="spawnCmdProcessCleanupEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.Cleanup true"/>
+          <Workflow Name="spawnCmdProcessCleanupEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.Cleanup false"/>
+          <Workflow Name="spawnCmdProcessresultEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.result true"/>
+          <Workflow Name="spawnCmdProcessresultEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.businessRules.clientRules.testRules.spawnCmdProcess.result false"/>
         </testRules>
       </clientRules>
     </businessRules>

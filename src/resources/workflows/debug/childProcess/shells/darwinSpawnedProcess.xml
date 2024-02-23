@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommandWorkflows>
+  <debug>
+    <childProcess>
+      <shells>
+        <darwinSpawnedProcess>
+          <Workflow Name="allDarwinSpawnedProcessEnable" Value="cmdSeq wrkflo,darwinSpawnedProcessEnable wrkflo,darwinSpawnedProcessShellEnable wrkflo,darwinSpawnedProcessShellErrorEventEnable wrkflo,darwinSpawnedProcessShellExitEventEnable wrkflo,darwinSpawnedProcessShellDisconnectEventEnable"/>
+          <Workflow Name="allDarwinSpawnedProcessDisable" Value="cmdSeq wrkflo,darwinSpawnedProcessDisable wrkflo,darwinSpawnedProcessShellDisable wrkflo,darwinSpawnedProcessShellErrorEventDisable wrkflo,darwinSpawnedProcessShellExitEventDisable wrkflo,darwinSpawnedProcessShellDisconnectEventDisable"/>
+          <Workflow Name="darwinSpawnedProcessEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess true"/>
+          <Workflow Name="darwinSpawnedProcessDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess false"/>
+          <Workflow Name="darwinSpawnedProcessShellEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess.shell true"/>
+          <Workflow Name="darwinSpawnedProcessShellDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess.shell false"/>
+          <Workflow Name="darwinSpawnedProcessShellErrorEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess.shell.error true"/>
+          <Workflow Name="darwinSpawnedProcessShellErrorEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess.shell.error false"/>
+          <Workflow Name="darwinSpawnedProcessShellExitEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess.shell.exit true"/>
+          <Workflow Name="darwinSpawnedProcessShellExitEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess.shell.exit false"/>
+          <Workflow Name="darwinSpawnedProcessShellDisconnectEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess.shell.disconnect true"/>
+          <Workflow Name="darwinSpawnedProcessShellDisconnectEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.darwinSpawnedProcess.shell.disconnect false"/>
+        </darwinSpawnedProcess>
+      </shells>
+    </childProcess>
+  </debug>
+</CommandWorkflows>

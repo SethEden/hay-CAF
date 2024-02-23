@@ -1,5 +1,5 @@
 {
-  "debugFiles|debugSetting.application.hay-CAF.commands.clientCommands.testCommands": true,
+  "debugFiles|debugSetting.application.hay-CAF.commands.clientCommands.testCommands": false,
   "debugFiles|debugSetting.application.hay-CAF.commands.clientCommands.testCommands@ModuleFontStyle": "Bold|Underline",
   "debugFiles|debugSetting.application.hay-CAF.commands.clientCommands.testCommands@FunctionFontStyle": "Bold|Underline",
   "debugFiles|debugSetting.application.hay-CAF.commands.clientCommands.testCommands@MessageFontStyle": "Underline",
@@ -168,7 +168,7 @@
   "debugFunctions|debugSetting.application.hay-CAF.commands.clientCommands.testCommands.printApplicationConfiguration@FunctionFontBackgroundColor": "Default",
   "debugFunctions|debugSetting.application.hay-CAF.commands.clientCommands.testCommands.printApplicationConfiguration@MessageFontBackgroundColor": "Default",
   "debugFunctions|debugSetting.application.hay-CAF.commands.clientCommands.testCommands.printApplicationConfiguration@DataFontBackgroundColor": "Default",
-  "debugFunctions|debugSetting.application.hay-CAF.commands.clientCommands.testCommands.test": true,
+  "debugFunctions|debugSetting.application.hay-CAF.commands.clientCommands.testCommands.test": false,
   "debugFunctions|debugSetting.application.hay-CAF.commands.clientCommands.testCommands.test@ModuleFontStyle": "Default",
   "debugFunctions|debugSetting.application.hay-CAF.commands.clientCommands.testCommands.test@FunctionFontStyle": "Default",
   "debugFunctions|debugSetting.application.hay-CAF.commands.clientCommands.testCommands.test@MessageFontStyle": "Default",

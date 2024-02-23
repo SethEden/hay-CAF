@@ -39,7 +39,7 @@
   "system.executionDriverEngine": "testcafe",
   "system.enableReporter": true,
   "system.reportPath": "C:/CAFfeinated/results/SethEden/reports/",
-  "system.childProcessLimitTime": 240000,
+  "system.childProcessLimitTime": 140000,
   "system.cmdType": "Bash",
   "system.silentDeleteFailure": false
 }

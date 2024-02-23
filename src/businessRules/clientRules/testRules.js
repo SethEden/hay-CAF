@@ -96,7 +96,7 @@ async function executeTestCommand(inputData, inputMetaData) {
       inputMetaData = String(inputMetaData).toLowerCase().trim() || '';
 
       // Validates the selected command type
-      if (inputMetaData === '' || !app_sys.cvalidCommandTypes.split(',').includes(inputMetaData)) {
+      if (inputMetaData === '' || !app_sys.cvalidCommandTypes.split(bas.cComa).includes(inputMetaData)) {
         // ERROR: You must specify a test type to execute. Command type is:
         console.log(app_msg.cErrorExecuteTestCommandMessage01 + inputMetaData);
         // Valid command types are:
@@ -240,7 +240,8 @@ async function spawnCmdProcess(inputData, inputMetaData) {
       // Cleanup any script files from the last command run.
       testScriptFileName = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName);
       // main.testScriptFileName is:
-      console.log(app_msg.cmainTestScriptFileNameIs + testScriptFileName);
+      // console.log(app_msg.cmainTestScriptFileNameIs + testScriptFileName);
+      await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cmainTestScriptFileNameIs + testScriptFileName);
       if (testScriptFileName !== '') {
         let applicationRootPath = await haystacks.getConfigurationSetting(wrd.csystem, cfg.cclientRootPath);
         // main.applicationRootPath is:
