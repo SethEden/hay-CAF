@@ -601,7 +601,6 @@ async function test(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ccommandTypeIs + commandType);
 
   if (rootTestFolderPath !== '') {
-    // commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.cisBoolean]);
     let testWorkflowFiles = await haystacks.executeBusinessRules([rootTestFolderPath, ''], [biz.creadDirectoryContents]);
     // testWorkflowFiles are:
     await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ctestWorkflowFilesAre + JSON.stringify(testWorkflowFiles));

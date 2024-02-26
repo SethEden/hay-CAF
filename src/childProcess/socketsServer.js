@@ -24,7 +24,6 @@ import hayConst from '@haystacks/constants';
 import path from 'path';
 import process from 'process';
 import { createServer } from 'net';
-// import { Buffer } from 'buffer';
 
 const { bas, gen, msg, num, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
@@ -265,13 +264,10 @@ export default function socketsServer() {
         const json = await safeJsonParse(chunk.toString().trim());
 
         if (json) {
-          // let hasDataKey = true;
-          // let hasTestResult = false;
           let hasMessage = false;
 
           if (Array.isArray(json)) {
             // console.log('\r\njson is an array...\r\n')
-            // hasDataKey = json.some(v => v[wrd.cdata]);
             json.find(obj1 => {
               // obj1 is:
               // console.log(app_msg.cobj1Is, obj1);
@@ -294,7 +290,6 @@ export default function socketsServer() {
             hasMessage = json.every(v => v[wrd.cmessage]);
 
           } else {
-            // hasDataKey = !!json[wrd.cdata];
             hasMessage = json[wrd.cmessage];
             if (hasMessage.includes(app_msg.cTestResultsLog) && hasMessage.includes(wrd.cTest + bas.cUnderscore) && 
             (hasMessage.toLowerCase().includes(wrd.cpass) ||
@@ -421,7 +416,6 @@ export default function socketsServer() {
     // Keep checking during the given allotted time for the test result. 
     // If no value is provided or time has passed send error.
     const getTestResult = async (allottedTimeInSeconds) => {
-      // let time = allottedTimeInSeconds;
       // console.log('calling getTestResult');
       return await new Promise((resolve, reject) => {
         const timeoutId = setTimeout(() => {
@@ -430,9 +424,6 @@ export default function socketsServer() {
         }, allottedTimeInSeconds * 1000);
 
         const checkResult = () => {
-          // time -= 100;
-          // console.log({allottedTimeInSeconds: time})
-          
           if (serverHasEnded) {
             resolve(testResult || wrd.cfail);
           } else {

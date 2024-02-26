@@ -30,10 +30,9 @@ const { bas, biz, cfg, gen, msg, num, sys, wrd } = hayConst;
 const baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 const spawnProcess = `${__dirname}/../../childProcess/spawnProcess.js`;
 
 // application.hay-CAF.businessRules.clientRules.testRules.

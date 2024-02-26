@@ -190,8 +190,6 @@ async function application() {
     // BEGIN command parser
     await haystacks.consoleLog(namespacePrefix, functionName, app_msg.capplicationMessage02);
     while(programRunning === true) {
-      // let testScriptFileName = '';
-      // let fileDeleted = false;
       if (await haystacks.isCommandQueueEmpty() === true) {
         // biz.cprompt is some how undefined here, although other biz.c<something-else> do still work.
         // We will use wrd.cprompt here because it is working. No idea what the issue is with biz.prompt.
