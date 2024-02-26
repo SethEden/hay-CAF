@@ -37,6 +37,18 @@ export const applicationCommandConstantsValidation = [
   // ********************************
   // test Commands in order
   // ********************************
+  {Name: 'csetBoilerPlateTestPathAndFileName', Actual: app_cmd.csetBoilerPlateTestPathAndFileName, Expected: 'setBoilerPlateTestPathAndFileName'},
+  {Name: 'csetRootTestFolderPath', Actual: app_cmd.csetRootTestFolderPath, Expected: 'setRootTestFolderPath'},
+  {Name: 'csetDefaultTestBehavior', Actual: app_cmd.csetDefaultTestBehavior, Expected: 'setDefaultTestBehavior'},
+  {Name: 'csetSlowExecutionConfiguration', Actual: app_cmd.csetSlowExecutionConfiguration, Expected: 'setSlowExecutionConfiguration'},
+  {Name: 'csetMultiTestExecutionConfiguration', Actual: app_cmd.csetMultiTestExecutionConfiguration, Expected: 'setMultiTestExecutionConfiguration'},
+  {Name: 'csetBrowsersList', Actual: app_cmd.csetBrowsersList, Expected: 'setBrowsersList'},
+  {Name: 'csetExecutionEngine', Actual: app_cmd.csetExecutionEngine, Expected: 'setExecutionEngine'},
+  {Name: 'csetEnableReporterConfiguration', Actual: app_cmd.csetEnableReporterConfiguration, Expected: 'setEnableReporterConfiguration'},
+  {Name: 'csetReportPathConfiguration', Actual: app_cmd.csetReportPathConfiguration, Expected: 'setReportPathConfiguration'},
+  {Name: 'csetChildProcessLimitTime', Actual: app_cmd.csetChildProcessLimitTime, Expected: 'setChildProcessLimitTime'},
+  {Name: 'csetCmdType', Actual: app_cmd.csetCmdType, Expected: 'setCmdType'},
+  {Name: 'cprintApplicationConfiguration', Actual: app_cmd.cprintApplicationConfiguration, Expected: 'printApplicationConfiguration'},
   {Name: 'ctest', Actual: app_cmd.ctest, Expected: 'test'},
   
   // ********************************

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommandWorkflows>
+  <debug>
+    <commands>
+      <clientCommands>
+        <Workflow Name="testCommandsEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands true"/>
+        <Workflow Name="testCommandsDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands false"/>
+        <Workflow Name="setBoilerPlateTestPathAndFileNameEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setBoilerPlateTestPathAndFileName true"/>
+        <Workflow Name="setBoilerPlateTestPathAndFileNameDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setBoilerPlateTestPathAndFileName false"/>
+        <Workflow Name="setRootTestFolderPathEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setRootTestFolderPath true"/>
+        <Workflow Name="setRootTestFolderPathDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setRootTestFolderPath false"/>
+        <Workflow Name="setDefaultTestBehaviorEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setDefaultTestBehavior true"/>
+        <Workflow Name="setDefaultTestBehaviorDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setDefaultTestBehavior false"/>
+        <Workflow Name="setSlowExecutionConfigurationEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setSlowExecutionConfiguration true"/>
+        <Workflow Name="setSlowExecutionConfigurationDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setSlowExecutionConfiguration false"/>
+        <Workflow Name="setMultiTestExecutionConfigurationEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setMultiTestExecutionConfiguration true"/>
+        <Workflow Name="setMultiTestExecutionConfigurationDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setMultiTestExecutionConfiguration false"/>
+        <Workflow Name="setBrowsersListEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setBrowsersList true"/>
+        <Workflow Name="setBrowsersListDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setBrowsersList false"/>
+        <Workflow Name="setExecutionEngineEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setExecutionEngine true"/>
+        <Workflow Name="setExecutionEngineDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setExecutionEngine false"/>
+        <Workflow Name="setEnableReporterConfigurationEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setEnableReporterConfiguration true"/>
+        <Workflow Name="setEnableReporterConfigurationDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setEnableReporterConfiguration false"/>
+        <Workflow Name="setReportPathConfigurationEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setReportPathConfiguration true"/>
+        <Workflow Name="setReportPathConfigurationDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setReportPathConfiguration false"/>
+        <Workflow Name="setChildProcessLimitTimeEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setChildProcessLimitTime true"/>
+        <Workflow Name="setChildProcessLimitTimeDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setChildProcessLimitTime false"/>
+        <Workflow Name="setCmdTypeEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setCmdType true"/>
+        <Workflow Name="setCmdTypeDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setCmdType false"/>
+        <Workflow Name="printApplicationConfigurationEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.printApplicationConfiguration true"/>
+        <Workflow Name="printApplicationConfigurationDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.printApplicationConfiguration false"/>
+        <Workflow Name="testEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.test true"/>
+        <Workflow Name="testDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.test false"/>
+      </clientCommands>       
+    </commands>
+  </debug>
+</CommandWorkflows>

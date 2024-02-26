@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommandWorkflows>
+  <debug>
+    <commands>
+      <clientCommands>
+        <Workflow Name="applicationTestsEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests true"/>
+        <Workflow Name="applicationTestsDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests false"/>
+        <Workflow Name="validateApplicationConstantsEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests.validateApplicationConstants true"/>
+        <Workflow Name="validateApplicationConstantsDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests.validateApplicationConstants false"/>
+        <Workflow Name="validateApplicationCommandAliasesEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests.validateApplicationCommandAliases true"/>
+        <Workflow Name="validateApplicationCommandAliasesDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests.validateApplicationCommandAliases false"/>
+        <Workflow Name="validateApplicationWorkflowsEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests.validateApplicationWorkflows true"/>
+        <Workflow Name="validateApplicationWorkflowsDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests.validateApplicationWorkflows false"/>
+        <Workflow Name="allApplicationValidationsEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests.allApplicationValidations true"/>
+        <Workflow Name="allApplicationValidationsDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationTests.allApplicationValidations false"/>
+      </clientCommands>
+    </commands>
+  </debug>
+</CommandWorkflows>

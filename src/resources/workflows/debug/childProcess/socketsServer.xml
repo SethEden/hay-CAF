@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommandWorkflows>
+  <debug>
+    <childProcess>
+      <socketsServer>
+          <Workflow Name="allSocketsServerEnable" Value="cmdSeq wrkflo,socketsServerEnable wrkflo,safeJsonParseEnable wrkflo,safeJsonMessageContainsTestResultFunctionEnable wrkflo,safeJsonGetTestResultFromMessageFunctionEnable wrkflo,socketsServerFunctionEnable wrkflo,socketsServerListeningEventEnable wrkflo,socketsServerConnectionEventEnable wrkflo,socketsServerConnectionErrorEventEnable wrkflo,socketsServerConnectionDataEventEnable wrkflo,socketsServerSigintEventEnable wrkflo,socketsServerConnectEventEnable wrkflo,socketsServerErrorEventEnable wrkflo,socketsServerDisconnectEventEnable wrkflo,socketsServerCloseEventEnable wrkflo,socketsServerConnectionEndEventEnable wrkflo,socketsServerDrainEventEnable"/>
+          <Workflow Name="allSocketsServerDisable" Value="cmdSeq wrkflo,socketsServerDisable wrkflo,safeJsonParseDisable wrkflo,safeJsonMessageContainsTestResultFunctionDisable wrkflo,safeJsonGetTestResultFromMessageFunctionDisable wrkflo,socketsServerFunctionDisable wrkflo,socketsServerListeningEventDisable wrkflo,socketsServerConnectionEventDisable wrkflo,socketsServerConnectionErrorEventDisable wrkflo,socketsServerConnectionDataEventDisable wrkflo,socketsServerSigintEventDisable wrkflo,socketsServerConnectEventDisable wrkflo,socketsServerErrorEventDisable wrkflo,socketsServerDisconnectEventDisable wrkflo,socketsServerCloseEventDisable wrkflo,socketsServerConnectionEndEventDisable wrkflo,socketsServerDrainEventDisable"/>
+          <Workflow Name="socketsServerEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer true"/>
+          <Workflow Name="socketsServerDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer false"/>
+          <Workflow Name="safeJsonParseEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.safeJsonParse true"/>
+          <Workflow Name="safeJsonParseDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.safeJsonParse false"/>
+          <Workflow Name="safeJsonMessageContainsTestResultFunctionEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.messageContainsTestResult true"/>
+          <Workflow Name="safeJsonMessageContainsTestResultFunctionDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.messageContainsTestResult false"/>
+          <Workflow Name="safeJsonGetTestResultFromMessageFunctionEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.getTestResultFromMessage true"/>
+          <Workflow Name="safeJsonGetTestResultFromMessageFunctionDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.getTestResultFromMessage false"/>
+          <Workflow Name="socketsServerFunctionEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer true"/>
+          <Workflow Name="socketsServerFunctionDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer false"/>
+          <Workflow Name="socketsServerListeningEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.listening true"/>
+          <Workflow Name="socketsServerListeningEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.listening false"/>
+          <Workflow Name="socketsServerConnectionEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connection true"/>
+          <Workflow Name="socketsServerConnectionEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connection false"/>
+          <Workflow Name="socketsServerConnectionErrorEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connection.error true"/>
+          <Workflow Name="socketsServerConnectionErrorEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connection.error false"/>
+          <Workflow Name="socketsServerConnectionDataEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connection.data true"/>
+          <Workflow Name="socketsServerConnectionDataEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connection.data false"/>
+          <Workflow Name="socketsServerSigintEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.sigint true"/>
+          <Workflow Name="socketsServerSigintEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.sigint false"/>
+          <Workflow Name="socketsServerConnectEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connect true"/>
+          <Workflow Name="socketsServerConnectEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connect false"/>
+          <Workflow Name="socketsServerErrorEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.error true"/>
+          <Workflow Name="socketsServerErrorEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.error false"/>
+          <Workflow Name="socketsServerDisconnectEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.disconnect true"/>
+          <Workflow Name="socketsServerDisconnectEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.disconnect false"/>
+          <Workflow Name="socketsServerCloseEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.close true"/>
+          <Workflow Name="socketsServerCloseEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.close false"/>
+          <Workflow Name="socketsServerConnectionEndEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connection.end true"/>
+          <Workflow Name="socketsServerConnectionEndEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.connection.end false"/>
+          <Workflow Name="socketsServerDrainEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.drain true"/>
+          <Workflow Name="socketsServerDrainEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.socketsServer.socketsServer.drain false"/>
+      </socketsServer>
+    </childProcess>
+  </debug>
+</CommandWorkflows>

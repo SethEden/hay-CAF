@@ -19,5 +19,16 @@ import * as app_cfg from '../../constants/application.configuration.constants.js
  * @date 2023/03/30
  */
 export const applicationConfigurationConstantsValidation = [
-  
+  {Name: 'cboilerPlateTestPathAndFileName', Actual: app_cfg.cboilerPlateTestPathAndFileName, Expected: 'boilerPlateTestPathAndFileName'},
+  {Name: 'crootTestFolderPath', Actual: app_cfg.crootTestFolderPath, Expected: 'rootTestFolderPath'},
+  {Name: 'cdefaultRunAllTests', Actual: app_cfg.cdefaultRunAllTests, Expected: 'defaultRunAllTests'},
+  {Name: 'cslowExecution', Actual: app_cfg.cslowExecution, Expected: 'slowExecution'},
+  {Name: 'cmultiTestExecution', Actual: app_cfg.cmultiTestExecution, Expected: 'multiTestExecution'},
+  {Name: 'clistOfBrowsers', Actual: app_cfg.clistOfBrowsers, Expected: 'listOfBrowsers'},
+  {Name: 'cexecutionDriverEngine', Actual: app_cfg.cexecutionDriverEngine, Expected: 'executionDriverEngine'},
+  {Name: 'cenableReporter', Actual: app_cfg.cenableReporter, Expected: 'enableReporter'},
+  {Name: 'creportPath', Actual: app_cfg.creportPath, Expected: 'reportPath'},
+  {Name: 'cchildProcessLimitTime', Actual: app_cfg.cchildProcessLimitTime, Expected: 'childProcessLimitTime'},
+  {Name: 'ccmdType', Actual: app_cfg.ccmdType, Expected: 'cmdType'},
+  {Name: 'ctestScriptFileName', Actual: app_cfg.ctestScriptFileName, Expected: 'testScriptFileName'}
 ];
