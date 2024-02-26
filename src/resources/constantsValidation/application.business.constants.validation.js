@@ -22,5 +22,7 @@ export const applicationBusinessConstantsValidation = [
   // ********************************
   // test rules in order
   // ********************************
-  
+  {Name: 'cbuildArrayOfTestNames', Actual: app_biz.cbuildArrayOfTestNames, Expected: 'buildArrayOfTestNames'},
+  {Name: 'cexecuteTestCommand', Actual: app_biz.cexecuteTestCommand, Expected: 'executeTestCommand'},
+  {Name: 'cspawnCmdProcess', Actual: app_biz.cspawnCmdProcess, Expected: 'spawnCmdProcess'},
 ];

@@ -10,9 +10,12 @@
  */
 
 // External imports
-// import hayConst from '@haystacks/constants';
-// const {} = hayConst;
+import hayConst from '@haystacks/constants';
+const {wrd, gen} = hayConst;
 
 // ********************************
 // hay-CAF rules in order
 // ********************************
+export const cbuildArrayOfTestNames = wrd.cbuild + wrd.cArray + wrd.cOf + wrd.cTest + wrd.cNames; // buildArrayOfTestNames
+export const cexecuteTestCommand = wrd.cexecute + wrd.cTest + wrd.cCommand; // executeTestCommand
+export const cspawnCmdProcess = wrd.cspawn + gen.cCmd + wrd.cProcess; // spawnCmdProcess

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CommandWorkflows>
+  <debug>
+    <childProcess>
+      <shells>
+        <win32SpawnedProcess>
+          <Workflow Name="allWin32SpawnedProcessEnable" Value="cmdSeq wrkflo,win32SpawnedProcessEnable wrkflo,win32SpawnedProcessShellEnable wrkflo,win32SpawnedProcessShellErrorEventEnable wrkflo,win32SpawnedProcessShellDataEventEnable wrkflo,win32SpawnedProcessShellExitEventEnable wrkflo,win32SpawnedProcessShellDisconnectEventEnable"/>
+          <Workflow Name="allWin32SpawnedProcessDisable" Value="cmdSeq wrkflo,win32SpawnedProcessDisable wrkflo,win32SpawnedProcessShellDisable wrkflo,win32SpawnedProcessShellErrorEventDisable wrkflo,win32SpawnedProcessShellDataEventDisable wrkflo,win32SpawnedProcessShellExitEventDisable wrkflo,win32SpawnedProcessShellDisconnectEventDisable"/>
+          <Workflow Name="win32SpawnedProcessEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess true"/>
+          <Workflow Name="win32SpawnedProcessDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess false"/>
+          <Workflow Name="win32SpawnedProcessShellEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell true"/>
+          <Workflow Name="win32SpawnedProcessShellDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell false"/>
+          <Workflow Name="win32SpawnedProcessShellErrorEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.error true"/>
+          <Workflow Name="win32SpawnedProcessShellErrorEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.error false"/>
+          <Workflow Name="win32SpawnedProcessShellDataEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.data true"/>
+          <Workflow Name="win32SpawnedProcessShellDataEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.data false"/>
+          <Workflow Name="win32SpawnedProcessShellExitEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.exit true"/>
+          <Workflow Name="win32SpawnedProcessShellExitEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.exit false"/>
+          <Workflow Name="win32SpawnedProcessShellDisconnectEventEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.disconnect true"/>
+          <Workflow Name="win32SpawnedProcessShellDisconnectEventDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.childProcess.shells.win32SpawnedProcess.shell.disconnect false"/>
+        </win32SpawnedProcess>
+      </shells>
+    </childProcess>
+  </debug>
+</CommandWorkflows>

@@ -1,3 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><CommandWorkflows>
   <Workflow Name="applicationStartup" Value="commandSequencer name,application,true version about instructions applicationHelp"/>
+  <Workflow Name="allAppDebugsEnable" Value="cmdSeq wrkflo,allTestRulesEnable wrkflo,allSocketsServerEnable wrkflo,allDarwinSpawnedProcessEnable wrkflo,allWin32SpawnedProcessEnable wrkflo,applicationSystemEnable wrkflo,applicationTestsEnable wrkflo,testCommandsEnable"/>
+  <Workflow Name="allAppDebugsDisable" Value="cmdSeq wrkflo,allTestRulesDisable wrkflo,allSocketsServerDisable wrkflo,allDarwinSpawnedProcessDisable wrkflo,allWin32SpawnedProcessDisable wrkflo,applicationSystemDisable wrkflo,applicationTestsDisable wrkflo,testCommandsDisable"/>
 </CommandWorkflows>

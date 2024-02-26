@@ -1,17 +1,5 @@
 {
-  "path": "C:/Proj/hayPlugins",
+  "path": "/Users/WebbratStudios/Documents/Dev/vagrant/www/clients/hs/plugins",
   "plugins": [
-    {
-      "hayd-caf": {
-        "Name": "hayd-caf",
-        "Path": "C:\\Proj\\hayPlugins\\hayd-caf\\"
-      }
-    },
-    {
-      "hexios": {
-        "Name": "hexios",
-        "Path": "C:\\Proj\\hayPlugins\\Hexios\\"
-      }
-    }
   ]
 }

@@ -18,15 +18,13 @@
  */
 
 // Internal imports
-import testBroker from './brokers/testBroker.js';
 import testRules from './businessRules/clientRulesLibrary.js';
 import testCommands from './commands/clientCommandsLibrary.js';
 import * as app_cmd from './constants/application.command.constants.js';
 import * as app_cfg from './constants/application.configuration.constants.js';
 import * as apc from './constants/application.constants.js';
 import * as app_msg from './constants/application.message.constants.js';
-import * as app_sys from './constants/application.system.constants.js';
-import allAppCV from './resources/constantsValidation/allApplicationConstantsValidationmetadata.js';
+import allAppCV from './resources/constantsValidation/allApplicationConstantsValidationMetadata.js';
 // External imports
 import haystacks from '@haystacks/async';
 import hayConst from '@haystacks/constants';
@@ -34,7 +32,7 @@ import url from 'url';
 import dotenv from 'dotenv';
 import path from 'path';
 
-const {bas, cmd, msg, sys, wrd} = hayConst;
+const {bas, msg, sys, wrd, biz} = hayConst;
 let rootPath = '';
 let baseFileName = path.basename(import.meta.url, path.extname(import.meta.url));
 // application.hay-CAF
@@ -55,7 +53,7 @@ let exitConditionArrayIndex = 0;
  */
 async function bootStrapApplication() {
   // let functionName = bootStrapApplication.name;
-  // console.log(`BEGIN ${namespacePrefix}${functionName} function`);
+  // console.log(msg.cBEGIN_Function + namespacePrefix + functionName + msg.cSpaceFunction);
   rootPath = url.fileURLToPath(path.dirname(import.meta.url));
   let rootPathArray = [];
   let pathSeparator = '';
@@ -121,9 +119,10 @@ async function bootStrapApplication() {
   }
   appConfig[sys.cclientBusinessRules] = await testRules.initApplicationRulesLibrary();
   appConfig[sys.cclientCommands] = await testCommands.initApplicationCommandsLibrary();
-  // console.log('appConfig is: ', appConfig);
+  // appConfig is:
+  // console.log(app_msg.cappConfigIs, appConfig);
   await haystacks.initFramework(appConfig);
-  // console.log(`END ${namespacePrefix}${functionName} function`);
+  // console.log(msg.cEND_Function + namespacePrefix + functionName + msg.cSpaceFunction);
 }
 
 /**
@@ -144,6 +143,8 @@ async function application() {
   if (argumentDrivenInterface === undefined) {
     argumentDrivenInterface = false;
   }
+  // Set this to an empty string at first.
+  await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.ctestScriptFileName, '');
   // argumentDrivenInterface is:
   // await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cargumentDrivenInterfaceIs + argumentDrivenInterface);
   await haystacks.enqueueCommand(app_cmd.cApplicationStartupWorkflow);
@@ -168,7 +169,7 @@ async function application() {
     if (process.argv[2].includes(bas.cDash) === true ||
     process.argv[2].includes(bas.cForwardSlash) === true ||
     process.argv[2].includes(bas.cBackSlash) === true) {
-      commandToExecute = await haystacks.executeBusinessRule([process.argv, ''], [biz.caggregateCommandArguments]);
+      commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.caggregateCommandArguments]);
     } else {
       commandToExecute = await haystacks.executeBusinessRules([process.argv, ''], [biz.caggregateCommandArguments]);
     }
@@ -196,6 +197,7 @@ async function application() {
         await haystacks.enqueueCommand(commandInput);
       } // End-if (haystacks.isCommandQueueEmpty() === true)
       commandResult = await haystacks.processCommandQueue();
+
       if (commandResult[exitConditionArrayIndex] === false) {
         // END command parser
         await haystacks.consoleLog(namespacePrefix, functionName, app_msg.capplicationMessage03);
