@@ -38,6 +38,8 @@ const initApplicationCommandsLibrary = function() {
     [app_cmd.cinstructions]: (inputData, inputMetaData) => applicationSystem.instructions(inputData, inputMetaData),
     [app_cmd.capplicationHelp]: (inputData, inputMetaData) => applicationSystem.applicationHelp(inputData, inputMetaData),
     [app_cmd.capplicationWorkflowHelp]: (inputData, inputMetaData) => applicationSystem.applicationWorkflowHelp(inputData, inputMetaData),
+    [app_cmd.cencryptString]: (inputData, inputMetaData) => applicationSystem.encryptString(inputData, inputMetaData),
+    [app_cmd.cdecryptString]: (inputData, inputMetaData) => applicationSystem.decryptString(inputData, inputMetaData),
 
     // ***********************************************
     // application test commands in order

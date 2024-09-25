@@ -25,6 +25,8 @@ export const applicationCommandConstantsValidation = [
   {Name: 'cinstructions', Actual: app_cmd.cinstructions, Expected: 'instructions'},
   {Name: 'capplicationHelp', Actual: app_cmd.capplicationHelp, Expected: 'applicationHelp'},
   {Name: 'capplicationWorkflowHelp', Actual: app_cmd.capplicationWorkflowHelp, Expected: 'applicationWorkflowHelp'},
+  {Name: 'cencryptString', Actual: app_cmd.cencryptString, Expected: 'encryptString'},
+  {Name: 'cdecryptString', Actual: app_cmd.cdecryptString, Expected: 'decryptString'},
 
   // ********************************
   // ApplicationTest Commands in order

@@ -21,6 +21,8 @@ const {bas, gen, wrd} = hayConst;
 export const cinstructions = wrd.cinstructions; // instructions
 export const capplicationHelp = wrd.capplication + wrd.cHelp; // applicationHelp
 export const capplicationWorkflowHelp = wrd.capplication + wrd.cWorkflow + wrd.cHelp; // applicationWorkflowHelp
+export const cencryptString = wrd.cencrypt + wrd.cString; // encryptString
+export const cdecryptString = wrd.cdecrypt + wrd.cString; // decryptString
 
 // ********************************
 // ApplicationTest Commands in order

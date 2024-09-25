@@ -11,6 +11,10 @@
           <Workflow Name="applicationHelpDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.applicationHelp false"/>
           <Workflow Name="applicationWorkflowHelpEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.applicationWorkflowHelp true"/>
           <Workflow Name="applicationWorkflowHelpDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.applicationWorkflowHelp false"/>
+          <Workflow Name="encryptStringEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.encryptString true"/>
+          <Workflow Name="encryptStringDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.encryptString false"/>
+          <Workflow Name="decryptStringEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.decryptString true"/>
+          <Workflow Name="decryptStringDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.applicationSystem.decryptString false"/>
       </clientCommands>
     </commands>
   </debug>
