@@ -118,7 +118,7 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cencryptionKeyArrayIs', Actual: app_msg.cencryptionKeyArrayIs, Expected: 'encryptionKeyArray is: '},
   {Name: 'cpublicKeyIs', Actual: app_msg.cpublicKeyIs, Expected: 'publicKey is: '},
   {Name: 'cencryptedStringIs', Actual: app_msg.cencryptedStringIs, Expected: 'encryptedString is: '},
-  {Name: 'cdecryptedStringIs', Actual: app_msg.cdecryptedStringIs, Expected: 'decrypted string is:'},
+  {Name: 'cdecryptedStringIs', Actual: app_msg.cdecryptedStringIs, Expected: 'decrypted string is: '},
 
   // ERROR Messages
   {Name: 'cErrorSetBoilerPlateTestPathAndFileNameMessage', Actual: app_msg.cErrorSetBoilerPlateTestPathAndFileNameMessage, Expected: 'ERROR: Please enter a valid path and filename as input.'},

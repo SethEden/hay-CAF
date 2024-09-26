@@ -49,6 +49,7 @@ export const cnightwatch = wrd.cnight + wrd.cwatch; // nightwatch
 export const cvalidExecutionEngines = ctestcafe + bas.cComa + cplaywright + bas.cComa + ccypress + bas.cComa + cwebdriver + bas.cComa + cappium + bas.cComa + cnightwatch; // testcafe,playwright,cypress,webdriver,appium,nightwatch
 export const cslowExe = wrd.cslow + gen.cExe; // slowExe
 export const ctestName = wrd.ctest + wrd.cName; // testName
+export const cCAF = bas.cCA + bas.cF; // CAF
 
 // Commands & Command Types
 export const cvalidCommandTypes = sys.cdos + bas.cComa + sys.ccmd + bas.cComa + sys.cbash + bas.cComa + sys.cpowershell; // dos,cmd,bash,powershell
