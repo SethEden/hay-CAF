@@ -56,6 +56,7 @@ export const applicationSystemConstantsValidation = [
   {Name: 'cvalidExecutionEngines', Actual: app_sys.cvalidExecutionEngines, Expected: 'testcafe,playwright,cypress,webdriver,appium,nightwatch'},
   {Name: 'cslowExe', Actual: app_sys.cslowExe, Expected: 'slowExe'},
   {Name: 'ctestName', Actual: app_sys.ctestName, Expected: 'testName'},
+  {Name: 'cCAF', Actual: app_sys.cCAF, Expected: 'CAF'},
 
   // Commands & Command Types
   {Name: 'cvalidCommandTypes', Actual: app_sys.cvalidCommandTypes, Expected: 'dos,cmd,bash,powershell'},
