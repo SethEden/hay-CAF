@@ -30,5 +30,6 @@ export const applicationConfigurationConstantsValidation = [
   {Name: 'creportPath', Actual: app_cfg.creportPath, Expected: 'reportPath'},
   {Name: 'cchildProcessLimitTime', Actual: app_cfg.cchildProcessLimitTime, Expected: 'childProcessLimitTime'},
   {Name: 'ccmdType', Actual: app_cfg.ccmdType, Expected: 'cmdType'},
+  {Name: 'cforwardCompatibilityMode', Actual: app_cfg.cforwardCompatibilityMode, Expected: 'forwardCompatibilityMode'},
   {Name: 'ctestScriptFileName', Actual: app_cfg.ctestScriptFileName, Expected: 'testScriptFileName'}
 ];

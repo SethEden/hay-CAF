@@ -69,6 +69,7 @@ export const applicationMessageConstantsValidation = [
   {Name: 'creportEnabledIs', Actual: app_msg.creportEnabledIs, Expected: 'reportEnabled is: '},
   {Name: 'creportPathIs', Actual: app_msg.creportPathIs, Expected: 'reportPath is: '},
   {Name: 'ccommandTypeIs', Actual: app_msg.ccommandTypeIs, Expected: 'commandType is: '},
+  {Name: 'cforwardCompatibilityModeIs', Actual: app_msg.cforwardCompatibilityModeIs, Expected: 'forwardCompatibilityMode is: '},
   {Name: 'ctestWorkflowFilesAre', Actual: app_msg.ctestWorkflowFilesAre, Expected: 'testWorkflowFiles are: '},
   {Name: 'ctestFileNameKeyIs', Actual: app_msg.ctestFileNameKeyIs, Expected: 'testFileNameKey is: '},
   {Name: 'ctestFileNameIs', Actual: app_msg.ctestFileNameIs, Expected: 'testFileName is: '},
@@ -199,5 +200,6 @@ export const applicationMessageConstantsValidation = [
   {Name: 'cSuccessSetReportPathConfigurationMessage', Actual: app_msg.cSuccessSetReportPathConfigurationMessage, Expected: 'SUCCESS: reportPath configuration setting successfully changed.'},
   {Name: 'cSuccessSetChildProcessLimitTimeMessage', Actual: app_msg.cSuccessSetChildProcessLimitTimeMessage, Expected: 'SUCCESS: childProcessLimitTime configuration setting successfully changed.'},
   {Name: 'cSuccessSetCmdTypeMessage', Actual: app_msg.cSuccessSetCmdTypeMessage, Expected: 'SUCCESS: cmdType configuration setting successfully changed.'},
+  {Name: 'cSuccessSetForwardCompatibilityModeConfigurationMessage', Actual: app_msg.cSuccessSetForwardCompatibilityModeConfigurationMessage, Expected: 'SUCCESS: forwardCompatibilityMode configuration setting successfully changed.'},
   {Name: 'cExitingChildProcess', Actual: app_msg.cExitingChildProcess, Expected: '\r\nExiting child process.'}
 ];

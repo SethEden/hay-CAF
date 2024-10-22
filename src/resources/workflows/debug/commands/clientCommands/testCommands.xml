@@ -27,6 +27,8 @@
         <Workflow Name="setChildProcessLimitTimeDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setChildProcessLimitTime false"/>
         <Workflow Name="setCmdTypeEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setCmdType true"/>
         <Workflow Name="setCmdTypeDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setCmdType false"/>
+        <Workflow Name="setForwardCompatibilityModeEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setForwardCompatibilityMode true"/>
+        <Workflow Name="setForwardCompatibilityModeDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.setForwardCompatibilityMode false"/>
         <Workflow Name="printApplicationConfigurationEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.printApplicationConfiguration true"/>
         <Workflow Name="printApplicationConfigurationDisable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.printApplicationConfiguration false"/>
         <Workflow Name="testEnable" Value="changeConfigSetting debugSetting.application.hay-CAF.commands.clientCommands.testCommands.test true"/>

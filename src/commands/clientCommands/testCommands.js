@@ -135,7 +135,8 @@ async function setDefaultTestBehavior(inputData, inputMetaData) {
   let returnData = [true, ];
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
-      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cdefaultRunAllTests, inputData[1]);
+      let parsedBoolean = await haystacks.executeBusinessRules([inputData[1], ''], [biz.cstringToBoolean]);
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cdefaultRunAllTests, parsedBoolean);
       // SUCCESS: defaultRunAllTests configuration setting successfully changed.
       console.log(app_msg.cSuccessSetDefaultTestBehaviorMessage);
     } else {
@@ -174,7 +175,8 @@ async function setSlowExecutionConfiguration(inputData, inputMetaData) {
   let returnData = [true, ];
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
-      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cslowExecution, inputData[1]);
+      let parsedBoolean = await haystacks.executeBusinessRules([inputData[1], ''], [biz.cstringToBoolean]);
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cslowExecution, parsedBoolean);
       // SUCCESS: slowExecution configuration setting successfully changed.
       console.log(app_msg.cSuccessSetSlowExecutionMessage);
     } else {
@@ -215,7 +217,8 @@ async function setMultiTestExecutionConfiguration(inputData, inputMetaData) {
   let returnData = [true, ];
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
-      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cmultiTestExecution, inputData[1]);
+      let parsedBoolean = await haystacks.executeBusinessRules([inputData[1], ''], [biz.cstringToBoolean]);
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cmultiTestExecution, parsedBoolean);
       // SUCCESS: multiTestExecution configuration setting successfully changed.
       console.log(app_msg.cSuccessSetMultiTestExecutionMessage);
     } else {
@@ -300,16 +303,20 @@ async function setExecutionEngine(inputData, inputMetaData) {
   let returnData = [true, ];
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (app_sys.cvalidExecutionEngines.includes(inputData[1])) {
-      // WARNING: All valid execution engines are not currently supported by our testing engine.
-      console.log(app_msg.csetExecutionEngineMessage01);
-      // WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.
-      console.log(app_msg.csetExecutionEngineMessage02);
-      // WARNING: The execution engine will be hard coded to testcafe for now.
-      console.log(app_msg.csetExecutionEngineMessage03);
-      // TODO: Change the below app_sys.ctestcafe to be dynamic once the new testing framework is implemented.
-      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine, app_sys.ctestcafe);
+      if (await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cforwardCompatibilityMode) === false) {
+        // WARNING: All valid execution engines are not currently supported by our testing engine.
+        console.log(app_msg.csetExecutionEngineMessage01);
+        // WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.
+        console.log(app_msg.csetExecutionEngineMessage02);
+        // WARNING: The execution engine will be hard coded to testcafe for now.
+        console.log(app_msg.csetExecutionEngineMessage03);
+        // TODO: Change the below app_sys.ctestcafe to be dynamic once the new testing framework is implemented.
+        await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine, app_sys.ctestcafe);
+      } else {
+        await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cexecutionDriverEngine, inputData[1]);
+      }
       // SUCCESS: executionDriverEngine configuration setting successfully changed.
-      console.log(app_msg.cSuccessSetExecutionEngineMessage);
+      console.log(app_msg.cSuccessSetExecutionEngineMessage + bas.cSpace + inputData[1]);
     } else {
       // ERROR: Please enter a valid execution engine such as:
       console.log(app_msg.csetExecutionEngineMessage04 + app_sys.cvalidExecutionEngines);
@@ -343,7 +350,8 @@ async function setEnableReporterConfiguration(inputData, inputMetaData) {
   let returnData = [true, ];
   if (Array.isArray(inputData) && inputData.length >= 2) {
     if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
-      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cenableReporter, inputData[1]);
+      let parsedBoolean = await haystacks.executeBusinessRules([inputData[1], ''], [biz.cstringToBoolean]);
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cenableReporter, parsedBoolean);
       // SUCCESS: enableReporter configuration setting successfully changed.
       console.log(app_msg.cSuccessSetEnableReporterConfigurationMessage);
     } else {
@@ -464,6 +472,46 @@ async function setCmdType(inputData, inputMetaData) {
 }
 
 /**
+ * @function setForwardCompatibilityMode
+ * @description Sets a configuration setting that allows the user to change the compatibility mode of the Hay-CAF runner.
+ * If the compatibility mode flag is not set, then the 2nd generation framework support is disabled and the legacy CAFfeinated framework support is enabled.
+ * @param {array<string>} inputData An array that could actually contain anything,
+ * depending on what the user entered. But the function filters all of that internally and
+ * extracts the case that the user entered a truthy of falsy value to enable or disable the forward compatibility flag.
+ * inputData[0] = setForwardCompatibilityMode
+ * inputData[1] = True or False
+ * @param {string} inputMetaData Not used for this command.
+ * @return {array<boolean,boolean>} An array with a boolean True or False value to
+ * indicate if the application should exit or not exit.
+ * @author Seth Hollingsead
+ * @date 2024/10/22
+ */
+async function setForwardCompatibilityMode(inputData, inputMetaData) {
+  let functionName = setForwardCompatibilityMode.name;
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cBEGIN_Function);
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputDataIs + JSON.stringify(inputData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cinputMetaDataIs + inputMetaData);
+  let returnData = [true, ];
+  if (Array.isArray(inputData) && inputData.length >= 2) {
+    if (await haystacks.executeBusinessRules([inputData[1], ''], [biz.cisBoolean]) === true) {
+      let parsedBoolean = await haystacks.executeBusinessRules([inputData[1], ''], [biz.cstringToBoolean]);
+      await haystacks.setConfigurationSetting(wrd.csystem, app_cfg.cforwardCompatibilityMode, parsedBoolean);
+      // SUCCESS: forward Compatibility Mode configuration setting successfully changed.
+      console.log(app_msg.cSuccessSetForwardCompatibilityModeConfigurationMessage);
+    } else {
+      // ERROR: Please enter a valid input, true or false.
+      console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+    }
+  } else {
+    // ERROR: Please enter a valid input, true or false.
+    console.log(app_msg.cErrorSetDefaultTestBehaviorMessage);
+  }
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.creturnDataIs + JSON.stringify(returnData));
+  await haystacks.consoleLog(namespacePrefix, functionName, msg.cEND_Function);
+  return returnData;
+}
+
+/**
  * @function printApplicationConfiguration
  * @description Prints out the current system.configuration settings in a table format,
  * that is easy to read and triage or debug the configuration by end users.
@@ -547,7 +595,7 @@ async function test(inputData, inputMetaData) {
   // for each test in the array of tests, build a CLI command string to execute the test. DONE
   // Spawn a new CMD or BASH child-process with a promise and send the CLI command string to it to execute the test script/workflow. DONE
   // Monitor the child process and determine when the test is done, resolve the promise with the pass-fail. DONE
-  // Delete any temporary files to clean up after the test run.
+  // Delete any temporary files to clean up after the test run. DONE
   // We can set re-run criteria or other rules to determine how to handle the failure.
   // OR move on to the next test.
 
@@ -561,6 +609,7 @@ async function test(inputData, inputMetaData) {
   let reportEnabled = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cenableReporter);
   let reportPath = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.creportPath);
   let commandType = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.ccmdType);
+  let forwardCompatibilityMode = await haystacks.getConfigurationSetting(wrd.csystem, app_cfg.cforwardCompatibilityMode);
   let testCommandString = '';
   let testReporterCommandString = '';
   let validTestParameters = false;
@@ -599,6 +648,8 @@ async function test(inputData, inputMetaData) {
   await haystacks.consoleLog(namespacePrefix, functionName, app_msg.creportPathIs + reportPath);
   // commandType is:
   await haystacks.consoleLog(namespacePrefix, functionName, app_msg.ccommandTypeIs + commandType);
+  // forwardCompatibilityMode is:
+  await haystacks.consoleLog(namespacePrefix, functionName, app_msg.cforwardCompatibilityModeIs + forwardCompatibilityMode)
 
   if (rootTestFolderPath !== '') {
     let testWorkflowFiles = await haystacks.executeBusinessRules([rootTestFolderPath, ''], [biz.creadDirectoryContents]);
@@ -679,8 +730,15 @@ async function test(inputData, inputMetaData) {
       // NOTE: At some point in the future hay-CAF will transition to using hayD-CAF rather than our current system.
       // Then we can call test scripts using Playwright, Cypress, NightwatchJS, WebDriverIO, Appium and TestCafe.
       // But for now I'm going to hard-code this to just using testcafe, because it's what we have, and it's what we can use.
-      testCommandString = executionEngine + bas.cSpace + listOfBrowsers + bas.cSpace + boilerPlateTestPathAndFileName + bas.cSpace;
-
+      if (forwardCompatibilityMode == false) {
+        testCommandString = executionEngine + bas.cSpace + listOfBrowsers + bas.cSpace + boilerPlateTestPathAndFileName + bas.cSpace;
+      } else {
+        // node boilerPlateTestPathAndFileName -executionDriverEngine:playwright -listOfBrowsers:chrome,firefox,safari,opera 
+        testCommandString = wrd.cnode + bas.cSpace + boilerPlateTestPathAndFileName + bas.cSpace + bas.cDash + app_cfg.cexecutionDriverEngine +
+        bas.cColon + executionEngine + bas.cSpace + bas.cDash + app_cfg.clistOfBrowsers + bas.cColon + listOfBrowsers + bas.cSpace;
+      }
+      
+      // TODO: Continue to refine the rest of this code for future compatibility with playCAF & Hay-DCAF repos.
       if (reportEnabled === true) {
         // NOTE: In the future we might want to enhance this to allow for different report types such as XML or JSON.
         // For now we are hard-coding it to html.
@@ -773,6 +831,7 @@ export default {
   setReportPathConfiguration,
   setChildProcessLimitTime,
   setCmdType,
+  setForwardCompatibilityMode,
   printApplicationConfiguration,
   test  
 }

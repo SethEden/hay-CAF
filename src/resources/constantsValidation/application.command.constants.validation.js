@@ -50,6 +50,7 @@ export const applicationCommandConstantsValidation = [
   {Name: 'csetReportPathConfiguration', Actual: app_cmd.csetReportPathConfiguration, Expected: 'setReportPathConfiguration'},
   {Name: 'csetChildProcessLimitTime', Actual: app_cmd.csetChildProcessLimitTime, Expected: 'setChildProcessLimitTime'},
   {Name: 'csetCmdType', Actual: app_cmd.csetCmdType, Expected: 'setCmdType'},
+  {Name: 'csetForwardCompatibilityMode', Actual: app_cmd.csetForwardCompatibilityMode, Expected: 'setForwardCompatibilityMode'},
   {Name: 'cprintApplicationConfiguration', Actual: app_cmd.cprintApplicationConfiguration, Expected: 'printApplicationConfiguration'},
   {Name: 'ctest', Actual: app_cmd.ctest, Expected: 'test'},
   

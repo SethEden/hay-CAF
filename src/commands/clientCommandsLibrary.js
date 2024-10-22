@@ -64,6 +64,7 @@ const initApplicationCommandsLibrary = function() {
     [app_cmd.csetChildProcessLimitTime]: (inputData, inputMetaData) => testCommands.setChildProcessLimitTime(inputData, inputMetaData),
     [app_cmd.csetCmdType]: (inputData, inputMetaData) => testCommands.setCmdType(inputData, inputMetaData),
     [app_cmd.cprintApplicationConfiguration]: (inputData, inputMetaData) => testCommands.printApplicationConfiguration(inputData, inputMetaData),
+    [app_cmd.csetForwardCompatibilityMode]: (inputData, inputMetaData) => testCommands.setForwardCompatibilityMode(inputData, inputMetaData),
     [app_cmd.ctest]: (inputData, inputMetaData) => testCommands.test(inputData, inputMetaData)
   }
 }

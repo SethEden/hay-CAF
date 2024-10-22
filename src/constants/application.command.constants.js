@@ -46,6 +46,7 @@ export const csetEnableReporterConfiguration = wrd.cset + wrd.cEnable + wrd.cRep
 export const csetReportPathConfiguration = wrd.cset + wrd.cReport + wrd.cPath + wrd.cConfiguration; // setReportPathConfiguration
 export const csetChildProcessLimitTime = wrd.cset + wrd.cChild + wrd.cProcess + wrd.cLimit + wrd.cTime; // setChildProcessLimitTime
 export const csetCmdType = wrd.cset + gen.cCmd + wrd.cType; // setCmdType
+export const csetForwardCompatibilityMode = wrd.cset + wrd.cForward + wrd.cCompatibility + wrd.cMode; // setForwardCompatibilityMode
 export const cprintApplicationConfiguration = wrd.cprint + wrd.cApplication + wrd.cConfiguration; // printApplicationConfiguration
 export const ctest = wrd.ctest; // test
 
