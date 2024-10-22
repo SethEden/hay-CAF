@@ -618,14 +618,16 @@ async function test(inputData, inputMetaData) {
   // TODO: Remove this hard-coded filter ONLY once we have completed the implementation of our NEW testing framework that supports multiple testing engines (playwright, cypress, webdriver, appium, testcafe).
   // NOTE: I am going to hard-code the execution engine to testcafe, so even if the user changed it to something else, we are going to force-change and hard-code it here.
   // We will also pop a message to inform the user that the only supported test execution engine is testcafe.
-  if (executionEngine !== app_sys.ctestcafe) {
-    // WARNING: All valid execution engines are not currently supported by our testing engine.
-    console.log(app_msg.csetExecutionEngineMessage01);
-    // WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.
-    console.log(app_msg.csetExecutionEngineMessage02);
-    // WARNING: The execution engine will be hard coded to testcafe for now.
-    console.log(app_msg.csetExecutionEngineMessage03);
-    executionEngine = app_sys.ctestcafe;
+  if (forwardCompatibilityMode == false) {
+    if (executionEngine !== app_sys.ctestcafe) {
+      // WARNING: All valid execution engines are not currently supported by our testing engine.
+      console.log(app_msg.csetExecutionEngineMessage01);
+      // WARNING: Only testcafe is supported as a testing engine, until we can finish building our next generation system.
+      console.log(app_msg.csetExecutionEngineMessage02);
+      // WARNING: The execution engine will be hard coded to testcafe for now.
+      console.log(app_msg.csetExecutionEngineMessage03);
+      executionEngine = app_sys.ctestcafe;
+    }
   }
 
   // boilerPlateTestPathAndFileName is:
