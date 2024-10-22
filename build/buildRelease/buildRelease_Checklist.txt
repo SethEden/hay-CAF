@@ -1,0 +1,79 @@
+This is a playbook for the release process.
+Most of the steps are already automated, its just a matter of executing them in the right order.
+Some tasks are on GitHub, and some are commits that need to be done in a certain order.
+
+1. Ensure all code changes for the release are merged with the final feature branch to be released.
+
+2. If multiple feature branches are to be merged together as part of a release,
+then ensure they are all merged to the develop branch with the exception of one final feature branch,
+which will be the branch were the version is built from.
+
+3. This final release feature branch should itself also be synched up with the develop branch so it has the latest from develop.
+
+4. Run all validations manually first to ensure that none of them will generate any errors during the release.
+commands are:
+constValid
+validateCommandAliases
+validateWorkflows
+OR
+runAllValidations
+
+5. Fix any bugs reported by the manually run integration test validations, and commit them to the feature branch as well, or to the constants repo.
+
+6. Once all integration tests are passing 100% then increment the haystacks-constants repo version number in the @haystacks/constants repo:
+Command is:
+npm run vers
+
+7. Push the changes and tag the feature release.
+
+8. Merge the code for the haystacks-constants feature branch into the develop branch,
+which will bring the new version into the develop as part of the staging process prior to release.
+ - This will require a Merge request & approval and also will run sonarCloud.
+
+9. Create another Merge Request to merge the develop branch into production.
+ - Again you will need to approve the request, after sonarCloud scan is complete.
+
+10. Confirm the @haystacks-constants newest version is released.
+
+11. Update the @haystacks/constants version dependencies in all the plugins.
+ - Also execute the command "npm i" in all of these plugins to get the latest code installed as a dependency for those repos.
+
+12. Update the @haystacks/constants version dependencies in the application.
+ - Again execute the command "npm i" in the application to get the latest code installed locally for the application repo.
+
+13. Again push the code changes to the feature branch.
+
+14. Create a Merge Request and wait for SonarCloud to execute. DO NOT APPROVE!!!
+ - Fix any blocking issues identified by SonarCloud
+
+15. Update the documentation command is:
+num run docs
+ - Again commit the changes
+
+15. Execute the build-release script in the application to compile the latest code and generate release binaries or release zip package.
+Command is:
+npm run release
+DO NOT APPROVE!!!
+
+16. Again push the code changes to the feature branch. DO NOT APPROVE!!!
+
+17. Once sonarCloud is done running again, increment the version numbers for any dependency apps that use the @haystacks/async repo.
+DO NOT APPROVE!!!
+
+18. Again push the latest changes to the feature branch. DO NOT APPROVE!!!
+
+19. Delete the contents of the bin folder, and push these changes to the branch. DO NOT APPROVE!!!
+
+20. Approve the Merge Request & delete the branch. (NOW APPROVE!!)
+
+21. Create another Merge Request to merge the develop branch to production as part of the release.
+
+22. Wait for SonarCloud to finish executing and then approve if its green.
+
+23. Confirm that the latest release is published on npm.
+
+24. Go through all the dependency apps and switch back to the develop branch.
+
+25. Pull the latest code.
+
+26. execute "npm i" again to re-install pulling the latest code that was just published on npm wtih the latest version number.
